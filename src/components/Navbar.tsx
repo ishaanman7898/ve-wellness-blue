@@ -45,12 +45,12 @@ export function Navbar() {
           "fixed top-0 z-50 w-full transition-all duration-300",
           isScrolled 
             ? "py-2 mx-auto px-4 lg:px-8" 
-            : "py-4"
+            : "py-6"
         )}
       >
         <div className={cn(
           "container mx-auto px-4 lg:px-8 transition-all duration-300",
-          isScrolled && "bg-black/90 backdrop-blur-xl rounded-full py-3 mt-2"
+          isScrolled && "bg-black/90 backdrop-blur-xl rounded-full py-5 mt-2"
         )}>
           <div className="flex items-center justify-between relative">
             {/* Logo */}
@@ -60,7 +60,7 @@ export function Navbar() {
                 alt="Thrive" 
                 className={cn(
                   "w-auto object-contain drop-shadow transition-all duration-300",
-                  isScrolled ? "h-10 md:h-12" : "h-16 md:h-20"
+                  isScrolled ? "h-12 md:h-14" : "h-20 md:h-24"
                 )} 
               />
             </a>
