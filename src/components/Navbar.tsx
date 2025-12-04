@@ -19,9 +19,8 @@ const navLinks = [
       { label: "All Products", href: "/shop" },
     ]
   },
-
-  { label: "About", href: "#about" },
-  { label: "Stories", href: "#stories" },
+  { label: "About", href: "/about" },
+  { label: "Stories", href: "/stories" },
   { label: "Newsletter", href: "#newsletter" },
 ];
 
@@ -43,21 +42,31 @@ export function Navbar() {
       {/* Main Navbar */}
       <nav
         className={cn(
-          "fixed top-0 z-50 w-full transition-all duration-300 py-4",
+          "fixed top-0 z-50 w-full transition-all duration-300",
           isScrolled 
-            ? "bg-black/90 backdrop-blur-xl supports-[backdrop-filter]:bg-black/80" 
-            : "bg-transparent"
+            ? "py-2 mx-auto px-4 lg:px-8" 
+            : "py-4"
         )}
       >
-        <div className="container mx-auto px-4 lg:px-8">
-          <div className="flex items-center justify-between">
-            {/* Logo - Bigger */}
-            <a href="/" className="flex items-center gap-3 group">
-              <img src="/Thrive.png" alt="Thrive" className="h-20 md:h-24 w-auto object-contain drop-shadow" />
+        <div className={cn(
+          "container mx-auto px-4 lg:px-8 transition-all duration-300",
+          isScrolled && "bg-black/90 backdrop-blur-xl rounded-full py-3 mt-2"
+        )}>
+          <div className="flex items-center justify-between relative">
+            {/* Logo */}
+            <a href="/" className="flex items-center gap-3 group flex-shrink-0">
+              <img 
+                src="/Thrive.png" 
+                alt="Thrive" 
+                className={cn(
+                  "w-auto object-contain drop-shadow transition-all duration-300",
+                  isScrolled ? "h-10 md:h-12" : "h-16 md:h-20"
+                )} 
+              />
             </a>
 
-            {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-1">
+            {/* Desktop Navigation - Centered */}
+            <div className="hidden lg:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
               {navLinks.map((link) => (
                 <div
                   key={link.label}

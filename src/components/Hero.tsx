@@ -1,5 +1,6 @@
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Play, ChevronDown } from "lucide-react";
+import { ArrowRight, ChevronDown } from "lucide-react";
 
 export function Hero() {
   return (
@@ -36,7 +37,7 @@ export function Hero() {
           </h1>
 
           {/* WELLNESS THAT WORKS with oval around WORKS */}
-          <div className="flex items-center justify-center gap-2 sm:gap-3 animate-fade-in-up delay-100">
+          <div className="flex items-center justify-center gap-2 sm:gap-3 animate-fade-in-up delay-100 mb-10 md:mb-12">
             <span className="font-display text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-white tracking-wide">
               WELLNESS THAT
             </span>
@@ -49,24 +50,18 @@ export function Hero() {
             </span>
           </div>
 
-          {/* Subheadline */}
-          <p className="text-base sm:text-lg md:text-xl text-white/80 mt-6 md:mt-8 mb-8 md:mb-10 max-w-2xl mx-auto animate-fade-in-up delay-200 leading-relaxed">
-            Unlock your peak performance with premium supplements designed for those who demand more from life.
-          </p>
-
-          {/* CTA Buttons */}
+          {/* CTA Buttons - Fatter */}
           <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 animate-fade-in-up delay-300 justify-center">
-            <Button variant="hero" size="default" className="rounded-full w-full sm:w-auto text-sm sm:text-base" asChild>
-              <a href="/shop">
+            <Button variant="hero" size="lg" className="rounded-full w-full sm:w-auto text-base sm:text-lg px-8 py-6" asChild>
+              <Link to="/shop">
                 Shop Now
-                <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
-              </a>
+                <ArrowRight className="ml-2 w-5 h-5" />
+              </Link>
             </Button>
-            <Button variant="hero-outline" size="default" className="rounded-full w-full sm:w-auto text-sm sm:text-base" asChild>
-              <a href="#about">
-                <Play className="mr-2 w-4 h-4 sm:w-5 sm:h-5" />
+            <Button variant="hero-outline" size="lg" className="rounded-full w-full sm:w-auto text-base sm:text-lg px-8 py-6" asChild>
+              <Link to="/about">
                 Our Story
-              </a>
+              </Link>
             </Button>
           </div>
         </div>

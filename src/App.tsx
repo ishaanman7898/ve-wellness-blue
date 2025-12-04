@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CartProvider } from "@/contexts/CartContext";
 import { FloatingCart } from "@/components/FloatingCart";
+import { PageLoader } from "@/components/PageLoader";
 import Index from "./pages/Index";
 import Shop from "./pages/Shop";
 import NotFound from "./pages/NotFound";
@@ -35,6 +36,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <PageLoader />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/featured" element={<Featured />} />
