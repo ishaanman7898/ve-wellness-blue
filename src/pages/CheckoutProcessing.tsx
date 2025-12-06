@@ -2,12 +2,12 @@ import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
-import { ShoppingCart, Check, ExternalLink, Loader2, X } from "lucide-react";
+import { ShoppingCart, Check, ExternalLink, Loader2, X, AlertTriangle, ArrowRight } from "lucide-react";
 
 export default function CheckoutProcessing() {
     const { cart, clearCart } = useCart();
     const navigate = useNavigate();
-    const [status, setStatus] = useState<"processing" | "complete" | "error">("processing");
+    const [status, setStatus] = useState<"processing" | "complete" | "error" | "manual">("processing");
     const [sessionId, setSessionId] = useState<string | null>(null);
     const [progress, setProgress] = useState({ processed: 0, total: 0 });
     const [finalCartUrl, setFinalCartUrl] = useState<string | null>(null);
@@ -15,6 +15,10 @@ export default function CheckoutProcessing() {
 
     // Cart server URL
     const CART_SERVER_URL = import.meta.env.VITE_CART_SERVER_URL || "http://localhost:3001";
+
+    // Extract company code for manual flow
+    const companyCode = cart[0]?.link.match(/buybuttons\/([a-z0-9]+)\//i)?.[1] || "";
+    const manualFinalCartUrl = companyCode ? `https://portal.veinternational.org/buybuttons/${companyCode}/cart/` : "";
 
     const startCheckout = async () => {
         try {
@@ -97,6 +101,10 @@ export default function CheckoutProcessing() {
         checkStatus();
     };
 
+    const openManualItem = (url: string) => {
+        window.open(url, "_blank", "noopener,noreferrer");
+    };
+
     return (
         <div className="fixed inset-0 z-[100] bg-background overflow-auto flex items-center justify-start pl-12 md:pl-24">
             {/* Close Button */}
@@ -172,17 +180,7 @@ export default function CheckoutProcessing() {
                             </p>
 
                             <div className="space-y-4 w-full">
-                                {finalCartUrl && (
-                                    <Button
-                                        variant="hero"
-                                        size="lg"
-                                        className="w-full rounded-full"
-                                        onClick={() => window.open(finalCartUrl, "_blank")}
-                                    >
-                                        <ExternalLink className="w-5 h-5 mr-2" />
-                                        Open Cart
-                                    </Button>
-                                )}
+
 
                                 <Button
                                     variant="outline"
@@ -198,37 +196,125 @@ export default function CheckoutProcessing() {
                     {status === "error" && (
                         <>
                             <div className="h-28 w-28 mb-8 rounded-full bg-red-500/20 flex items-center justify-center">
-                                <span className="text-5xl">❌</span>
+                                <AlertTriangle className="w-12 h-12 text-red-500" />
                             </div>
 
                             <h1 className="font-display text-4xl md:text-5xl font-bold mb-4 text-red-500">
                                 Something Went Wrong
                             </h1>
 
-                            <p className="text-muted-foreground text-lg mb-8">
+                            <p className="text-muted-foreground text-lg mb-6">
                                 We couldn't complete the automated checkout. Please try again or use the manual checkout.
                             </p>
 
-                            <div className="space-x-4">
+                            <div className="bg-amber-500/10 border border-amber-500/20 rounded-xl p-4 mb-8">
+                                <p className="text-sm text-amber-600 dark:text-amber-400">
+                                    <strong>Tip:</strong> Ensure the automation helper app is running and pop-ups are allowed.
+                                </p>
+                            </div>
+
+                            <div className="grid gap-3 w-full">
                                 <Button
-                                    variant="outline"
-                                    onClick={() => navigate("/cart")}
-                                    className="rounded-full"
+                                    onClick={() => setStatus("manual")}
+                                    variant="hero"
+                                    className="w-full rounded-full"
                                 >
-                                    Back to Cart
+                                    Use Manual Checkout
+                                    <ArrowRight className="w-4 h-4 ml-2" />
                                 </Button>
-                                <Button
-                                    onClick={() => {
-                                        hasStarted.current = false;
-                                        setStatus("processing");
-                                        startCheckout(); // Retry
-                                    }}
-                                    className="rounded-full"
-                                >
-                                    Try Again
-                                </Button>
+
+                                <div className="flex gap-3">
+                                    <Button
+                                        variant="outline"
+                                        onClick={() => navigate("/cart")}
+                                        className="rounded-full flex-1"
+                                    >
+                                        Back
+                                    </Button>
+                                    <Button
+                                        onClick={() => {
+                                            hasStarted.current = false;
+                                            setStatus("processing");
+                                            startCheckout();
+                                        }}
+                                        className="rounded-full flex-1"
+                                    >
+                                        Try Again
+                                    </Button>
+                                </div>
                             </div>
                         </>
+                    )}
+
+                    {status === "manual" && (
+                        <div className="w-full h-[80vh] flex flex-col">
+                            <div className="flex-shrink-0">
+                                <h1 className="font-display text-3xl font-bold mb-2">Manual Checkout</h1>
+                                <p className="text-muted-foreground mb-6">
+                                    Follow these steps to complete your purchase:
+                                </p>
+                            </div>
+
+                            <div className="flex-grow overflow-y-auto pr-2 space-y-4">
+                                <div className="step">
+                                    <p className="font-semibold mb-2 flex items-center">
+                                        <span className="bg-primary/10 text-primary w-6 h-6 rounded-full inline-flex items-center justify-center text-sm mr-2">1</span>
+                                        Add items one by one:
+                                    </p>
+                                    <div className="space-y-3 pl-8">
+                                        {cart.map((item, i) => (
+                                            <div key={`${item.link}-${i}`} className="bg-card border border-border rounded-lg p-3 flex items-center justify-between">
+                                                <div className="flex-1 min-w-0 mr-3">
+                                                    <p className="font-medium truncate">{item.name}</p>
+                                                    <p className="text-xs text-muted-foreground">Qty: {item.quantity || 1}</p>
+                                                </div>
+                                                <Button
+                                                    size="sm"
+                                                    variant="outline"
+                                                    className="shrink-0"
+                                                    onClick={() => {
+                                                        const times = Math.max(1, item.quantity || 1);
+                                                        for (let k = 0; k < times; k++) {
+                                                            openManualItem(`${item.link}?nocache=${Date.now() + i * 100 + k}`);
+                                                        }
+                                                    }}
+                                                >
+                                                    Add
+                                                </Button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div className="step pt-2">
+                                    <p className="font-semibold mb-2 flex items-center">
+                                        <span className="bg-primary/10 text-primary w-6 h-6 rounded-full inline-flex items-center justify-center text-sm mr-2">2</span>
+                                        Complete purchase:
+                                    </p>
+                                    <div className="pl-8">
+                                        {manualFinalCartUrl && (
+                                            <Button
+                                                className="w-full rounded-full"
+                                                onClick={() => window.open(manualFinalCartUrl, "_blank")}
+                                            >
+                                                <ExternalLink className="w-4 h-4 mr-2" />
+                                                Open VEI Cart
+                                            </Button>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="flex-shrink-0 pt-6">
+                                <Button
+                                    variant="ghost"
+                                    onClick={() => navigate("/cart")}
+                                    className="w-full text-muted-foreground hover:text-foreground"
+                                >
+                                    Cancel and go back
+                                </Button>
+                            </div>
+                        </div>
                     )}
                 </div>
             </div>
