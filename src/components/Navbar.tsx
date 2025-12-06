@@ -20,8 +20,7 @@ const navLinks = [
     ]
   },
   { label: "About", href: "/about" },
-  { label: "Stories", href: "/stories" },
-  { label: "Newsletter", href: "#newsletter" },
+  { label: "Newsletter", href: "/newsletter" },
 ];
 
 export function Navbar() {
@@ -58,97 +57,97 @@ export function Navbar() {
                 : "max-w-[min(96vw,1500px)] bg-transparent px-2 sm:px-4 md:px-6 lg:px-8 xl:px-10 py-6"
             )}
           >
-          <div className="flex items-center justify-between relative">
-            {/* Logo */}
-            <a href="/" className="flex items-center gap-3 group flex-shrink-0">
-              <img 
-                src="/Thrive.png" 
-                alt="Thrive" 
-                className={cn(
-                  "w-auto object-contain drop-shadow transition-transform duration-500 origin-left",
-                  "h-16 md:h-20",
-                  isScrolled ? "scale-90" : "scale-110"
-                )} 
-              />
-            </a>
+            <div className="flex items-center justify-between relative">
+              {/* Logo */}
+              <a href="/" className="flex items-center gap-3 group flex-shrink-0">
+                <img
+                  src="/Thrive.png"
+                  alt="Thrive"
+                  className={cn(
+                    "w-auto object-contain drop-shadow transition-transform duration-500 origin-left",
+                    "h-16 md:h-20",
+                    isScrolled ? "scale-90" : "scale-110"
+                  )}
+                />
+              </a>
 
-            {/* Desktop Navigation - Centered */}
-            <div className="hidden lg:flex items-center gap-4 absolute left-1/2 -translate-x-1/2">
-              {navLinks.map((link) => (
-                <div
-                  key={link.label}
-                  className="relative"
-                  onMouseEnter={() => link.hasDropdown && setActiveDropdown(link.label)}
-                  onMouseLeave={() => setActiveDropdown(null)}
-                >
-                  <a
-                    href={link.href}
-                    className={cn(
-                      "flex items-center gap-1 px-4 py-2 text-white font-medium transition-colors duration-200",
-                      "hover:text-ocean"
-                    )}
+              {/* Desktop Navigation - Centered */}
+              <div className="hidden lg:flex items-center gap-4 absolute left-1/2 -translate-x-1/2">
+                {navLinks.map((link) => (
+                  <div
+                    key={link.label}
+                    className="relative"
+                    onMouseEnter={() => link.hasDropdown && setActiveDropdown(link.label)}
+                    onMouseLeave={() => setActiveDropdown(null)}
                   >
-                    {link.label}
-                    {link.hasDropdown && (
-                      <ChevronDown className={cn(
-                        "w-4 h-4 transition-transform duration-200",
-                        activeDropdown === link.label && "rotate-180"
-                      )} />
-                    )}
-                  </a>
+                    <a
+                      href={link.href}
+                      className={cn(
+                        "flex items-center gap-1 px-4 py-2 text-white font-medium transition-colors duration-200",
+                        "hover:text-ocean"
+                      )}
+                    >
+                      {link.label}
+                      {link.hasDropdown && (
+                        <ChevronDown className={cn(
+                          "w-4 h-4 transition-transform duration-200",
+                          activeDropdown === link.label && "rotate-180"
+                        )} />
+                      )}
+                    </a>
 
-                  {/* Dropdown */}
-                  {link.hasDropdown && activeDropdown === link.label && (
-                    <div className="absolute top-full left-0 pt-2 animate-fade-in">
-                      <div
-                        className={cn(
-                          "rounded-xl p-2 min-w-[220px] border border-border transition-colors",
-                          isScrolled
-                            ? "bg-black/90 backdrop-blur-xl"
-                            : "bg-black/30 backdrop-blur-xl hover:bg-neutral-800/95 duration-0"
-                        )}
-                      >
-                        {link.dropdownItems?.map((item) => (
-                          <a
-                            key={item.label}
-                            href={item.href}
-                            className="block px-4 py-2 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition-colors"
-                          >
-                            {item.label}
-                          </a>
-                        ))}
+                    {/* Dropdown */}
+                    {link.hasDropdown && activeDropdown === link.label && (
+                      <div className="absolute top-full left-0 pt-2 animate-fade-in">
+                        <div
+                          className={cn(
+                            "rounded-xl p-2 min-w-[220px] border border-border transition-colors",
+                            isScrolled
+                              ? "bg-black/90 backdrop-blur-xl"
+                              : "bg-black/30 backdrop-blur-xl hover:bg-neutral-800/95 duration-0"
+                          )}
+                        >
+                          {link.dropdownItems?.map((item) => (
+                            <a
+                              key={item.label}
+                              href={item.href}
+                              className="block px-4 py-2 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+                            >
+                              {item.label}
+                            </a>
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
+                    )}
+                  </div>
+                ))}
+              </div>
 
-            {/* Right Side Actions - Cart Button */}
-            <div className="hidden lg:flex items-center gap-3">
-              <Button variant="nav-cta" className="rounded-full group relative" asChild>
-                <Link to="/cart">
-                  <ShoppingCart className="w-5 h-5" />
-                  <span className="ml-2">Cart</span>
-                  {totalItems > 0 && (
-                    <span className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
-                      {totalItems}
-                    </span>
-                  )}
-                </Link>
+              {/* Right Side Actions - Cart Button */}
+              <div className="hidden lg:flex items-center gap-3">
+                <Button variant="nav-cta" className="rounded-full group relative" asChild>
+                  <Link to="/cart">
+                    <ShoppingCart className="w-5 h-5" />
+                    <span className="ml-2">Cart</span>
+                    {totalItems > 0 && (
+                      <span className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
+                        {totalItems}
+                      </span>
+                    )}
+                  </Link>
+                </Button>
+              </div>
+
+              {/* Mobile Menu Button */}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="lg:hidden"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              >
+                {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </Button>
             </div>
-
-            {/* Mobile Menu Button */}
-            <Button
-              variant="ghost"
-              size="icon"
-              className="lg:hidden"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            >
-              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </Button>
-          </div>
           </div>
         </div>
 

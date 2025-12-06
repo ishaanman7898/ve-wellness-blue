@@ -1,24 +1,22 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
-import { Trash2, ShoppingBag, ArrowLeft } from "lucide-react";
+import { Trash2, ShoppingBag } from "lucide-react";
 
 export default function Cart() {
-  const { cart, removeFromCart, updateQuantity, totalPrice, totalItems, checkout, isCheckingOut } = useCart();
+  const { cart, removeFromCart, updateQuantity, totalPrice, totalItems } = useCart();
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Navbar />
-      
-      <main className="flex-1 pt-32 pb-20">
+
+      <main className="flex-1 pt-44 pb-20">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="mb-8">
-            <Link to="/shop" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
-              <ArrowLeft className="w-4 h-4" />
-              Continue Shopping
-            </Link>
+            {/* Continue Shopping button removed */}
           </div>
 
           <h1 className="font-display text-4xl md:text-5xl font-bold mb-8">Your Cart</h1>
@@ -41,8 +39,8 @@ export default function Cart() {
                   const unit = item.price || 0;
                   const line = unit * qty;
                   return (
-                    <div 
-                      key={index} 
+                    <div
+                      key={index}
                       className="glass rounded-xl p-4 md:p-6 flex flex-col sm:flex-row gap-4"
                     >
                       {/* Product Image Placeholder */}
@@ -109,7 +107,7 @@ export default function Cart() {
               <div className="lg:col-span-1">
                 <div className="glass rounded-xl p-6 sticky top-32">
                   <h2 className="font-display text-xl font-bold mb-6">Order Summary</h2>
-                  
+
                   <div className="space-y-3 mb-6">
                     <div className="flex justify-between text-muted-foreground">
                       <span>Subtotal ({totalItems} items)</span>
@@ -128,13 +126,12 @@ export default function Cart() {
                     </div>
                   </div>
 
-                  <Button 
-                    variant="hero" 
+                  <Button
+                    variant="hero"
                     className="w-full rounded-full"
-                    onClick={checkout}
-                    disabled={isCheckingOut}
+                    onClick={() => navigate("/checkout-processing")}
                   >
-                    {isCheckingOut ? "Processing..." : "Proceed to Checkout"}
+                    Proceed to Checkout
                   </Button>
 
                   <p className="text-center text-xs text-muted-foreground mt-4">

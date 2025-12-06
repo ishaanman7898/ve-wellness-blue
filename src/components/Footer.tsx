@@ -1,5 +1,12 @@
-import { Instagram, Twitter, Youtube, Mail } from "lucide-react";
+import { Instagram, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
+
+// TikTok icon component (not in lucide-react)
+const TikTokIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
+  </svg>
+);
 
 const footerLinks = {
   productLines: [
@@ -11,12 +18,12 @@ const footerLinks = {
   ],
   company: [
     { label: "About Us", href: "/about" },
-    { label: "Our Mission", href: "/about#mission" },
-    { label: "Team", href: "/about#team" },
+    { label: "Our Mission", href: "/mission" },
+    { label: "Our Team", href: "/team" },
   ],
   support: [
     { label: "FAQ", href: "/faq" },
-    { label: "Shipping Times", href: "/shipping" },
+    { label: "Shipping", href: "/shipping" },
     { label: "Contact Us", href: "/contact" },
   ],
   legal: [
@@ -26,10 +33,9 @@ const footerLinks = {
 };
 
 const socialLinks = [
-  { icon: Instagram, href: "#", label: "Instagram" },
-  { icon: Twitter, href: "#", label: "Twitter" },
-  { icon: Youtube, href: "#", label: "YouTube" },
-  { icon: Mail, href: "#", label: "Email" },
+  { icon: Instagram, href: "https://instagram.com", label: "Instagram" },
+  { icon: TikTokIcon, href: "https://tiktok.com", label: "TikTok" },
+  { icon: Mail, href: "mailto:contact@thrivewellness.com", label: "Email" },
 ];
 
 export function Footer() {
@@ -50,6 +56,8 @@ export function Footer() {
                 <a
                   key={social.label}
                   href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-primary/20 transition-colors"
                   aria-label={social.label}
                 >

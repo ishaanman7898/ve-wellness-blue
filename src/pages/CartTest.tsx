@@ -234,7 +234,7 @@ export default function CartTest() {
         </div>
       )}
 
-      <section className="pt-28 pb-12">
+      <section className="pt-44 pb-12">
         <div className="container mx-auto px-4 lg:px-8">
           <h1 className="font-display text-3xl md:text-4xl font-bold mb-2">Cart Test (Hidden)</h1>
           <p className="text-muted-foreground mb-8">This page demonstrates the VEI multi-item checkout workaround using localStorage and hidden iframes. Toggle debug options to see the iframes and logs.</p>
@@ -265,6 +265,7 @@ export default function CartTest() {
               <div className="font-medium mb-3">Action</div>
               <div className="flex flex-wrap gap-2">
                 <Button onClick={goToRealCheckout} className="rounded-full">Queue Checkout</Button>
+                <Button onClick={() => window.open('/checkout-processing', 'checkout_process', 'left=127,top=184,width=694,height=750,scrollbars=yes,resizable=yes')} className="rounded-full bg-glacier hover:bg-glacier/90">Puppeteer Checkout</Button>
                 <Button variant="secondary" onClick={clearCart} className="rounded-full">Clear Local Cart</Button>
                 <Button variant="outline" onClick={() => window.open('https://portal.veinternational.org/cart', '_blank')} className="rounded-full">Open Global Cart</Button>
                 <Button

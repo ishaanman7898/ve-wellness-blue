@@ -51,16 +51,16 @@ export default function About() {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Navbar />
-      
+
       {/* Hero Section */}
-      <section className="pt-32 pb-16 md:pt-40 md:pb-24">
+      <section className="pt-44 pb-16 md:pt-52 md:pb-24">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fade-in">
               Our Story
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground leading-relaxed animate-fade-in delay-100">
-              At Thrive, we believe that wellness isn't just about supplements—it's about empowering you to live your best life. 
+              At Thrive, we believe that wellness isn't just about supplements—it's about empowering you to live your best life.
               Born from a passion for health and a commitment to quality, we've dedicated ourselves to creating products that make a real difference.
             </p>
           </div>
@@ -76,15 +76,15 @@ export default function About() {
                 Born in the Mountains
               </h2>
               <p className="text-muted-foreground leading-relaxed">
-                Thrive was founded with a simple yet powerful mission: to bring the purity and strength of nature to your daily wellness routine. 
+                Thrive was founded with a simple yet powerful mission: to bring the purity and strength of nature to your daily wellness routine.
                 Inspired by the pristine peaks and crystal-clear waters of mountain landscapes, our products embody the essence of natural vitality.
               </p>
               <p className="text-muted-foreground leading-relaxed">
-                We started with a small team of health enthusiasts, scientists, and athletes who shared a common frustration—the wellness industry was flooded with products that promised everything but delivered little. 
+                We started with a small team of health enthusiasts, scientists, and athletes who shared a common frustration—the wellness industry was flooded with products that promised everything but delivered little.
                 We set out to change that by creating supplements that are as pure as they are effective.
               </p>
               <p className="text-muted-foreground leading-relaxed">
-                Today, Thrive has grown into a trusted name in wellness, but our core values remain unchanged. 
+                Today, Thrive has grown into a trusted name in wellness, but our core values remain unchanged.
                 Every product we create is a testament to our commitment to quality, transparency, and your well-being.
               </p>
             </div>

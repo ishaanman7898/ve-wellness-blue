@@ -1,14 +1,14 @@
 import { useState } from "react";
-import { ShoppingCart, Trash2, Check, X, Minus, Plus } from "lucide-react";
+import { ShoppingCart, Trash2, Check, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
-import { cn } from "@/lib/utils";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export function FloatingCart() {
-    const { cart, removeFromCart, clearCart, checkout, isCheckingOut } = useCart();
+    const { cart, removeFromCart, clearCart } = useCart();
     const [isOpen, setIsOpen] = useState(false);
     const location = useLocation();
+    const navigate = useNavigate();
 
     // Hide cart on home page
     const shouldShowCart = location.pathname !== '/';
@@ -22,93 +22,6 @@ export function FloatingCart() {
 
     return (
         <>
-            {/* Checkout Loading Overlay */}
-            {isCheckingOut && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background/95 backdrop-blur-md">
-                    <div className="relative max-w-lg w-full mx-4">
-                        {/* Matrix Dots */}
-                        <div className="absolute inset-0 matrix-dots opacity-10 rounded-3xl"></div>
-
-                        {/* Main Card */}
-                        <div className="relative glass border border-primary/20 rounded-3xl p-8 md:p-12 shadow-2xl">
-                            {/* Animated Spinner */}
-                            <div className="relative mb-8 flex justify-center">
-                                <div className="relative">
-                                    {/* Outer ring */}
-                                    <div className="absolute inset-0 h-24 w-24 animate-spin rounded-full border-4 border-glacier/20 border-t-glacier"></div>
-                                    {/* Inner glow */}
-                                    <div className="absolute inset-2 h-20 w-20 rounded-full bg-gradient-to-br from-primary/20 to-glacier/20 blur-xl animate-pulse"></div>
-                                    {/* Center icon */}
-                                    <div className="relative h-24 w-24 flex items-center justify-center">
-                                        <ShoppingCart className="w-10 h-10 text-glacier" />
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Header */}
-                            <h2 className="font-display text-3xl md:text-4xl font-bold text-center mb-4 bg-gradient-to-r from-foreground to-glacier bg-clip-text text-transparent">
-                                Processing Your Order
-                            </h2>
-
-                            {/* Description */}
-                            <div className="space-y-3 mb-6 text-center">
-                                <p className="text-muted-foreground text-lg">
-                                    We're securely adding your items to the official VEI cart
-                                </p>
-                                <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground/80">
-                                    <div className="w-2 h-2 rounded-full bg-glacier animate-pulse"></div>
-                                    <span>Processing {cart.length} item{cart.length !== 1 ? 's' : ''}</span>
-                                </div>
-                            </div>
-
-                            {/* Progress Steps */}
-                            <div className="space-y-4 mb-6">
-                                <div className="flex items-start gap-3">
-                                    <div className="flex-shrink-0 w-6 h-6 rounded-full bg-glacier flex items-center justify-center">
-                                        <Check className="w-4 h-4 text-background" />
-                                    </div>
-                                    <div>
-                                        <p className="font-medium text-foreground">Verifying Items</p>
-                                        <p className="text-sm text-muted-foreground">Confirming product availability</p>
-                                    </div>
-                                </div>
-                                <div className="flex items-start gap-3">
-                                    <div className="flex-shrink-0 w-6 h-6 rounded-full border-2 border-glacier flex items-center justify-center animate-pulse">
-                                        <div className="w-2 h-2 rounded-full bg-glacier"></div>
-                                    </div>
-                                    <div>
-                                        <p className="font-medium text-foreground">Building Cart</p>
-                                        <p className="text-sm text-muted-foreground">Adding items to VEI portal</p>
-                                    </div>
-                                </div>
-                                <div className="flex items-start gap-3 opacity-50">
-                                    <div className="flex-shrink-0 w-6 h-6 rounded-full border-2 border-muted-foreground/30"></div>
-                                    <div>
-                                        <p className="font-medium text-foreground">Ready to Checkout</p>
-                                        <p className="text-sm text-muted-foreground">Opening secure checkout</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Important Notice */}
-                            <div className="bg-primary/5 border border-primary/20 rounded-xl p-4">
-                                <p className="text-sm text-center text-muted-foreground leading-relaxed">
-                                    <span className="font-semibold text-foreground">Please keep this tab open.</span><br />
-                                    Your cart will open automatically when ready.
-                                </p>
-                            </div>
-
-                            {/* Subtle animation bars */}
-                            <div className="mt-6 flex gap-2 justify-center">
-                                <div className="w-2 h-2 rounded-full bg-glacier animate-pulse"></div>
-                                <div className="w-2 h-2 rounded-full bg-glacier/70 animate-pulse" style={{ animationDelay: '0.2s' }}></div>
-                                <div className="w-2 h-2 rounded-full bg-glacier/40 animate-pulse" style={{ animationDelay: '0.4s' }}></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
-
             {/* Floating Cart Button */}
             <div className="fixed bottom-6 right-6 z-[60]">
                 <button
@@ -195,7 +108,7 @@ export function FloatingCart() {
                                             <Button variant="outline" size="default" onClick={clearCart} className="flex-1">
                                                 Clear
                                             </Button>
-                                            <Button onClick={checkout} className="flex-1 rounded-full" size="default">
+                                            <Button onClick={() => { setIsOpen(false); navigate("/checkout-processing"); }} className="flex-1 rounded-full" size="default">
                                                 <Check className="w-4 h-4 mr-2" />
                                                 Checkout
                                             </Button>

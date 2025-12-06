@@ -6,7 +6,7 @@ const Privacy = () => {
         <div className="min-h-screen bg-background">
             <Navbar />
 
-            <div className="container mx-auto px-4 lg:px-8 py-24">
+            <div className="container mx-auto px-4 lg:px-8 pt-44 pb-24">
                 <div className="max-w-4xl mx-auto">
                     <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-6">
                         Privacy Policy

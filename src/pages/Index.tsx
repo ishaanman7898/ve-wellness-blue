@@ -1,40 +1,35 @@
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
 import { Footer } from "@/components/Footer";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import WaveMarquee from "@/components/WaveMarquee";
+import { ChevronDown } from "lucide-react";
 
-interface Product {
-  category: string;
-  name: string;
-  price: string;
-  image?: string;
-}
+const thriveFactors = [
+  {
+    title: "MATERIALS",
+    content: "We use only premium, food-grade stainless steel and BPA-free materials. Every product is designed with durability and safety in mind, ensuring your wellness journey is built on a solid foundation."
+  },
+  {
+    title: "SUSTAINABILITY",
+    content: "Our commitment to the planet drives every decision. From recyclable packaging to carbon-neutral shipping, we're dedicated to reducing our environmental footprint while helping you reduce yours."
+  },
+  {
+    title: "CUSTOMIZATION",
+    content: "Your wellness journey is unique, and your products should be too. Choose from a range of colors, sizes, and configurations to find the perfect fit for your lifestyle."
+  },
+  {
+    title: "CONVENIENCE",
+    content: "Designed for life on the go. Our products feature easy-clean designs, leak-proof seals, and portable sizes that fit seamlessly into your daily routine."
+  },
+];
 
 const Index = () => {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [openAccordion, setOpenAccordion] = useState<string | null>(null);
 
-  useEffect(() => {
-    // Parse CSV data
-    fetch('/products.csv')
-      .then(res => res.text())
-      .then(csv => {
-        const lines = csv.split('\n').slice(1); // Skip header
-        const parsed = lines
-          .filter(line => line.trim() && line.includes('In Store'))
-          .slice(0, 12) // Get first 12 products
-          .map(line => {
-            const parts = line.split(',');
-            return {
-              category: parts[0]?.trim() || '',
-              name: parts[1]?.trim() || '',
-              price: parts[5]?.trim() || '',
-              image: '/placeholder.svg' // Using placeholder for now
-            };
-          });
-        setProducts(parsed);
-      });
-  }, []);
+  const toggleAccordion = (title: string) => {
+    setOpenAccordion(openAccordion === title ? null : title);
+  };
 
   return (
     <div className="min-h-screen bg-background font-sans">
@@ -58,9 +53,9 @@ const Index = () => {
             </div>
             {/* Right: product card mock */}
             <div className="flex justify-center">
-              <div className="relative w-full max-w-md rounded-2xl border border-white/20 bg-gradient-to-br from-navy-medium via-navy-medium/60 to-white/10 p-6 shadow-2xl">
+              <div className="relative w-full max-w-md rounded-2xl border border-white/20 bg-gradient-to-br from-navy-medium via-navy-medium/60 to-white/10 p-6 shadow-2xl overflow-hidden">
                 <div className="aspect-[3/4] rounded-xl bg-gradient-to-br from-navy-medium/40 via-ocean/30 to-white/40 flex items-center justify-center overflow-hidden">
-                  <img src="/placeholder.svg" alt="Peak Protein" className="w-3/4 h-3/4 object-contain drop-shadow" />
+                  <img src="/product-images/SU-PR-1.jpg" alt="Peak Protein" className="w-full h-full object-cover" />
                 </div>
               </div>
             </div>
@@ -68,53 +63,69 @@ const Index = () => {
         </div>
       </section>
 
-  
+      {/* Wavy Scrolling Text */}
+      <section className="py-0 overflow-hidden bg-navy-medium relative z-10">
+        <WaveMarquee speedSeconds={25} amplitudePx={12} tightnessSeconds={-0.04} repeats={4} />
+      </section>
 
-        {/* Wavy Scrolling Text (new) */}
-        <section className="py-8 md:py-10 overflow-hidden bg-navy-medium relative z-10">
-          <WaveMarquee speedSeconds={21} amplitudePx={22} tightnessSeconds={-0.06} />
-        </section>
-
-          {/* Section Divider */}
+      {/* Section Divider - Pure white */}
+      <div className="bg-navy-medium">
         <div className="container mx-auto px-4 lg:px-8 relative z-10">
-          <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent"></div>
+          <div className="h-px bg-white"></div>
         </div>
+      </div>
 
-        {/* The Thrive Factor - split layout */}
-        <section className="py-16 md:py-24 bg-navy-medium relative overflow-hidden">
-          <div className="absolute inset-0 matrix-dots opacity-10" aria-hidden="true" />
-          <div className="container mx-auto px-4 lg:px-8 relative z-10">
-            <div className="grid lg:grid-cols-2 items-start gap-12">
-              {/* Left: Heading + list */}
-              <div>
-                <h2 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-tight mb-3">
-                  THE THRIVE <span className="text-glacier">FACTOR</span>
-                </h2>
-                <p className="font-display text-xl sm:text-2xl font-extrabold text-white/90 tracking-wide mb-10">
-                  MADE WITH A CONSCIENCE TO THE WORLD
-                </p>
+      {/* The Thrive Factor - split layout with accordions */}
+      <section className="py-16 md:py-24 bg-navy-medium relative overflow-hidden">
+        <div className="absolute inset-0 matrix-dots opacity-10" aria-hidden="true" />
+        <div className="container mx-auto px-4 lg:px-8 relative z-10">
+          <div className="grid lg:grid-cols-2 items-start gap-12">
+            {/* Left: Heading + accordion list */}
+            <div>
+              <h2 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-tight mb-3">
+                THE THRIVE <span className="text-glacier">FACTOR</span>
+              </h2>
+              <p className="font-display text-xl sm:text-2xl font-extrabold text-white/90 tracking-wide mb-10">
+                MADE WITH A CONSCIENCE TO THE WORLD
+              </p>
 
-                <div className="divide-y divide-white/20 max-w-xl">
-                  {["MATERIALS","SUSTAINABILITY","CUSTOMIZATION","CONVENIENCE"].map((item) => (
-                    <div key={item} className="flex items-center justify-between py-4 text-white/90">
-                      <span className="font-display text-xl font-bold tracking-wide">{item}</span>
-                      <span className="text-2xl font-bold">+</span>
+              <div className="divide-y divide-white/20 max-w-xl">
+                {thriveFactors.map((item) => (
+                  <div key={item.title} className="py-4">
+                    <button
+                      onClick={() => toggleAccordion(item.title)}
+                      className="flex items-center justify-between w-full text-white/90 hover:text-white transition-colors"
+                    >
+                      <span className="font-display text-xl font-bold tracking-wide">{item.title}</span>
+                      <ChevronDown
+                        className={`w-6 h-6 transition-transform duration-300 ${openAccordion === item.title ? "rotate-180" : ""
+                          }`}
+                      />
+                    </button>
+                    <div
+                      className={`overflow-hidden transition-all duration-300 ${openAccordion === item.title ? "max-h-40 mt-4" : "max-h-0"
+                        }`}
+                    >
+                      <p className="text-white/70 leading-relaxed">
+                        {item.content}
+                      </p>
                     </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Right: Product card */}
-              <div className="flex justify-center">
-                <div className="relative w-full max-w-md rounded-2xl border border-white/20 bg-gradient-to-br from-navy-medium via-navy-medium/60 to-white/10 p-6 shadow-2xl">
-                  <div className="aspect-[3/4] rounded-xl bg-gradient-to-br from-navy-medium/40 via-ocean/30 to-white/40 flex items-center justify-center overflow-hidden">
-                    <img src="/placeholder.svg" alt="Thrive Bottle" className="w-4/5 h-4/5 object-contain drop-shadow" />
                   </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Right: Product card */}
+            <div className="flex justify-center">
+              <div className="relative w-full max-w-md rounded-2xl border border-white/20 bg-gradient-to-br from-navy-medium via-navy-medium/60 to-white/10 p-6 shadow-2xl overflow-hidden">
+                <div className="aspect-[3/4] rounded-xl bg-gradient-to-br from-navy-medium/40 via-ocean/30 to-white/40 flex items-center justify-center overflow-hidden">
+                  <img src="/product-images/BO-43.jpg" alt="Thrive Bottle" className="w-full h-full object-cover" />
                 </div>
               </div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
       <Footer />
     </div>

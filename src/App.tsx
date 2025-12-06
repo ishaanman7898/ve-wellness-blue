@@ -27,6 +27,13 @@ import Bundles from "./pages/Bundles";
 import Cart from "./pages/Cart";
 import CheckoutLoading from "./pages/CheckoutLoading";
 import CheckoutManual from "./pages/CheckoutManual";
+import CheckoutProcessing from "./pages/CheckoutProcessing";
+import Newsletter from "./pages/Newsletter";
+import FAQ from "./pages/FAQ";
+import Contact from "./pages/Contact";
+import Shipping from "./pages/Shipping";
+import Mission from "./pages/Mission";
+import Team from "./pages/Team";
 
 const queryClient = new QueryClient();
 
@@ -52,8 +59,15 @@ const App = () => (
             <Route path="/cart" element={<Cart />} />
             <Route path="/checkout-loading" element={<CheckoutLoading />} />
             <Route path="/checkout-manual" element={<CheckoutManual />} />
+            <Route path="/checkout-processing" element={<CheckoutProcessing />} />
             <Route path="/about" element={<About />} />
             <Route path="/stories" element={<Stories />} />
+            <Route path="/newsletter" element={<Newsletter />} />
+            <Route path="/faq" element={<FAQ />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/shipping" element={<Shipping />} />
+            <Route path="/mission" element={<Mission />} />
+            <Route path="/team" element={<Team />} />
             <Route path="/login" element={<Login />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/terms" element={<Terms />} />

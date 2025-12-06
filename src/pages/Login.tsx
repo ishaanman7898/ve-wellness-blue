@@ -22,7 +22,7 @@ export default function Login() {
     return (
         <div className="min-h-screen bg-background flex flex-col">
             <Navbar />
-            <div className="flex-grow flex items-start justify-center px-4 pt-40 md:pt-56">
+            <div className="flex-grow flex items-start justify-center px-4 pt-40 md:pt-56 pb-32">
                 <div className="w-full max-w-md p-8 rounded-2xl glass border border-border">
                     <h1 className="text-2xl font-bold mb-6 text-center">Team Login</h1>
                     <form onSubmit={handleLogin} className="space-y-4">

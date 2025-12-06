@@ -94,39 +94,41 @@ export function CartProvider({ children }: { children: ReactNode }) {
             alert("Your cart is empty!");
             return;
         }
-        const companyCode = cart[0].link.match(/buybuttons\/([a-z0-9]+)\//i)?.[1];
-        if (!companyCode) {
-            alert("Can't detect company code!");
-            return;
-        }
-        const finalCartUrl = `https://portal.veinternational.org/buybuttons/${companyCode}/cart/`;
         setIsCheckingOut(true);
-        const popups: (Window | null)[] = [];
-        for (let i = 0; i < cart.length; i++) {
-            const item = cart[i];
-            const times = Math.max(1, item.quantity || 1);
-            for (let k = 0; k < times; k++) {
-                const url = `${item.link}?nocache=${Date.now() + i * 100 + k}`;
-                const popup = window.open(
-                    url,
-                    `vei_add_${i}_${k}`,
-                    "width=1,height=1,top=-10000,left=-10000,scrollbars=no,resizable=no,menubar=no,toolbar=no,location=no,status=no"
-                );
-                if (!popup || popup.closed) {
-                    setIsCheckingOut(false);
-                    window.location.href = "/checkout-manual";
-                    return;
-                }
-                popups.push(popup);
+
+        // Flatten cart items based on quantity
+        const items = cart.flatMap(item =>
+            Array(item.quantity || 1).fill({ name: item.name, url: item.link })
+        );
+
+        try {
+            const response = await fetch("http://localhost:3000/checkout", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ items }),
+            });
+
+            if (!response.ok) {
+                throw new Error("Failed to start checkout process");
             }
-        }
-        setTimeout(() => {
-            try {
-                popups.forEach((p) => { if (p && !p.closed) p.close(); });
-            } catch {}
-            window.open(finalCartUrl, "_blank");
+
+            // The server responds immediately, but the process continues in the background.
+            // We can keep the loading state for a bit or just finish.
+            // Since the server opens the browser, we can probably just reset the state.
+
+            // Optional: Wait a bit to show the "Processing" UI
+            await new Promise(resolve => setTimeout(resolve, 2000));
+
             setIsCheckingOut(false);
-        }, 1500);
+            // clearCart(); // Optional: clear cart after successful handoff? User might want to keep it if it fails.
+
+        } catch (error) {
+            console.error("Checkout error:", error);
+            alert("Failed to connect to the checkout helper. Make sure the helper app is running.");
+            setIsCheckingOut(false);
+        }
     };
 
     return (
