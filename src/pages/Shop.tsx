@@ -81,97 +81,97 @@ export default function Shop({ category: categoryProp }: ShopProps = {}) {
       <div className="relative">
         <div className="absolute inset-0 matrix-dots opacity-10" aria-hidden="true"></div>
 
-      {/* Hero Section */}
-      <section className="pt-48 pb-20 bg-gradient-to-b from-primary/10 to-background relative overflow-hidden">
-        {/* Matrix Dots Background */}
-        <div className="absolute inset-0 matrix-dots opacity-20"></div>
+        {/* Hero Section */}
+        <section className="pt-48 pb-20 bg-gradient-to-b from-primary/10 to-background relative overflow-hidden">
+          {/* Matrix Dots Background */}
+          <div className="absolute inset-0 matrix-dots opacity-20"></div>
 
-        <div className="container mx-auto px-4 lg:px-8 text-center relative z-10">
-          <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-4">
-            Shop <span className="text-gradient">Thrive</span>
-          </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Premium wellness products designed for those who demand more from life.
-          </p>
-        </div>
-      </section>
+          <div className="container mx-auto px-4 lg:px-8 text-center relative z-10">
+            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-4">
+              Shop <span className="text-gradient">Thrive</span>
+            </h1>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Premium wellness products designed for those who demand more from life.
+            </p>
+          </div>
+        </section>
 
-      {/* Filters & Products */}
-      <section className="py-12">
-        <div className="container mx-auto px-4 lg:px-8">
-          {/* Filters */}
-          <div className="flex flex-col md:flex-row gap-4 mb-8">
-            {/* Search */}
-            <div className="relative flex-1 max-w-md">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-              <Input
-                placeholder="Search products..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10"
-              />
+        {/* Filters & Products */}
+        <section className="py-12">
+          <div className="container mx-auto px-4 lg:px-8">
+            {/* Filters */}
+            <div className="flex flex-col md:flex-row gap-4 mb-8">
+              {/* Search */}
+              <div className="relative flex-1 max-w-md">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                <Input
+                  placeholder="Search products..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10"
+                />
+              </div>
+
+              {/* Category Filter */}
+              <div className="flex gap-2 flex-wrap">
+                {categories.map((category) => (
+                  <Button
+                    key={category}
+                    variant={selectedCategory === category ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setSelectedCategory(category)}
+                    className="rounded-full"
+                  >
+                    {category}
+                  </Button>
+                ))}
+              </div>
+
+              {/* Sort */}
+              <Select value={sortBy} onValueChange={(value: SortOption) => setSortBy(value)}>
+                <SelectTrigger className="w-[180px]">
+                  <ArrowUpDown className="w-4 h-4 mr-2" />
+                  <SelectValue placeholder="Sort by" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="name-asc">Name (A-Z)</SelectItem>
+                  <SelectItem value="name-desc">Name (Z-A)</SelectItem>
+                  <SelectItem value="price-asc">Price (Low-High)</SelectItem>
+                  <SelectItem value="price-desc">Price (High-Low)</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
-            {/* Category Filter */}
-            <div className="flex gap-2 flex-wrap">
-              {categories.map((category) => (
-                <Button
-                  key={category}
-                  variant={selectedCategory === category ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setSelectedCategory(category)}
-                  className="rounded-full"
-                >
-                  {category}
-                </Button>
+            {/* Results Count */}
+            <p className="text-sm text-muted-foreground mb-6">
+              Showing {groupedProducts.length} products
+            </p>
+
+            {/* Products Grid */}
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {groupedProducts.map((group, index) => (
+                <ProductCard key={group[0].id} variants={group} index={index} />
               ))}
             </div>
 
-            {/* Sort */}
-            <Select value={sortBy} onValueChange={(value: SortOption) => setSortBy(value)}>
-              <SelectTrigger className="w-[180px]">
-                <ArrowUpDown className="w-4 h-4 mr-2" />
-                <SelectValue placeholder="Sort by" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="name-asc">Name (A-Z)</SelectItem>
-                <SelectItem value="name-desc">Name (Z-A)</SelectItem>
-                <SelectItem value="price-asc">Price (Low-High)</SelectItem>
-                <SelectItem value="price-desc">Price (High-Low)</SelectItem>
-              </SelectContent>
-            </Select>
+            {/* Empty State */}
+            {groupedProducts.length === 0 && (
+              <div className="text-center py-16">
+                <p className="text-muted-foreground text-lg">No products found matching your criteria.</p>
+                <Button
+                  variant="outline"
+                  className="mt-4"
+                  onClick={() => {
+                    setSelectedCategory("All");
+                    setSearchQuery("");
+                  }}
+                >
+                  Clear Filters
+                </Button>
+              </div>
+            )}
           </div>
-
-          {/* Results Count */}
-          <p className="text-sm text-muted-foreground mb-6">
-            Showing {groupedProducts.length} products
-          </p>
-
-          {/* Products Grid */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {groupedProducts.map((group, index) => (
-              <ProductCard key={group[0].id} variants={group} index={index} />
-            ))}
-          </div>
-
-          {/* Empty State */}
-          {groupedProducts.length === 0 && (
-            <div className="text-center py-16">
-              <p className="text-muted-foreground text-lg">No products found matching your criteria.</p>
-              <Button
-                variant="outline"
-                className="mt-4"
-                onClick={() => {
-                  setSelectedCategory("All");
-                  setSearchQuery("");
-                }}
-              >
-                Clear Filters
-              </Button>
-            </div>
-          )}
-        </div>
-      </section>
+        </section>
 
       </div>
 
@@ -239,22 +239,19 @@ function ProductCard({ variants, index }: { variants: Product[]; index: number }
   return (
     <div
       className={cn(
-        "group relative rounded-2xl overflow-hidden transition-all duration-500 flex flex-col h-full",
-        "bg-card border border-border hover:border-primary/30",
-        "hover:shadow-2xl hover:shadow-primary/10 hover:-translate-y-2",
-        "animate-fade-in-up"
+        "group relative rounded-2xl overflow-hidden transition-all duration-500 h-[500px] shadow-xl hover:shadow-2xl hover:shadow-primary/10 hover:-translate-y-2 animate-fade-in-up border border-border/50",
       )}
       style={{ animationDelay: `${index * 50}ms` }}
     >
-      {/* Product Image */}
-      <div className={cn("relative h-40 sm:h-48 flex items-center justify-center p-4 sm:p-6", getCategoryBg(product.category))}>
-        <Link to={`/product/${slugify(product.groupName)}`} className="absolute inset-0" aria-label={`View ${product.groupName}`} />
+      {/* Full Background Image */}
+      <div className="absolute inset-0 bg-white">
+        <Link to={`/product/${slugify(product.groupName)}`} className="absolute inset-0 z-10" aria-label={`View ${product.groupName}`} />
         {product.image ? (
           <img
             key={product.image}
-            src={product.image}
+            src={product.image.replace(/^public\//, '/')}
             alt={product.name}
-            className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500 relative z-[1]"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
             onError={(e) => {
               (e.currentTarget as HTMLImageElement).style.display = 'none';
               e.currentTarget.nextElementSibling?.classList.remove('hidden');
@@ -264,26 +261,32 @@ function ProductCard({ variants, index }: { variants: Product[]; index: number }
 
         {/* Fallback Placeholder */}
         <div className={cn(
-          "absolute inset-0 flex items-center justify-center",
+          "absolute inset-0 flex items-center justify-center bg-gray-100",
           product.image ? "hidden" : ""
         )}>
-          <div className="text-4xl sm:text-6xl font-display font-bold text-foreground/10">
+          <div className="text-6xl font-display font-bold text-gray-300">
             {product.groupName.charAt(0)}
           </div>
         </div>
+      </div>
 
+      {/* Gradient Overlay for Text Readability */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none" />
+
+      {/* Top badges */}
+      <div className="absolute top-4 left-4 z-20 flex flex-col gap-2 pointer-events-none">
         <span className={cn(
-          "absolute top-2 sm:top-3 left-2 sm:left-3 px-2 py-1 rounded-full text-xs font-medium",
-          getCategoryColor(product.category)
+          "px-3 py-1 rounded-full text-xs font-bold shadow-lg backdrop-blur-md",
+          getCategoryColor(product.category).replace('text-', 'bg-white/90 text-').replace('bg-', 'border-0 ')
         )}>
           {product.category}
         </span>
       </div>
 
-      {/* Product Info */}
-      <div className="p-3 sm:p-5 flex flex-col flex-grow">
-        <p className="text-xs text-muted-foreground mb-1">SKU: {product.sku}</p>
-        <h3 className="font-display text-base sm:text-lg font-bold text-foreground mb-2 line-clamp-2 tracking-[0.02em]">
+      {/* Product Info Overlay */}
+      <div className="absolute bottom-0 left-0 right-0 p-6 flex flex-col z-20 text-white">
+        <p className="text-xs text-white/70 mb-1 font-medium tracking-wide">SKU: {product.sku}</p>
+        <h3 className="font-display text-2xl font-bold mb-3 line-clamp-2 tracking-wide leading-tight shadow-black/50 drop-shadow-md">
           <Link to={`/product/${slugify(product.groupName)}`} className="hover:underline">
             {product.groupName}
           </Link>
@@ -291,14 +294,17 @@ function ProductCard({ variants, index }: { variants: Product[]; index: number }
 
         {/* Variant Swatches */}
         {variants.length > 1 && (
-          <div className="flex flex-wrap gap-2 mb-3 sm:mb-4 min-h-[28px] sm:min-h-[32px] items-center">
+          <div className="flex flex-wrap gap-2 mb-4 items-center">
             {variants.map((variant) => (
               <button
                 key={variant.id}
-                onClick={() => setSelectedVariant(variant)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setSelectedVariant(variant);
+                }}
                 className={cn(
-                  "w-5 h-5 sm:w-6 sm:h-6 rounded-full border border-border transition-all hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary/50",
-                  selectedVariant.id === variant.id && "ring-2 ring-primary scale-110",
+                  "w-6 h-6 rounded-full border border-white/30 transition-all hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white/50 shadow-sm",
+                  selectedVariant.id === variant.id && "ring-2 ring-white scale-110",
                   variant.hexColor === "#FFFFFF" && "bg-white",
                 )}
                 style={{ backgroundColor: variant.hexColor }}
@@ -308,42 +314,37 @@ function ProductCard({ variants, index }: { variants: Product[]; index: number }
           </div>
         )}
 
-        {/* Selected Variant Label */}
-        {product.color && (
-          <p className="text-xs text-muted-foreground mb-3">
-            {product.category === "Wellness" ? "Flavor" : "Color"}: <span className="font-medium text-foreground">{product.color}</span>
-          </p>
-        )}
-
-        <div className="mt-auto space-y-3">
+        <div className="mt-2 space-y-4">
           <div className="flex items-center justify-between">
-            <span className="text-lg sm:text-xl md:text-2xl leading-none font-display font-bold text-foreground">
-              ${product.price.toFixed(2)}
-            </span>
+            <span className="text-3xl font-display font-bold">${product.price.toFixed(2)}</span>
+
             {/* Quantity Selector */}
-            <div className="flex items-center gap-2 bg-muted rounded-full p-1">
+            <div className="flex items-center gap-2 bg-white/10 backdrop-blur-md rounded-full p-1 border border-white/20">
               <button
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-background hover:bg-foreground/10 flex items-center justify-center text-sm font-bold"
+                className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-sm font-bold transition-colors"
+                aria-label="Decrease quantity"
               >
                 −
               </button>
-              <span className="w-6 sm:w-8 text-center font-medium text-sm">{quantity}</span>
+              <span className="w-8 text-center font-medium text-sm">{quantity}</span>
               <button
                 onClick={() => setQuantity(Math.min(99, quantity + 1))}
-                className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-background hover:bg-foreground/10 flex items-center justify-center text-sm font-bold"
+                className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-sm font-bold transition-colors"
+                aria-label="Increase quantity"
               >
                 +
               </button>
             </div>
           </div>
+
           <Button
             variant="default"
-            size="sm"
-            className="w-full rounded-full text-sm sm:text-base"
+            size="lg"
+            className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold h-11 text-base shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all duration-300"
             onClick={handleAddToCart}
           >
-            <ShoppingCart className="w-4 h-4 mr-2" />
+            <ShoppingCart className="w-5 h-5 mr-2" />
             Add to Cart
           </Button>
         </div>

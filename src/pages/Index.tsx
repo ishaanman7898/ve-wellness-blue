@@ -4,6 +4,7 @@ import { Footer } from "@/components/Footer";
 import { useState } from "react";
 import WaveMarquee from "@/components/WaveMarquee";
 import { ChevronDown } from "lucide-react";
+import { HeroProductSlideshow } from "@/components/HeroProductSlideshow";
 
 const thriveFactors = [
   {
@@ -51,28 +52,22 @@ const Index = () => {
                 <div><span className="text-glacier">SIMPLE.</span></div>
               </h2>
             </div>
-            {/* Right: product card mock */}
-            <div className="flex justify-center">
-              <div className="relative w-full max-w-md rounded-2xl border border-white/20 bg-gradient-to-br from-navy-medium via-navy-medium/60 to-white/10 p-6 shadow-2xl overflow-hidden">
-                <div className="aspect-[3/4] rounded-xl bg-gradient-to-br from-navy-medium/40 via-ocean/30 to-white/40 flex items-center justify-center overflow-hidden">
-                  <img src="/product-images/SU-PR-1.jpg" alt="Peak Protein" className="w-full h-full object-cover" />
-                </div>
-              </div>
+            {/* Right: product card slideshow */}
+            <div className="flex justify-center w-full">
+              <HeroProductSlideshow />
             </div>
           </div>
         </div>
       </section>
 
       {/* Wavy Scrolling Text */}
-      <section className="py-0 overflow-hidden bg-navy-medium relative z-10">
-        <WaveMarquee speedSeconds={25} amplitudePx={12} tightnessSeconds={-0.04} repeats={4} />
+      <section className="py-12 overflow-hidden bg-navy-medium relative z-10">
+        <WaveMarquee speedSeconds={25} amplitudePx={24} tightnessSeconds={-0.04} repeats={4} />
       </section>
 
       {/* Section Divider - Pure white */}
-      <div className="bg-navy-medium">
-        <div className="container mx-auto px-4 lg:px-8 relative z-10">
-          <div className="h-px bg-white"></div>
-        </div>
+      <div className="bg-navy-medium pt-12">
+        <div className="w-full h-px bg-white relative z-10"></div>
       </div>
 
       {/* The Thrive Factor - split layout with accordions */}
@@ -103,7 +98,7 @@ const Index = () => {
                       />
                     </button>
                     <div
-                      className={`overflow-hidden transition-all duration-300 ${openAccordion === item.title ? "max-h-40 mt-4" : "max-h-0"
+                      className={`overflow-hidden transition-all duration-700 ease-in-out ${openAccordion === item.title ? "max-h-96 mt-6" : "max-h-0"
                         }`}
                     >
                       <p className="text-white/70 leading-relaxed">
@@ -119,7 +114,7 @@ const Index = () => {
             <div className="flex justify-center">
               <div className="relative w-full max-w-md rounded-2xl border border-white/20 bg-gradient-to-br from-navy-medium via-navy-medium/60 to-white/10 p-6 shadow-2xl overflow-hidden">
                 <div className="aspect-[3/4] rounded-xl bg-gradient-to-br from-navy-medium/40 via-ocean/30 to-white/40 flex items-center justify-center overflow-hidden">
-                  <img src="/product-images/BO-43.jpg" alt="Thrive Bottle" className="w-full h-full object-cover" />
+                  <img src="public/product-images/BO-43.png" alt="Thrive Bottle" className="w-full h-full object-cover" />
                 </div>
               </div>
             </div>

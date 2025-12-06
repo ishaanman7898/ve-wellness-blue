@@ -123,17 +123,22 @@ export function Navbar() {
                 ))}
               </div>
 
-              {/* Right Side Actions - Cart Button */}
-              <div className="hidden lg:flex items-center gap-3">
-                <Button variant="nav-cta" className="rounded-full group relative" asChild>
-                  <Link to="/cart">
-                    <ShoppingCart className="w-5 h-5" />
-                    <span className="ml-2">Cart</span>
-                    {totalItems > 0 && (
-                      <span className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
-                        {totalItems}
-                      </span>
-                    )}
+              {/* Right Side Actions - Cart & Shop */}
+              <div className="hidden lg:flex items-center gap-4">
+                {/* Cart Icon */}
+                <Link to="/cart" className="relative group text-white hover:text-ocean transition-colors">
+                  <ShoppingCart className="w-6 h-6" />
+                  {totalItems > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
+                      {totalItems}
+                    </span>
+                  )}
+                </Link>
+
+                {/* Shop Button */}
+                <Button variant="nav-cta" className="rounded-full px-6" asChild>
+                  <Link to="/shop">
+                    Shop
                   </Link>
                 </Button>
               </div>

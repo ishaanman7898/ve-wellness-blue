@@ -9,18 +9,19 @@ interface WaveMarqueeProps {
 }
 
 const TEXT_SEQUENCE = [
-  "SUSTAINABLE",
   "SIMPLE",
   "ELEGANT",
   "BEAUTIFUL",
   "INNOVATIVE",
+  "SUSTAINABLE",
+
 ];
 
 export function WaveMarquee({
-  speedSeconds = 25,
+  speedSeconds = 1,
   amplitudePx = 15,
-  tightnessSeconds = -0.05,
-  repeats = 4,
+  tightnessSeconds = -0.0001,
+  repeats = 100,
   className = "",
 }: WaveMarqueeProps) {
   const styleVars = useMemo(() => ({
@@ -78,7 +79,7 @@ export function WaveMarquee({
           position: relative;
           width: 100%;
           overflow: hidden;
-          padding: 0;
+          padding: calc(var(--amplitude) + 20px) 0; /* Add padding to prevent cutoff */
           margin: 0;
         }
         .wave-track {
@@ -99,8 +100,8 @@ export function WaveMarquee({
           animation-delay: calc(var(--i) * var(--tightness));
         }
         @keyframes wave-scroll {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
+          0% { transform: translateX(-50%); }
+          100% { transform: translateX(0); }
         }
         @keyframes wave-float {
           0%, 100% { transform: translateY(0); }

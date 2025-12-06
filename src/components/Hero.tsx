@@ -47,19 +47,19 @@ export function Hero() {
       <div className="container mx-auto px-4 lg:px-8 relative z-20">
         <div className="max-w-5xl mx-auto text-center">
           {/* Big THRIVE Text */}
-          <h1 className="font-display text-[clamp(3rem,12vw,14rem)] font-black mb-4 md:mb-6 animate-fade-in-up tracking-[0.06em] leading-none">
+          <h1 className="font-display text-[clamp(4rem,15vw,16rem)] font-black mb-4 md:mb-6 animate-fade-in-up tracking-[0.06em] leading-none">
             <span className="text-white drop-shadow-[0_4px_30px_rgba(0,0,0,0.5)]">THRIVE</span>
           </h1>
 
           {/* WELLNESS THAT WORKS with oval around WORKS */}
           <div className="flex items-center justify-center gap-2 sm:gap-3 animate-fade-in-up delay-100 mb-10 md:mb-12">
-            <span className="font-display font-bold text-white tracking-wide text-[clamp(1rem,3vw,2.5rem)]">
+            <span className="font-display font-bold text-white tracking-wide text-[clamp(1.5rem,4vw,3rem)]">
               WELLNESS THAT
             </span>
             <span className="relative inline-flex items-center justify-center">
               {/* Glow halo */}
               <span className="absolute -inset-3 rounded-full bg-primary/30 blur-xl animate-glow-pulse" aria-hidden="true" />
-              <span className="font-display font-bold text-primary tracking-wide px-4 sm:px-6 py-1 text-[clamp(1rem,3vw,2.5rem)]">
+              <span className="font-display font-bold text-primary tracking-wide px-4 sm:px-6 py-1 text-[clamp(1.5rem,4vw,3rem)]">
                 WORKS
               </span>
               {/* Oval border around WORKS */}
