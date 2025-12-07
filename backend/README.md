@@ -4,11 +4,14 @@ This folder is for deploying the Puppeteer backend to Railway. It automates the 
 
 ---
 
-## 🚀 Deployment on Railway
+## 🚀 Deployment on Railway (Node/NPM only)
 1. Push this folder (and your repo) to GitHub.
 2. On Railway.com, create a New Project → "Deploy from GitHub repo"
 3. Make sure to set the service root to `backend/` (not repo root!)
-4. Railway will automatically detect your Dockerfile and build everything with the right dependencies and Chromium support!
+4. **Keep the backend pure Node.js/NPM: Use only `package.json` and no Bun or pnpm.**
+   - Delete any `bun.lockb` or non-npm lockfiles
+   - Run `npm install` locally if you test
+5. Railway will automatically detect your Dockerfile and build everything with the right dependencies and Chromium support!
 
 **Backend will run on https://your-backend.up.railway.app**
 
