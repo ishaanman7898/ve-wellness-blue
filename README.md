@@ -1,73 +1,111 @@
-# Welcome to your Lovable project
+# Thrive Wellness Web App — Monorepo
 
-## Project info
+A premium wellness e-commerce experience built with React, Vite, Tailwind, and shadcn/ui. This monorepo contains both the main frontend (client) and a Puppeteer-based backend (cart microservice) to automate checkout on the official VE cart portal.
 
-**URL**: https://lovable.dev/projects/8b946cf3-2591-4637-a43a-39ddc96f6578
+---
 
-## How can I edit this code?
+## Table of Contents
+- [Stack Overview](#stack-overview)
+- [Repository Structure](#repository-structure)
+- [Quick Start](#quick-start)
+- [Local Development](#local-development)
+- [Deployment](#deployment)
+  - [Netlify](#netlify)
+  - [Cart Service (Railway or VPS)](#cart-service-railway-or-vps)
+- [Cart Server Architecture](#cart-server-architecture)
+- [Environment Variables](#environment-variables)
+- [License](#license)
 
-There are several ways of editing your application.
+---
 
-**Use Lovable**
+## Stack Overview
+- **Frontend:** React 18, Vite, TypeScript, Tailwind CSS, shadcn/ui
+- **Backend/microservice:** Node.js (Express), Puppeteer (cart automation), CORS
+- **Dev tools:** ESLint, Prettier, Railway (suggested for cart server hosting)
+- **Deployment:** Netlify ([frontend only](#netlify)), Railway or VPS (cart backend)
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/8b946cf3-2591-4637-a43a-39ddc96f6578) and start prompting.
+---
 
-Changes made via Lovable will be committed automatically to this repo.
+## Repository Structure
 
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```txt
+.
+├── src/                 # Main frontend source code (pages, components, etc)
+├── public/              # Static frontend assets, product images, video etc.
+├── cart/                # Puppeteer automation server (Express API)
+│   ├── server.js        # Cart service runner
+│   ├── README.md        # Backend setup
+│   └── ...
+└── ...                  # Standard monorepo Vite/React setup
 ```
 
-**Edit a file directly in GitHub**
+---
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Quick Start
 
-**Use GitHub Codespaces**
+### 1. Clone & Install
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+```bash
+git clone <your-url>
+cd ve-wellness-blue
+npm install
+```
 
-## What technologies are used for this project?
+### 2. Run both servers locally (default, for dev only)
 
-This project is built with:
+```bash
+npm run dev
+# This runs BOTH:
+# - Vite frontend at http://localhost:5173
+# - Cart backend at http://localhost:3001
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+Or, run individually:
 
-## How can I deploy this project?
+```bash
+npm run dev:frontend    # Just the React/Vite frontend
+npm run dev:cart        # Just the backend cart service
+```
 
-Simply open [Lovable](https://lovable.dev/projects/8b946cf3-2591-4637-a43a-39ddc96f6578) and click on Share -> Publish.
+---
 
-## Can I connect a custom domain to my Lovable project?
+## Local Development Notes
+The main UI is on [localhost:5173](http://localhost:5173) by default. All cart-related checkouts are proxied to the Puppeteer backend on :3001. For full functionality (and VE checkout automation), both must be running!
 
-Yes, you can!
+## Deployment
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+### Netlify (Frontend)
+- **What deploys:** ONLY the frontend `/src`. The cart backend does NOT run on Netlify.
+- **Limitation:** Netlify can't run Puppeteer/Node backend. You must host the cart server (cart/ directory) somewhere else (see below).
+- **Frontend API URL:** Ensure your production UI calls the correct remote cart backend (e.g. Railway, Render, VPS, etc).
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+### Cart Service (Railway or VPS)
+- Deploy `/cart` to Railway (or a VPS). It runs as a Node process, with puppeteer (headless browser) enabled.
+  - Railway setup guide: see `/cart/README.md`.
+- Set the correct CORS settings and allow frontend domain.
+- Update the frontend to call your deployed cart backend in production (not localhost!).
+
+---
+
+## Cart Server Architecture
+- **Endpoints**
+  - `POST /checkout` — Accepts `{ items: [...] }` and opens browser tabs for each (Puppeteer)
+  - `GET /checkout/status/:sessionId` — Progress polling
+- **Development:** The backend launches a real (not headless) browser locally to process the cart with VE's portal.
+- **Production:** Recommend Railway, Render, or a Linux VPS — NOT deployable on pure frontend hosts like Netlify/Vercel.
+
+---
+
+## Environment Variables
+- `PORT` for cart (default 3001)
+- (Frontend uses standard Vite env — see docs if needed)
+
+---
+
+## License
+MIT (see LICENSE)
+
+---
+
+## Contributors
+Built with care by the Thrive development team.
