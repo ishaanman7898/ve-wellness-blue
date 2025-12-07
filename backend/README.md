@@ -1,30 +1,23 @@
-# Thrive Backend (Render/Docker)
+# Thrive Checkout Backend (Railway)
 
-This is the server-side checkout handler for Thrive. It launches Chromium via Puppeteer to automate adding items to the official VEI cart.
+This folder is for deploying the Puppeteer backend to Railway. It automates the checkout process for VE cart links.
 
-## Docker/Render deployment
+---
 
-1. Build and run locally:
-   ```bash
-   npm install
-   node server.js
-   ```
-   or use Docker:
-   ```bash
-   docker build -t ve-backend .
-   docker run --rm -p 3000:3000 --shm-size=1gb ve-backend
-   ```
+## 🚀 Deployment on Railway
+1. Push this folder (and your repo) to GitHub.
+2. On Railway.com, create a New Project → "Deploy from GitHub repo"
+3. Make sure to set the service root to `backend/` (not repo root!)
+4. Railway will automatically detect your Dockerfile and build everything with the right dependencies and Chromium support!
 
-2. Deploy to Render:
-   - New Web Service, root is `backend/`
-   - No build command (Dockerfile is detected)
-   - Exposed port: 3000
-   - Set env var if needed: `CHROMIUM_PATH` (try `/usr/bin/chromium` or `/usr/bin/chromium-browser`)
+**Backend will run on https://your-backend.up.railway.app**
 
-3. Your frontend should call the URL Render provides for this service.
+### Endpoints
+- POST `/checkout` — process items (see server.js for logic)
+- GET `/checkout/status/:sessionId` — status
+- GET `/health` — healthcheck
 
-**Endpoints:**
-- `POST /checkout` (body: `{ items: [ { name, url }, ... ]}`)
-- `GET /health`
+---
 
-**For full documentation and frontend setup, see the main repo's README.**
+## ⚡ For Full Usage Docs
+See the main repo README for how to wire your Netlify (frontend) to this Railway backend. Your Netlify frontend should call the `/checkout` endpoint at the Railway-provided URL (and never call localhost in production).
