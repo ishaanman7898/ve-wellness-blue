@@ -7,65 +7,180 @@ const fallbackPlaceholder = "/placeholder.svg";
 
 // Expect converted PNGs in /public/team/*.png. Fallback to placeholder until provided.
 const teamImages = [
-  "/team/IMG_3614.png",
-  "/team/IMG_3615.png",
-  "/team/IMG_3618.png",
-  "/team/IMG_3619.png",
-  "/team/IMG_3620.png",
-  "/team/IMG_3622.png",
-  "/team/IMG_3623.png",
-  "/team/IMG_3624.png",
-  "/team/IMG_3626.png",
-  "/team/IMG_3627.png",
-  "/team/IMG_3629.png",
-  "/team/IMG_3630.png",
-  "/team/IMG_3631.png",
-  "/team/IMG_3633.png",
-  "/team/IMG_3636.png",
-  "/team/IMG_3637.png",
-  "/team/IMG_3639.png",
-  "/team/IMG_3640.png",
-  "/team/IMG_3642.png",
-  "/team/IMG_3643.png",
+  "/team/Copy of IMG_3614.png",
+  "/team/Copy of IMG_3615.png",
+  "/team/Copy of IMG_3618.png",
+  "/team/Copy of IMG_3619.png",
+  "/team/Copy of IMG_3620.png",
+  "/team/Copy of IMG_3622.png",
+  "/team/Copy of IMG_3623.png",
+  "/team/Copy of IMG_3624.png",
+  "/team/Copy of IMG_3626.png",
+  "/team/Copy of IMG_3627.png",
+  "/team/Copy of IMG_3629.png",
+  "/team/Copy of IMG_3630.png",
+  "/team/Copy of IMG_3631.png",
+  "/team/Copy of IMG_3633.png",
+  "/team/Copy of IMG_3636.png",
+  "/team/Copy of IMG_3637.png",
+  "/team/Copy of IMG_3639.png",
+  "/team/Copy of IMG_3640.png",
+  "/team/Copy of IMG_3642.png",
+  "/team/Copy of IMG_3643.png"
 ];
 
 const teamMembers = [
+  // Chief Team
   {
-    name: "Team Member 1",
-    role: "CEO & Founder",
+    name: "Alice Ho",
+    role: "Chief Executive Officer",
     image: teamImages[0],
-    bio: "Passionate about wellness and sustainability, leading Thrive's vision."
+    bio: "Leading Thrive's vision and strategic direction with a passion for wellness and innovation.",
+    department: "Chief Team"
   },
   {
-    name: "Team Member 2",
-    role: "CFO",
+    name: "Lily Elsea",
+    role: "Chief Financial Officer",
     image: teamImages[1],
-    bio: "Managing finances and ensuring Thrive's growth and stability."
+    bio: "Overseeing financial strategy and ensuring sustainable growth for Thrive.",
+    department: "Chief Team"
   },
   {
-    name: "Team Member 3",
-    role: "CMO",
+    name: "Hita Khandelwal",
+    role: "Chief Design Officer",
     image: teamImages[2],
-    bio: "Crafting the Thrive brand story and connecting with our community."
+    bio: "Shaping Thrive's visual identity and user experience with creative excellence.",
+    department: "Chief Team"
   },
   {
-    name: "Team Member 4",
-    role: "COO",
+    name: "Macy Evans",
+    role: "Chief Administrative Officer",
     image: teamImages[3],
-    bio: "Overseeing operations to deliver the best products to you."
+    bio: "Ensuring operational excellence and organizational effectiveness at Thrive.",
+    department: "Chief Team"
   },
   {
-    name: "Team Member 5",
-    role: "Head of Product",
+    name: "Mary Howard",
+    role: "Chief Marketing Officer",
     image: teamImages[4],
-    bio: "Designing innovative products that make wellness simple."
+    bio: "Driving brand awareness and customer engagement through innovative marketing strategies.",
+    department: "Chief Team"
   },
   {
-    name: "Team Member 6",
-    role: "Head of Sales",
+    name: "Vinanya Penumadula",
+    role: "Chief Sales Officer",
     image: teamImages[5],
-    bio: "Building relationships and growing the Thrive family."
+    bio: "Leading sales initiatives and building strong customer relationships.",
+    department: "Chief Team"
   },
+  
+  // Accounting Team
+  {
+    name: "Ansh Jain",
+    role: "Financial Analyst",
+    image: teamImages[6],
+    bio: "Analyzing financial data to support strategic decision-making.",
+    department: "Accounting"
+  },
+  {
+    name: "Siyansh Virmani",
+    role: "Accountant",
+    image: teamImages[7],
+    bio: "Managing financial records and ensuring compliance with regulations.",
+    department: "Accounting"
+  },
+  {
+    name: "Alex Wohlfahrt",
+    role: "Financial Associate",
+    image: teamImages[8],
+    bio: "Supporting financial operations and reporting.",
+    department: "Accounting"
+  },
+  
+  // Creative Services
+  {
+    name: "Ronika Gajulapalli",
+    role: "Graphic Designer",
+    image: teamImages[9],
+    bio: "Creating visually stunning designs that bring our brand to life.",
+    department: "Creative Services"
+  },
+  {
+    name: "Grace Helbing",
+    role: "UX/UI Designer",
+    image: teamImages[10],
+    bio: "Designing intuitive and engaging user experiences.",
+    department: "Creative Services"
+  },
+  {
+    name: "Eshan Khan",
+    role: "Creative Director",
+    image: teamImages[11],
+    bio: "Leading creative direction and visual storytelling.",
+    department: "Creative Services"
+  },
+  
+  // Sales
+  {
+    name: "Dumitru Busuioc",
+    role: "Sales Representative",
+    image: teamImages[12],
+    bio: "Building relationships and driving sales growth.",
+    department: "Sales"
+  },
+  {
+    name: "Ishaan Manoor",
+    role: "Account Manager",
+    image: teamImages[13],
+    bio: "Managing client relationships and ensuring customer satisfaction.",
+    department: "Sales"
+  },
+  
+  // Marketing
+  {
+    name: "Reece Clavey",
+    role: "Marketing Specialist",
+    image: teamImages[14],
+    bio: "Developing and executing marketing campaigns.",
+    department: "Marketing"
+  },
+  {
+    name: "Eshanvi Sharma",
+    role: "Digital Marketer",
+    image: teamImages[15],
+    bio: "Optimizing our digital presence and online marketing efforts.",
+    department: "Marketing"
+  },
+  {
+    name: "Carter Shaw",
+    role: "Content Strategist",
+    image: teamImages[16],
+    bio: "Crafting compelling content that resonates with our audience.",
+    department: "Marketing"
+  },
+  
+  // Human Resources
+  {
+    name: "Ethan Hsu",
+    role: "HR Specialist",
+    image: teamImages[17],
+    bio: "Supporting employee development and organizational culture.",
+    department: "Human Resources"
+  },
+  {
+    name: "Munis Kodirova",
+    role: "Talent Acquisition",
+    image: teamImages[18],
+    bio: "Finding and nurturing top talent for Thrive.",
+    department: "Human Resources"
+  },
+  {
+    name: "Ryan Lucas",
+    role: "HR Coordinator",
+    image: teamImages[19],
+    bio: "Ensuring smooth HR operations and employee support.",
+    department: "Human Resources"
+  }
 ];
 
 export default function Team() {
