@@ -67,7 +67,14 @@ export default function WaterBottlesPage() {
                     </p>
                 </div>
                 {/* Scroll-down indicator at true hero bottom, outside .container */}
-                {/* REMOVE ChevronDown button here in hero section */}
+                <button
+                    type="button"
+                    aria-label="Scroll down"
+                    onClick={() => window.scrollTo({ behavior: 'smooth', top: window.innerHeight })}
+                    className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce z-30 hover:opacity-90 focus:outline-none"
+                >
+                    <ChevronDown className="w-8 h-8 text-white/80" />
+                </button>
             </section>
 
             {/* Products Grid */}

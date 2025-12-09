@@ -53,23 +53,19 @@ export default function About() {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        {/* Image Background */}
+      <section className="relative h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-[#0b3aa0] via-[#0f4ccf] to-[#071a45]">
+        {/* Background dots */}
         <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-gradient-to-b from-primary/20 to-background"></div>
           <div className="absolute inset-0 matrix-dots opacity-10" aria-hidden="true"></div>
         </div>
-        {/* Darker overlay for text readability */}
-        <div className="absolute inset-0 bg-black/40 z-10"></div>
         {/* Content */}
-        <div className="container mx-auto px-4 lg:px-8 text-center relative z-20">
-          <h1 className="font-display text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-4 drop-shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
-            About <span className="text-gradient">Us</span>
+        <div className="container mx-auto px-4 lg:px-8 text-center relative z-10">
+          <h1 className="font-display text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white mb-4 drop-shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
+            We are built diffrent
           </h1>
           <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto drop-shadow-[0_2px_20px_rgba(0,0,0,0.5)]">
             Learn about Thrive's journey, mission, and values.
           </p>
-    
         </div>
       </section>
 
