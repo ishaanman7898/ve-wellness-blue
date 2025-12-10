@@ -46,7 +46,7 @@ export function Footer() {
           {/* Brand */}
           <div className="col-span-2">
             <a href="/" className="flex items-center gap-2 mb-4">
-              <img src="/Thrive.png" alt="Thrive" className="h-12 w-auto object-contain" />
+              <img src="/thrive.png" alt="Thrive" className="h-12 w-auto object-contain" />
             </a>
             <p className="text-muted-foreground mb-6 max-w-xs">
               Premium wellness supplements designed for those who demand more from life.
@@ -139,7 +139,7 @@ export function Footer() {
               Disclaimer: This Virtual Enterprise online store is for educational purposes only (Thrive 2025-2026)
             </p>
             <p className="text-xs text-muted-foreground/60 mt-2">
-              Version 1.2.7
+              Version 1.4.0
             </p>
           </div>
         </div>

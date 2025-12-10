@@ -80,7 +80,7 @@ export function Navbar() {
               {/* Logo */}
               <a href="/" className="flex items-center gap-3 group flex-shrink-0">
                 <img
-                  src="/Thrive.png"
+                  src="/thrive.png"
                   alt="Thrive"
                   className={cn(
                     "w-auto object-contain drop-shadow transition-transform duration-500 origin-left",

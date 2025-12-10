@@ -4,16 +4,19 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { products, Product } from "@/data/products";
+import { useProductsCsv } from "@/hooks/useProductsCsv";
 import { ShoppingBag, ShoppingCart, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useCart } from "@/contexts/CartContext";
 
 export default function WaterBottlesPage() {
     const { addToCart } = useCart();
+    const { products: csvProducts } = useProductsCsv();
+    const sourceProducts = csvProducts.length ? csvProducts : products;
 
     const waterBottleProducts = useMemo(() => {
-        return products.filter((product) => product.category === "Water Bottles");
-    }, []);
+        return sourceProducts.filter((product) => product.category === "Water Bottles");
+    }, [sourceProducts]);
 
     // Group products by groupName, but split groups with <5 variants into individual products
     const groupedProducts = useMemo(() => {
@@ -143,6 +146,7 @@ function ProductCard({ variants, index, addToCart }: { variants: Product[]; inde
                         key={product.image}
                         src={product.image.replace(/^public\//, '/')}
                         alt={product.name}
+                        loading="lazy"
                         className="w-full h-full object-cover"
                         onError={(e) => {
                             (e.currentTarget as HTMLImageElement).style.display = 'none';
@@ -264,7 +268,7 @@ function FeatureWaterBottleCard({ variant, addToCart }) {
     const oz = variant.groupName === "The Glacier" ? "40 oz" : variant.groupName === "The Iceberg" ? "32 oz" : "";
     return (
         <div className="relative col-span-2 xl:col-span-3 flex flex-col md:flex-row items-center justify-center min-h-[400px] md:min-h-[340px] bg-gradient-to-br from-navy-medium/90 via-background to-white/30 border border-glacier rounded-3xl shadow-2xl overflow-hidden px-0 py-8 animate-fade-in-up">
-            <div className="relative flex-1 w-full h-80 md:h-full flex items-center justify-center p-4"><img src={variant.image} alt={variant.name} className="object-contain w-full max-w-xs md:max-w-md drop-shadow-2xl mx-auto select-none" draggable={false} /></div>
+            <div className="relative flex-1 w-full h-80 md:h-full flex items-center justify-center p-4"><img src={variant.image} alt={variant.name} loading="lazy" className="object-contain w-full max-w-xs md:max-w-md drop-shadow-2xl mx-auto select-none" draggable={false} /></div>
             <div className="flex-1 flex flex-col justify-center items-center md:items-start text-center md:text-left px-4 md:px-10 py-6 gap-4">
                 <span className="inline-block bg-white/80 text-glacier font-bold px-6 py-1 rounded-full shadow text-base tracking-wider mb-2 uppercase letter-spacing-tight">{oz}</span>
                 <h2 className="font-display text-3xl md:text-5xl font-bold text-navy-900 drop-shadow">{variant.groupName}</h2>

@@ -4,6 +4,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { products, Product } from "@/data/products";
+import { useProductsCsv } from "@/hooks/useProductsCsv";
 import { cn } from "@/lib/utils";
 import { useCart } from "@/contexts/CartContext";
 import { ShoppingCart, Minus, Plus } from "lucide-react";
@@ -14,11 +15,13 @@ export default function ProductDetail() {
   const { slug } = useParams<{ slug: string }>();
   const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
+  const { products: csvProducts } = useProductsCsv();
+  const sourceProducts = csvProducts.length ? csvProducts : products;
 
   const variants = useMemo(() => {
-    const group = products.filter(p => slugify(p.groupName) === slug);
+    const group = sourceProducts.filter(p => slugify(p.groupName) === slug);
     return group;
-  }, [slug]);
+  }, [slug, sourceProducts]);
 
   const [selected, setSelected] = useState<Product | null>(variants[0] || null);
 
@@ -243,7 +246,7 @@ export default function ProductDetail() {
         <div className="container mx-auto px-4 lg:px-8 relative z-10">
           <h3 className="font-display text-xl md:text-2xl font-bold mb-6 tracking-[0.02em]">Related Products</h3>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {products
+            {sourceProducts
               .filter(p => p.category === category && p.groupName !== selected.groupName)
               .slice(0, 4)
               .map((p, i) => (

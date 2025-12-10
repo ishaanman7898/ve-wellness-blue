@@ -4,39 +4,23 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { products, Product } from "@/data/products";
+import { useProductsCsv } from "@/hooks/useProductsCsv";
 import { ShoppingCart, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useCart } from "@/contexts/CartContext";
 
 export default function ElectrolytesPage() {
     const { addToCart } = useCart();
+    const { products: csvProducts } = useProductsCsv();
+    const sourceProducts = csvProducts.length ? csvProducts : products;
 
     const electrolytesProducts = useMemo(() => {
-        return products.filter((product) => product.category === "Wellness" && product.groupName.includes("Surge IV"));
-    }, []);
+        return sourceProducts.filter((product) => product.category === "Wellness" && product.groupName === "Surge IV");
+    }, [sourceProducts]);
 
+    // One card per flavor (no grouping into a single variant selector)
     const groupedProducts = useMemo(() => {
-        const groups: { [key: string]: Product[] } = {};
-        electrolytesProducts.forEach(product => {
-            if (!groups[product.groupName]) {
-                groups[product.groupName] = [];
-            }
-            groups[product.groupName].push(product);
-        });
-        
-        // Split groups with <5 variants into individual products
-        const result: Product[][] = [];
-        Object.values(groups).forEach(group => {
-            if (group.length < 5) {
-                // Split into individual products
-                group.forEach(product => result.push([product]));
-            } else {
-                // Keep as grouped
-                result.push(group);
-            }
-        });
-        
-        return result;
+        return electrolytesProducts.map((p) => [p]);
     }, [electrolytesProducts]);
 
     return (
@@ -60,17 +44,17 @@ export default function ElectrolytesPage() {
                         Hydrating electrolyte drinks to replenish and refresh, supporting peak performance and recovery.
                     </p>
                 </div>
-            </section>
 
-            {/* Scroll-down indicator at the hero bottom */}
-            <button
-                type="button"
-                aria-label="Scroll down"
-                onClick={() => window.scrollTo({ behavior: 'smooth', top: window.innerHeight })}
-                className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce z-30 hover:opacity-90 focus:outline-none"
-            >
-                <ChevronDown className="w-8 h-8 text-white/80" />
-            </button>
+                {/* Scroll-down indicator at the hero bottom */}
+                <button
+                    type="button"
+                    aria-label="Scroll down"
+                    onClick={() => window.scrollTo({ behavior: 'smooth', top: window.innerHeight })}
+                    className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce z-30 hover:opacity-90 focus:outline-none"
+                >
+                    <ChevronDown className="w-8 h-8 text-white/80" />
+                </button>
+            </section>
 
             <section className="py-12 relative">
                 <div className="container mx-auto px-4 lg:px-8 relative z-10">

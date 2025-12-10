@@ -4,16 +4,19 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { products, Product } from "@/data/products";
+import { useProductsCsv } from "@/hooks/useProductsCsv";
 import { ShoppingCart, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useCart } from "@/contexts/CartContext";
 
 export default function SupplementsPage() {
     const { addToCart } = useCart();
+    const { products: csvProducts } = useProductsCsv();
+    const sourceProducts = csvProducts.length ? csvProducts : products;
 
     const supplementsProducts = useMemo(() => {
-        return products.filter((product) => product.category === "Wellness" && product.groupName.includes("Peak"));
-    }, []);
+        return sourceProducts.filter((product) => product.category === "Wellness" && product.groupName.includes("Peak"));
+    }, [sourceProducts]);
 
     const groupedProducts = useMemo(() => {
         const groups: { [key: string]: Product[] } = {};
@@ -62,6 +65,15 @@ export default function SupplementsPage() {
                         Premium protein powders and nutritional supplements to fuel your fitness journey.
                     </p>
                 </div>
+
+                <button
+                    type="button"
+                    aria-label="Scroll down"
+                    onClick={() => window.scrollTo({ behavior: 'smooth', top: window.innerHeight })}
+                    className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce z-30 hover:opacity-90 focus:outline-none"
+                >
+                    <ChevronDown className="w-8 h-8 text-white/80" />
+                </button>
             </section>
 
             <section className="py-12 relative">
@@ -76,15 +88,6 @@ export default function SupplementsPage() {
                     </div>
                 </div>
             </section>
-            {/* Scroll-down indicator at true hero bottom, outside .container */}
-            <button
-                type="button"
-                aria-label="Scroll down"
-                onClick={() => window.scrollTo({ behavior: 'smooth', top: window.innerHeight })}
-                className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce z-30 hover:opacity-90 focus:outline-none"
-            >
-                <ChevronDown className="w-8 h-8 text-white/80" />
-            </button>
             </div>
             <Footer />
         </div>
@@ -130,6 +133,7 @@ function ProductCard({ variants, index, addToCart }: { variants: Product[]; inde
                         key={product.image}
                         src={product.image.replace(/^public\//, '/')}
                         alt={product.name}
+                        loading="lazy"
                         className="w-full h-full object-cover"
                         onError={(e) => {
                             (e.currentTarget as HTMLImageElement).style.display = 'none';

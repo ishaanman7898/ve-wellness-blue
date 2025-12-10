@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { products } from "@/data/products";
 import { Link } from "react-router-dom";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
 import { cn } from "@/lib/utils";
@@ -35,11 +35,34 @@ export function HeroProductSlideshow() {
         return path.replace(/^public\//, '/');
     };
 
+    const goToIndex = (idx: number) => {
+        setCurrentIndex((idx + displayProducts.length) % displayProducts.length);
+    };
+
+    const goNext = () => {
+        setCurrentIndex((prev) => (prev + 1) % displayProducts.length);
+    };
+
+    const goPrev = () => {
+        setCurrentIndex((prev) => (prev - 1 + displayProducts.length) % displayProducts.length);
+    };
+
     return (
         <div
             className="relative w-full max-w-md mx-auto aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl border border-white/20 group animate-fade-in-up"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
+            tabIndex={0}
+            onKeyDown={(e) => {
+                if (!isHovered) return;
+                if (e.key === "ArrowRight") {
+                    e.preventDefault();
+                    goNext();
+                } else if (e.key === "ArrowLeft") {
+                    e.preventDefault();
+                    goPrev();
+                }
+            }}
         >
             {displayProducts.map((product, index) => (
                 <div
@@ -54,6 +77,7 @@ export function HeroProductSlideshow() {
                         <img
                             src={getImagePath(product.image)}
                             alt={product.name}
+                            loading="lazy"
                             className="w-full h-full object-cover"
                         />
                     </div>
@@ -119,18 +143,52 @@ export function HeroProductSlideshow() {
                 </div>
             ))}
 
-            {/* Slide Indicators */}
+            {/* Slide Controls */}
+            {/* Dots */}
             <div className="absolute top-4 right-4 flex gap-1.5 z-30">
                 {displayProducts.map((_, idx) => (
-                    <div
+                    <button
                         key={idx}
+                        type="button"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            goToIndex(idx);
+                        }}
+                        aria-label={`Go to slide ${idx + 1}`}
                         className={cn(
-                            "w-2 h-2 rounded-full transition-all duration-300 shadow-sm",
-                            idx === currentIndex ? "bg-white w-6" : "bg-white/40"
+                            "w-2 h-2 rounded-full transition-all duration-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-white/60",
+                            idx === currentIndex ? "bg-white w-6" : "bg-white/40 hover:bg-white/70"
                         )}
                     />
                 ))}
             </div>
+
+            {/* Arrows (show on hover) */}
+            <button
+                type="button"
+                aria-label="Previous slide"
+                onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    goPrev();
+                }}
+                className="absolute left-3 top-1/2 -translate-y-1/2 z-30 flex items-center justify-center w-9 h-9 rounded-full bg-black/40 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-black/70 focus:outline-none focus:ring-2 focus:ring-white/70"
+            >
+                <ChevronLeft className="w-5 h-5" />
+            </button>
+            <button
+                type="button"
+                aria-label="Next slide"
+                onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    goNext();
+                }}
+                className="absolute right-3 top-1/2 -translate-y-1/2 z-30 flex items-center justify-center w-9 h-9 rounded-full bg-black/40 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-black/70 focus:outline-none focus:ring-2 focus:ring-white/70"
+            >
+                <ChevronRight className="w-5 h-5" />
+            </button>
         </div>
     );
 }

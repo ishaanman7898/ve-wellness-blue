@@ -4,16 +4,19 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { products, Product } from "@/data/products";
+import { useProductsCsv } from "@/hooks/useProductsCsv";
 import { ShoppingCart, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useCart } from "@/contexts/CartContext";
 
 export default function AccessoriesPage() {
     const { addToCart } = useCart();
+    const { products: csvProducts } = useProductsCsv();
+    const sourceProducts = csvProducts.length ? csvProducts : products;
 
     const accessoriesProducts = useMemo(() => {
-        return products.filter((product) => product.category === "Accessories");
-    }, []);
+        return sourceProducts.filter((product) => product.category === "Accessories");
+    }, [sourceProducts]);
 
     const groupedProducts = useMemo(() => {
         const groups: { [key: string]: Product[] } = {};
@@ -70,16 +73,6 @@ export default function AccessoriesPage() {
                     <ChevronDown className="w-8 h-8 text-white/80" />
                 </button>
             </section>
-
-            {/* Scroll Indicator */}
-            <button
-                type="button"
-                aria-label="Scroll down"
-                onClick={() => window.scrollTo({ behavior: 'smooth', top: window.innerHeight })}
-                className="absolute bottom-4 left-1/2 -translate-x-1/2 animate-bounce z-20 hover:opacity-90 focus:outline-none"
-            >
-                <ChevronDown className="w-8 h-8 text-white/80" />
-            </button>
 
             <section className="py-12 relative">
                 <div className="container mx-auto px-4 lg:px-8 relative z-10">
@@ -138,6 +131,7 @@ function ProductCard({ variants, index, addToCart }: { variants: Product[]; inde
                         key={product.image}
                         src={product.image.replace(/^public\//, '/')}
                         alt={product.name}
+                        loading="lazy"
                         className="w-full h-full object-cover"
                         onError={(e) => {
                             (e.currentTarget as HTMLImageElement).style.display = 'none';

@@ -52,6 +52,7 @@ export default function FeaturedWaterBottles() {
               <img
                 src={p!.image}
                 alt={p!.groupName}
+                loading="lazy"
                 className="object-contain w-full h-full bg-white/80"
                 draggable={false}
               />

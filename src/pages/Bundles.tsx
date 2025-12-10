@@ -4,16 +4,19 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { products, Product } from "@/data/products";
+import { useProductsCsv } from "@/hooks/useProductsCsv";
 import { ShoppingCart, Package, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useCart } from "@/contexts/CartContext";
 
 export default function BundlesPage() {
     const { addToCart } = useCart();
+    const { products: csvProducts } = useProductsCsv();
+    const sourceProducts = csvProducts.length ? csvProducts : products;
 
     const bundlesProducts = useMemo(() => {
-        return products.filter((product) => product.category === "Bundles");
-    }, []);
+        return sourceProducts.filter((product) => product.category === "Bundles");
+    }, [sourceProducts]);
 
     const groupedProducts = useMemo(() => {
         const groups: { [key: string]: Product[] } = {};
@@ -62,6 +65,15 @@ export default function BundlesPage() {
                         Curated wellness bundles designed to save you money while maximizing your health journey.
                     </p>
                 </div>
+
+                <button
+                    type="button"
+                    aria-label="Scroll down"
+                    onClick={() => window.scrollTo({ behavior: 'smooth', top: window.innerHeight })}
+                    className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce z-30 hover:opacity-90 focus:outline-none"
+                >
+                    <ChevronDown className="w-8 h-8 text-white/80" />
+                </button>
             </section>
 
             <section className="py-12 relative">
@@ -76,14 +88,6 @@ export default function BundlesPage() {
                     </div>
                 </div>
             </section>
-            <button
-                type="button"
-                aria-label="Scroll down"
-                onClick={() => window.scrollTo({ behavior: 'smooth', top: window.innerHeight })}
-                className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce z-30 hover:opacity-90 focus:outline-none"
-            >
-                <ChevronDown className="w-8 h-8 text-white/80" />
-            </button>
             </div>
             <Footer />
         </div>
@@ -129,6 +133,7 @@ function BundleCard({ variants, index, addToCart }: { variants: Product[]; index
                         key={product.image}
                         src={product.image.replace(/^public\//, '/')}
                         alt={product.name}
+                        loading="lazy"
                         className="w-full h-full object-cover"
                         onError={(e) => {
                             (e.currentTarget as HTMLImageElement).style.display = 'none';

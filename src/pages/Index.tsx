@@ -63,7 +63,7 @@ const Index = () => {
       {/* Wavy Scrolling Text */}
       <section className="py-8 overflow-hidden bg-navy-medium relative z-10 -mt-4">
         <div className="absolute inset-0 matrix-dots opacity-20" aria-hidden="true" />
-        <WaveMarquee speedSeconds={25} amplitudePx={24} tightnessSeconds={-0.04} repeats={4} />
+        <WaveMarquee speedSeconds={12} amplitudePx={24} tightnessSeconds={-0.04} repeats={4} />
       </section>
 
       {/* Section Divider - Pure white */}

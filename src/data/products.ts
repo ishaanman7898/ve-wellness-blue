@@ -177,20 +177,20 @@ export const products: Product[] = [
   {
     "id": "su-pr-1",
     "category": "Wellness",
-    "name": "Peak Powder (Chocolate)",
+    "name": "Peak Protein (Chocolate)",
     "status": "In Store",
     "sku": "SU-PR-1",
     "price": 34.99,
     "buyLink": "https://portal.veinternational.org/buybuttons/us019814/btn/peak-powder-chocolate-supr1/",
     "image": "/product-images/SU-PR-1.png",
-    "groupName": "Peak Powder",
+    "groupName": "Peak Protein",
     "color": "Chocolate",
     "hexColor": "#3E2723"
   },
   {
     "id": "su-pr-2",
     "category": "Wellness",
-    "name": "Peak Powder (Vanilla)",
+    "name": "Peak Protein (Vanilla)",
     "status": "In Store",
     "sku": "SU-PR-2",
     "price": 34.99,

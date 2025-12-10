@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { products, categories, Product } from "@/data/products";
+import { useProductsCsv } from "@/hooks/useProductsCsv";
 import { Search, ShoppingBag, ArrowUpDown, ShoppingCart, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSearchParams } from "react-router-dom";
@@ -18,6 +19,9 @@ interface ShopProps {
 }
 
 export default function Shop({ category: categoryProp }: ShopProps = {}) {
+  const { products: csvProducts } = useProductsCsv();
+  const sourceProducts = csvProducts.length ? csvProducts : products;
+
   const [searchParams] = useSearchParams();
   const categoryParam = searchParams.get("category");
   const [selectedCategory, setSelectedCategory] = useState(categoryProp || categoryParam || "All");
@@ -37,7 +41,7 @@ export default function Shop({ category: categoryProp }: ShopProps = {}) {
   const [sortBy, setSortBy] = useState<SortOption>("name-asc");
 
   const filteredAndSortedProducts = useMemo(() => {
-    let filtered = products.filter((product) => {
+    let filtered = sourceProducts.filter((product) => {
       const matchesCategory = selectedCategory === "All" || product.category === selectedCategory;
       const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         product.groupName.toLowerCase().includes(searchQuery.toLowerCase());
@@ -59,7 +63,7 @@ export default function Shop({ category: categoryProp }: ShopProps = {}) {
           return 0;
       }
     });
-  }, [selectedCategory, searchQuery, sortBy]);
+  }, [selectedCategory, searchQuery, sortBy, sourceProducts]);
 
   // Group products by groupName
   const groupedProducts = useMemo(() => {
@@ -102,17 +106,17 @@ export default function Shop({ category: categoryProp }: ShopProps = {}) {
               Premium wellness products designed for those who demand more from life.
             </p>
           </div>
-        </section>
 
-        {/* Scroll Indicator */}
-        <button
-          type="button"
-          aria-label="Scroll down"
-          onClick={() => window.scrollTo({ behavior: 'smooth', top: window.innerHeight })}
-          className="absolute bottom-4 left-1/2 -translate-x-1/2 animate-bounce z-20 hover:opacity-90 focus:outline-none"
-        >
-          <ChevronDown className="w-8 h-8 text-white/80" />
-        </button>
+          {/* Scroll Indicator anchored to hero bottom */}
+          <button
+            type="button"
+            aria-label="Scroll down"
+            onClick={() => window.scrollTo({ behavior: 'smooth', top: window.innerHeight })}
+            className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce z-30 hover:opacity-90 focus:outline-none"
+          >
+            <ChevronDown className="w-8 h-8 text-white/80" />
+          </button>
+        </section>
 
         {/* Filters & Products */}
         <section className="py-12">
@@ -272,6 +276,7 @@ function ProductCard({ variants, index }: { variants: Product[]; index: number }
             key={product.image}
             src={product.image.replace(/^public\//, '/')}
             alt={product.name}
+            loading="lazy"
             className="w-full h-full object-cover"
             onError={(e) => {
               (e.currentTarget as HTMLImageElement).style.display = 'none';
