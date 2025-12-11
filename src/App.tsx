@@ -44,7 +44,7 @@ const App = () => (
       <CartProvider>
         <Toaster />
         <Sonner />
-        <BrowserRouter>
+        <BrowserRouter basename="/ve-wellness-blue">
           <ScrollToTop />
           <PageLoader />
           <Routes>
