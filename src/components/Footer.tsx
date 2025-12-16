@@ -25,10 +25,15 @@ const footerLinks = {
     { label: "FAQ", href: "/faq" },
     { label: "Shipping", href: "/shipping" },
     { label: "Contact Us", href: "/contact" },
+    
   ],
   legal: [
     { label: "Terms of Service", href: "/terms" },
     { label: "Privacy Policy", href: "/privacy" },
+  ],
+  teamApps: [
+    { label: "Team Login", href: "/login" },
+    { label: "Email Management", href: "https://thrive-ve.streamlit.app/" },
   ],
 };
 
@@ -42,7 +47,7 @@ export function Footer() {
   return (
     <footer className="bg-card border-t border-border">
       <div className="container mx-auto px-4 lg:px-8 py-16">
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 mb-12">
+        <div className="grid grid-cols-2 md:grid-cols-5 lg:grid-cols-7 gap-8 mb-12">
           {/* Brand */}
           <div className="col-span-2">
             <a href="/" className="flex items-center gap-2 mb-4">
@@ -92,11 +97,31 @@ export function Footer() {
                   </Link>
                 </li>
               ))}
-              <li>
-                <Link to="/login" className="text-muted-foreground hover:text-foreground transition-colors">
-                  Team Login
-                </Link>
-              </li>
+            </ul>
+          </div>
+
+          {/* Team Apps */}
+          <div>
+            <h4 className="font-display font-bold text-foreground mb-4">Team Apps</h4>
+            <ul className="space-y-3">
+              {footerLinks.teamApps.map((link) => (
+                <li key={link.label}>
+                  {link.href.startsWith("http") ? (
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {link.label}
+                    </a>
+                  ) : (
+                    <Link to={link.href} className="text-muted-foreground hover:text-foreground transition-colors">
+                      {link.label}
+                    </Link>
+                  )}
+                </li>
+              ))}
             </ul>
           </div>
 
