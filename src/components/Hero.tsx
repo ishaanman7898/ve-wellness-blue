@@ -5,6 +5,26 @@ export function Hero() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [playing, setPlaying] = useState(true);
 
+  const GradientLetter = ({ letter }: { letter: string }) => {
+    return (
+      <span
+        className="ve-gradient-letter"
+        aria-label={letter}
+        style={{
+          WebkitTextStroke: '0.5px white',
+          background:
+            "linear-gradient(135deg, rgba(34,211,238,1) 0%, rgba(56,189,248,1) 30%, rgba(59,130,246,1) 60%, rgba(14,165,233,1) 100%)",
+          WebkitBackgroundClip: "text",
+          backgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          color: "transparent",
+        }}
+      >
+        {letter}
+      </span>
+    );
+  };
+
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
@@ -30,6 +50,13 @@ export function Hero() {
 
   return (
     <section className="relative h-screen flex items-center justify-center overflow-hidden pt-24">
+      <style>{`
+        .ve-gradient-letter{
+          display: inline-block;
+          line-height: 1;
+          vertical-align: baseline;
+        }
+      `}</style>
       {/* Matrix Dots Background */}
       <div className="absolute inset-0 z-0">
         <div className="matrix-dots"></div>
@@ -59,19 +86,23 @@ export function Hero() {
         <div className="max-w-5xl mx-auto text-center">
           {/* Big THRIVE Text */}
           <h1 className="font-display text-[clamp(4rem,15vw,20rem)] font-black mb-4 md:mb-6 animate-fade-in-up tracking-[0.06em] leading-none text-center">
-            <span className="text-white drop-shadow-[0_4px_30px_rgba(0,0,0,0.5)]">THRIVE</span>
+            <span className="text-white drop-shadow-[0_4px_30px_rgba(0,0,0,0.5)] whitespace-nowrap">
+              <span className="inline-block text-white drop-shadow-[0_4px_30px_rgba(0,0,0,0.5)]">T</span>
+              <span className="inline-block text-white drop-shadow-[0_4px_30px_rgba(0,0,0,0.5)]">H</span>
+              <span className="inline-block text-white drop-shadow-[0_4px_30px_rgba(0,0,0,0.5)]">R</span>
+              <span className="inline-block text-white drop-shadow-[0_4px_30px_rgba(0,0,0,0.5)]">I</span>
+              <GradientLetter letter="V" />
+              <GradientLetter letter="E" />
+            </span>
           </h1>
 
-          {/* WELLNESS THAT WORKS with oval around WORKS - aligned with THRIVE */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 animate-fade-in-up delay-100 mb-10 md:mb-12 w-full">
+          {/* WELLNESS THAT WORKS */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 animate-fade-in-up delay-100 mb-10 md:mb-12 w-full">
             <span className="font-display font-bold text-white tracking-wide text-[clamp(1.1rem,4vw,2.8rem)] text-center sm:text-left">
               WELLNESS THAT
             </span>
-            <span className="relative inline-flex items-center justify-center">
-              <span className="font-display font-bold text-primary tracking-wide px-3 sm:px-6 py-1 text-[clamp(1.1rem,4vw,2.8rem)]">
-                WORKS
-              </span>
-              <span className="absolute inset-0 border-2 border-primary/70 rounded-full"></span>
+            <span className="font-display font-bold tracking-wide text-[clamp(1.1rem,4vw,2.8rem)]" style={{ color: '#3686F5' }}>
+              WORKS
             </span>
           </div>
         </div>

@@ -7,6 +7,16 @@ import { ArrowLeft } from "lucide-react";
 export default function Changelog() {
     const changes = [
         {
+            version: "1.8.3",
+            date: "December 16, 2025",
+            type: "Minor Fixes",
+            items: [
+                "Updated product status filtering to exclude 'Removal Pending' products from shop and detail pages.",
+                "Added proper status options in Product Management: In Store, Removal Requested, Removal Pending, Phased Out.",
+                "Updated footer branding text to reflect broader product offerings beyond supplements."
+            ]
+        },
+        {
             version: "1.8.1",
             date: "December 16, 2025",
             type: "Updates",

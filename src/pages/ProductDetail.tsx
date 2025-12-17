@@ -37,7 +37,11 @@ export default function ProductDetail() {
   }, []);
 
   const variants = useMemo(() => {
-    const group = products.filter(p => slugify(p.group_name || p.name) === slug);
+    const group = products.filter(p => {
+      const isVisible = p.status !== "Phased Out" && p.status !== "Removal Requested" && p.status !== "Removal Pending";
+      const matchesSlug = slugify(p.group_name || p.name) === slug;
+      return isVisible && matchesSlug;
+    });
     return group;
   }, [slug, products]);
 
@@ -253,7 +257,7 @@ export default function ProductDetail() {
           <h2 className="font-display text-3xl md:text-4xl font-bold mb-12 tracking-tight">Explore More</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {products
-              .filter(p => p.category === selected.category && p.group_name !== selected.group_name)
+              .filter(p => p.category === selected.category && p.group_name !== selected.group_name && p.status !== "Phased Out" && p.status !== "Removal Requested")
               // We need to dedupe by group name for "Explore More" to avoid showing all colors of same product
               .filter((p, index, self) =>
                 index === self.findIndex((t) => (
@@ -274,8 +278,12 @@ export default function ProductDetail() {
 }
 
 function ExploreCard({ product, allProducts }: { product: Product, allProducts: Product[] }) {
-  // Get all variants for this product group
-  const variants = allProducts.filter(p => p.group_name === product.group_name);
+  // Get all variants for this product group, filtering out removed/phased out products
+  const variants = allProducts.filter(p => 
+    p.group_name === product.group_name && 
+    p.status !== "Phased Out" && 
+    p.status !== "Removal Requested"
+  );
   const [hoveredVariant, setHoveredVariant] = useState(product);
 
   return (

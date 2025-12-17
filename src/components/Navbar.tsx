@@ -67,7 +67,7 @@ export function Navbar() {
       <nav
         className={cn(
           "fixed top-0 z-50 w-full navbar-adaptive",
-          isScrolled ? "py-2" : "py-4 sm:py-5"
+          isScrolled ? "py-4" : "py-6 sm:py-7"
         )}
       >
         <div className={cn(
@@ -78,8 +78,8 @@ export function Navbar() {
             className={cn(
               "relative mx-auto mt-2 navbar-adaptive",
               isScrolled
-                ? "max-w-[min(82vw,1100px)] bg-black/90 backdrop-blur-xl rounded-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 py-3"
-                : "max-w-[min(96vw,1500px)] bg-transparent px-2 sm:px-3 md:px-4 lg:px-6 xl:px-8 py-2 sm:py-3"
+                ? "max-w-[min(82vw,1100px)] bg-black/90 backdrop-blur-xl rounded-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 py-4"
+                : "max-w-[min(96vw,1500px)] bg-transparent px-2 sm:px-3 md:px-4 lg:px-6 xl:px-8 py-3 sm:py-4"
             )}
           >
             <div className="flex items-center justify-between relative">
@@ -90,8 +90,8 @@ export function Navbar() {
                   alt="Thrive"
                   className={cn(
                     "w-auto object-contain drop-shadow navbar-adaptive origin-left",
-                    "h-12 sm:h-14 md:h-16 lg:h-20 xl:h-24",
-                    isScrolled ? "scale-75" : "scale-110"
+                    "h-16 sm:h-18 md:h-20 lg:h-24 xl:h-28",
+                    isScrolled ? "scale-95" : "scale-130"
                   )}
                 />
               </a>
@@ -109,7 +109,7 @@ export function Navbar() {
                       href={link.href}
                       className={cn(
                         "flex items-center gap-1 px-3 py-2 font-medium transition-all duration-300 hover-lift",
-                        "text-white hover:text-ocean"
+                        "text-white hover:text-[#31C2F4]"
                       )}
                     >
                       {link.label}
@@ -149,7 +149,7 @@ export function Navbar() {
               {/* Right Side Actions - Cart & Shop */}
               <div className="hidden lg:flex items-center gap-2 sm:gap-3 md:gap-4">
                 {/* Cart Icon */}
-                <Link to="/cart" className="relative group text-white hover:text-ocean transition-all duration-300 hover-lift">
+                <Link to="/cart" className="relative group text-white hover:text-[#31C2F4] transition-all duration-300 hover-lift">
                   <ShoppingCart className="w-6 h-6" />
                   {totalItems > 0 && (
                     <span className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
@@ -190,7 +190,7 @@ export function Navbar() {
                 <a
                   key={link.label}
                   href={link.href}
-                  className="px-4 py-3 rounded-lg text-white font-medium transition-colors duration-200 hover:text-ocean"
+                  className="px-4 py-3 rounded-lg text-white font-medium transition-colors duration-200 hover:text-[#31C2F4]"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {link.label}

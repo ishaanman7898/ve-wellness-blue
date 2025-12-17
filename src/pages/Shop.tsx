@@ -101,7 +101,7 @@ export default function Shop({ category: categoryProp }: ShopProps = {}) {
     const normalizedProducts = sourceProducts.map(normalizeProduct);
     
     let filtered = normalizedProducts.filter((product) => {
-      const isVisible = product.status !== "Phased Out" && product.status !== "Removal Requested";
+      const isVisible = product.status !== "Phased Out" && product.status !== "Removal Requested" && product.status !== "Removal Pending";
       const matchesCategory = selectedCategory === "All"
         ? product.category !== "Accessories" // Show all categories except Accessories by default
         : product.category === selectedCategory;

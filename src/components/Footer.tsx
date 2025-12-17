@@ -54,7 +54,7 @@ export function Footer() {
               <img src="/Thrive.png" alt="Thrive" className="h-12 w-auto object-contain" />
             </a>
             <p className="text-muted-foreground mb-6 max-w-xs">
-              Premium wellness supplements designed for those who demand more from life.
+              Premium wellness products designed for those who demand more from life.
             </p>
             <div className="flex items-center gap-4">
               {socialLinks.map((social) => (
@@ -165,7 +165,7 @@ export function Footer() {
             </p>
             <p className="text-xs text-muted-foreground/60 mt-2">
               <Link to="/changelog" className="text-xs text-muted-foreground/60 hover:text-muted-foreground underline">
-                v1.8.1 - Updates
+                v1.8.3 - Minor Fixes
               </Link>
             </p>
 

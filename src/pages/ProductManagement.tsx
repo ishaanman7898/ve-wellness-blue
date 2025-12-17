@@ -377,8 +377,9 @@ const ProductManagement = () => {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="In Store">In Store</SelectItem>
-                      <SelectItem value="Out of Stock">Out of Stock</SelectItem>
                       <SelectItem value="Removal Requested">Removal Requested</SelectItem>
+                      <SelectItem value="Removal Pending">Removal Pending</SelectItem>
+                      <SelectItem value="Phased Out">Phased Out</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -603,7 +604,9 @@ const ProductManagement = () => {
                   <Badge
                     className={`absolute top-2 right-2 ${
                       product.status === 'In Store' ? 'bg-green-500' :
-                      product.status === 'Out of Stock' ? 'bg-red-500' :
+                      product.status === 'Removal Requested' ? 'bg-red-500' :
+                      product.status === 'Removal Pending' ? 'bg-orange-500' :
+                      product.status === 'Phased Out' ? 'bg-gray-500' :
                       'bg-yellow-500'
                     }`}
                   >
@@ -773,8 +776,9 @@ const ProductManagement = () => {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="In Store">In Store</SelectItem>
-                        <SelectItem value="Out of Stock">Out of Stock</SelectItem>
                         <SelectItem value="Removal Requested">Removal Requested</SelectItem>
+                        <SelectItem value="Removal Pending">Removal Pending</SelectItem>
+                        <SelectItem value="Phased Out">Phased Out</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
