@@ -66,8 +66,8 @@ export function Navbar() {
       {/* Main Navbar */}
       <nav
         className={cn(
-          "fixed top-0 z-50 w-full navbar-adaptive",
-          isScrolled ? "py-4" : "py-6 sm:py-7"
+          "fixed top-0 z-50 w-full navbar-adaptive transition-all duration-300 ease-in-out",
+          isScrolled ? "py-2" : "py-6 sm:py-7"
         )}
       >
         <div className={cn(
@@ -76,9 +76,9 @@ export function Navbar() {
         >
           <div
             className={cn(
-              "relative mx-auto mt-2 navbar-adaptive",
+              "relative mx-auto mt-2 navbar-adaptive transition-all duration-300 ease-in-out",
               isScrolled
-                ? "max-w-[min(82vw,1100px)] bg-black/90 backdrop-blur-xl rounded-full px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 py-4"
+                ? "max-w-[min(82vw,1100px)] bg-black/90 backdrop-blur-xl rounded-full px-3 sm:px-4 md:px-6 lg:px-8 xl:px-10 py-2"
                 : "max-w-[min(96vw,1500px)] bg-transparent px-2 sm:px-3 md:px-4 lg:px-6 xl:px-8 py-3 sm:py-4"
             )}
           >
@@ -89,15 +89,15 @@ export function Navbar() {
                   src="/Thrive.png"
                   alt="Thrive"
                   className={cn(
-                    "w-auto object-contain drop-shadow navbar-adaptive origin-left",
+                    "w-auto object-contain drop-shadow navbar-adaptive origin-left transition-all duration-300 ease-in-out",
                     "h-16 sm:h-18 md:h-20 lg:h-24 xl:h-28",
-                    isScrolled ? "scale-95" : "scale-130"
+                    isScrolled ? "scale-75" : "scale-100"
                   )}
                 />
               </a>
 
               {/* Desktop Navigation - Centered */}
-              <div className="hidden lg:flex items-center gap-2 sm:gap-3 md:gap-4 absolute left-1/2 -translate-x-1/2">
+              <div className="hidden lg:flex items-center gap-2 sm:gap-3 md:gap-4 absolute left-1/2 -translate-x-1/2 transition-all duration-300 ease-in-out">
                 {navLinks.map((link) => (
                   <div
                     key={link.label}
@@ -109,14 +109,16 @@ export function Navbar() {
                       href={link.href}
                       className={cn(
                         "flex items-center gap-1 px-3 py-2 font-medium transition-all duration-300 hover-lift",
-                        "text-white hover:text-[#31C2F4]"
+                        "text-white hover:text-[#31C2F4]",
+                        isScrolled && "px-2 py-1 text-sm"
                       )}
                     >
                       {link.label}
                       {link.hasDropdown && (
                         <ChevronDown className={cn(
-                          "w-4 h-4 navbar-adaptive",
-                          activeDropdown === link.label && "rotate-180"
+                          "w-4 h-4 navbar-adaptive transition-all duration-300",
+                          activeDropdown === link.label && "rotate-180",
+                          isScrolled && "w-3 h-3"
                         )} />
                       )}
                     </a>
@@ -147,22 +149,34 @@ export function Navbar() {
               </div>
 
               {/* Right Side Actions - Cart & Shop */}
-              <div className="hidden lg:flex items-center gap-2 sm:gap-3 md:gap-4">
+              <div className="hidden lg:flex items-center gap-2 sm:gap-3 md:gap-4 transition-all duration-300 ease-in-out">
                 {/* Cart Icon */}
                 <Link to="/cart" className="relative group text-white hover:text-[#31C2F4] transition-all duration-300 hover-lift">
-                  <ShoppingCart className="w-6 h-6" />
+                  <ShoppingCart className={cn(
+                    "transition-all duration-300 ease-in-out",
+                    isScrolled ? "w-5 h-5" : "w-6 h-6"
+                  )} />
                   {totalItems > 0 && (
-                    <span className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
+                    <span className={cn(
+                      "absolute -top-2 -right-2 bg-primary text-primary-foreground text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center transition-all duration-300",
+                      isScrolled ? "w-4 h-4 text-[10px]" : "w-5 h-5"
+                    )}>
                       {totalItems}
                     </span>
                   )}
                 </Link>
 
                 {/* Divider */}
-                <div className="h-6 w-px bg-white/20"></div>
+                <div className={cn(
+                  "w-px bg-white/20 transition-all duration-300",
+                  isScrolled ? "h-4" : "h-6"
+                )}></div>
 
                 {/* Shop Button */}
-                <Button variant="nav-cta" className="rounded-full px-4 sm:px-6 group relative hover:shadow-[0_0_20px_rgba(59,130,246,0.6)] hover:shadow-blue-500/50 transition-all duration-500 hover-lift" asChild>
+                <Button variant="nav-cta" className={cn(
+                  "rounded-full px-4 sm:px-6 group relative hover:shadow-[0_0_20px_rgba(59,130,246,0.6)] hover:shadow-blue-500/50 transition-all duration-500 hover-lift",
+                  isScrolled ? "px-3 py-1 text-sm" : "px-4 sm:px-6 py-2"
+                )} asChild>
                   <Link to="/shop">
                     Shop
                   </Link>
@@ -173,7 +187,7 @@ export function Navbar() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="lg:hidden"
+                className="lg:hidden transition-all duration-300"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               >
                 {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}

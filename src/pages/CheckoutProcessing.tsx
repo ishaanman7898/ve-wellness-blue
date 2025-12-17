@@ -38,10 +38,36 @@ export default function CheckoutProcessing() {
 
             setProgress({ processed: 0, total: items.length });
 
-            const width = 703;
-            const height = 760;
-            const left = 1016;
-            const top = 184;
+            // Calculate adaptive popup dimensions based on screen size
+            const screenWidth = window.screen.width;
+            const screenHeight = window.screen.height;
+            
+            // Base dimensions
+            const baseWidth = 703;
+            const baseHeight = 760;
+            
+            // Scale factors for different screen sizes
+            let widthScale = 1;
+            
+            // Adjust for smaller screens
+            if (screenWidth < 1366) {
+                widthScale = 0.85;
+            }
+            if (screenWidth < 1024) {
+                widthScale = 0.75;
+            }
+            if (screenWidth < 768) {
+                widthScale = 0.9;
+            }
+            
+            // Calculate final dimensions - height fits entire screen, width is adaptive
+            const width = Math.floor(baseWidth * widthScale);
+            const height = screenHeight; // Full screen height
+            
+            // Position popup on right side of screen
+            const left = Math.floor(screenWidth - width - 20); // 20px margin from right edge
+            const top = 0; // Start from top of screen
+            
             const features = `width=${width},height=${height},left=${left},top=${top},scrollbars=yes,resizable=yes,menubar=no,toolbar=no,location=yes,status=no`;
 
             const firstUrl = `${items[0].url}?nocache=${Date.now()}`;

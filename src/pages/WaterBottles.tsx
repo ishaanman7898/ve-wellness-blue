@@ -52,8 +52,7 @@ export default function WaterBottlesPage() {
 
             {/* Hero Section - Apple Style */}
             <section className="relative h-screen flex items-center justify-center overflow-hidden pt-20">
-                <div className="absolute inset-0 bg-gradient-to-b from-slate-900 via-black to-black z-0"></div>
-
+                <div className="absolute inset-0 bg-gradient-to-b from-blue-900/60 via-black to-black z-0"></div>
 
                 <div className="relative z-10 text-center px-4">
                     <h1 className="font-display text-6xl md:text-8xl font-bold mb-6 tracking-tight">

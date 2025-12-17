@@ -7,6 +7,17 @@ import { ArrowLeft } from "lucide-react";
 export default function Changelog() {
     const changes = [
         {
+            version: "1.8.4",
+            date: "December 17, 2025",
+            type: "Bug fixes and patches",
+            items: [
+                "Made checkout popup windows adaptive to different screen sizes with responsive positioning.",
+                "Updated checkout popup to position on right side with full screen height.",
+                "Added divider to footer brand section for better visual separation.",
+                "Enhanced newsletter and mission pages with improved content positioning and matrix dots visibility."
+            ]
+        },
+        {
             version: "1.8.3",
             date: "December 16, 2025",
             type: "Minor Fixes",

@@ -31,13 +31,32 @@ export default function CheckoutLoading() {
 
     const openAll = () => {
       setStatus("adding");
+      
+      // Calculate adaptive popup dimensions based on screen size
+      const screenWidth = window.screen.width;
+      const screenHeight = window.screen.height;
+      
+      // For small popups (background processing), use minimal size but ensure visibility
+      let width = 1;
+      let height = 1;
+      let left = -10000;
+      let top = -10000;
+      
+      // On very small screens, make popups slightly larger to ensure they work
+      if (screenWidth < 768) {
+        width = 100;
+        height = 100;
+        left = screenWidth - width - 10;
+        top = screenHeight - height - 10;
+      }
+      
       for (let i = 0; i < cart.length; i++) {
         const item = cart[i];
         const url = `${item.link}?nocache=${Date.now() + i}`;
         const popup = window.open(
           url,
           `vei_add_${i}`,
-          "width=1,height=1,top=-10000,left=-10000,scrollbars=no,resizable=no,menubar=no,toolbar=no,location=no,status=no"
+          `width=${width},height=${height},left=${left},top=${top},scrollbars=no,resizable=no,menubar=no,toolbar=no,location=no,status=no`
         );
         popups.push(popup);
       }

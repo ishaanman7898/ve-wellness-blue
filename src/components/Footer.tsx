@@ -49,7 +49,7 @@ export function Footer() {
       <div className="container mx-auto px-4 lg:px-8 py-16">
         <div className="grid grid-cols-2 md:grid-cols-5 lg:grid-cols-7 gap-8 mb-12">
           {/* Brand */}
-          <div className="col-span-2">
+          <div className="col-span-2 border-r border-border pr-8">
             <a href="/" className="flex items-center gap-2 mb-4">
               <img src="/Thrive.png" alt="Thrive" className="h-12 w-auto object-contain" />
             </a>
@@ -165,7 +165,7 @@ export function Footer() {
             </p>
             <p className="text-xs text-muted-foreground/60 mt-2">
               <Link to="/changelog" className="text-xs text-muted-foreground/60 hover:text-muted-foreground underline">
-                v1.8.3 - Minor Fixes
+                v1.8.4 - Bug fixes and patches
               </Link>
             </p>
 

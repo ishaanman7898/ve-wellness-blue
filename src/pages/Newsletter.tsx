@@ -22,10 +22,10 @@ export default function Newsletter() {
             <Navbar />
 
             {/* Hero Section */}
-            <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-black via-[#050b1e] to-background text-white">
+            <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-black via-[#050b1e] to-background text-white pt-16">
                 {/* Background dots */}
                 <div className="absolute inset-0 z-0">
-                    <div className="absolute inset-0 matrix-dots opacity-5" aria-hidden="true"></div>
+                    <div className="absolute inset-0 matrix-dots opacity-15" aria-hidden="true"></div>
                 </div>
 
                 {/* Content */}
