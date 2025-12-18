@@ -7,6 +7,23 @@ import { ArrowLeft } from "lucide-react";
 export default function Changelog() {
     const changes = [
         {
+            version: "1.9.1",
+            date: "December 18, 2025",
+            type: "Minor Updates",
+            items: [
+                "Redesigned Team page with centered cards, proper image positioning (object-contain), and removed animations from department cards.",
+                "Updated leadership cards to match department card styling with same hover effects.",
+                "Added mouse trail effect to hero section only with square images (140x140px) that fall immediately after appearing.",
+                "Completely redesigned About page with dynamic product count from Supabase, 4-stat grid (Products Available, Products Sold, Customers Served, Year Strong).",
+                "Added location info to About page: 'Based in Aurora, Illinois, we've been here for one year and counting.'",
+                "Updated FAQ: removed 'Track my order' question, changed return policy to no returns for tangible products, updated payment methods.",
+                "Fixed Navbar dropdown selection on mobile/smaller devices with proper toggle functionality and smooth animations.",
+                "Updated home page slideshow to show 3 water bottles, 3 wellness products, and 2 bundles with black background.",
+                "Fixed specifications input focus issue in Product Management - cursor no longer loses focus after each character.",
+                "Changed slideshow background from light to black for better contrast."
+            ]
+        },
+        {
             version: "1.9.0",
             date: "December 17, 2025",
             type: "Supabase Tweaks and General Product Management Updates",

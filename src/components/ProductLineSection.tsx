@@ -63,6 +63,40 @@ export function ProductLineSection({
 
   const [selectedVariant, setSelectedVariant] = useState(displayVariants[0]);
   const [quantity, setQuantity] = useState(1);
+  const [imagesLoaded, setImagesLoaded] = useState<Set<string>>(new Set());
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Preload all variant images immediately
+  useEffect(() => {
+    setIsLoading(true);
+    let loadedCount = 0;
+    const totalImages = displayVariants.filter(v => v.image).length;
+
+    if (totalImages === 0) {
+      setIsLoading(false);
+      return;
+    }
+
+    displayVariants.forEach((variant) => {
+      if (variant.image) {
+        const img = new Image();
+        img.src = variant.image;
+        img.onload = () => {
+          setImagesLoaded((prev) => new Set(prev).add(variant.image));
+          loadedCount++;
+          if (loadedCount === totalImages) {
+            setIsLoading(false);
+          }
+        };
+        img.onerror = () => {
+          loadedCount++;
+          if (loadedCount === totalImages) {
+            setIsLoading(false);
+          }
+        };
+      }
+    });
+  }, [displayVariants]);
 
   useEffect(() => {
     setSelectedVariant(displayVariants[0]);
@@ -105,19 +139,37 @@ export function ProductLineSection({
             )}
           >
             <div className="relative w-full max-w-md group">
+              {/* Loading Skeleton */}
+              {isLoading && (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-full h-full bg-gradient-to-br from-white/5 to-white/10 rounded-2xl animate-pulse flex items-center justify-center">
+                    <div className="space-y-4 text-center">
+                      <div className="w-16 h-16 border-4 border-glacier/30 border-t-glacier rounded-full animate-spin mx-auto" />
+                      <p className="text-white/60 text-sm font-medium">Loading images...</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+              
               <Link to={`/product/${slugify(selectedVariant.groupName || selectedVariant.name)}?sku=${selectedVariant.sku}`}>
-                {selectedVariant.image && (
-                  <img
-                    key={selectedVariant.image}
-                    src={selectedVariant.image}
-                    alt={selectedVariant.name}
-                    loading="lazy"
-                    className="w-full h-auto object-contain drop-shadow-2xl transition-transform duration-300 group-hover:scale-105"
-                    onError={(e) => {
-                      (e.currentTarget as HTMLImageElement).style.display = "none";
-                    }}
-                  />
-                )}
+                {/* Preload all images hidden */}
+                {displayVariants.map((variant) => (
+                  variant.image && (
+                    <img
+                      key={variant.image}
+                      src={variant.image}
+                      alt={variant.name}
+                      className={cn(
+                        "w-full h-auto object-contain drop-shadow-2xl transition-all duration-200 group-hover:scale-105",
+                        selectedVariant.id === variant.id && !isLoading ? "opacity-100" : "opacity-0 absolute inset-0 pointer-events-none"
+                      )}
+                      loading="eager"
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).style.display = "none";
+                      }}
+                    />
+                  )
+                ))}
               </Link>
             </div>
           </div>

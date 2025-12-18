@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { products } from "@/data/products";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/lib/supabase";
 import { Link } from "react-router-dom";
 import { ShoppingCart, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -7,23 +8,40 @@ import { useCart } from "@/contexts/CartContext";
 import { cn } from "@/lib/utils";
 
 export function HeroProductSlideshow() {
-    // Select products for the slideshow
-    // Cycle through all available items (excluding those marked for removal and fake SKUs)
-    const inStoreProducts = products.filter(
-        p => p.status !== "Removal Requested" && p.id !== "su-el-6"
-    );
-    // Remove first 4 and last 2 products
-    let filteredProducts = inStoreProducts.slice(4, -2);
+    // Fetch products from Supabase
+    const { data: products = [] } = useQuery({
+        queryKey: ['slideshow-products'],
+        queryFn: async () => {
+            const { data, error } = await supabase
+                .from('products')
+                .select('*')
+                .eq('status', 'In Store')
+                .not('image_url', 'is', null)
+                .order('created_at', { ascending: false })
+            
+            if (error) throw error
+            return data || []
+        }
+    })
 
-    // User request: remove the last product, remove the second and third product from the slideshow
-    // Indices to remove: 1 (second), 2 (third), and the last one.
-    if (filteredProducts.length > 0) {
-        filteredProducts = filteredProducts.filter((_, index) =>
-            index !== 1 && index !== 2 && index !== filteredProducts.length - 1
-        );
-    }
-
-    const displayProducts = filteredProducts.length > 0 ? filteredProducts : inStoreProducts;
+    // Get 3 water bottles, 3 wellness products, and 2 bundles
+    const displayProducts = (() => {
+        const result: typeof products = []
+        
+        // Add 3 water bottles
+        const waterBottles = products.filter(p => p.category === 'Water Bottles' && p.image_url).slice(0, 3)
+        result.push(...waterBottles)
+        
+        // Add 3 wellness products
+        const wellness = products.filter(p => p.category === 'Wellness' && p.image_url).slice(0, 3)
+        result.push(...wellness)
+        
+        // Add 2 bundles
+        const bundles = products.filter(p => p.category === 'Bundles' && p.image_url).slice(0, 2)
+        result.push(...bundles)
+        
+        return result.length > 0 ? result : products.slice(0, 8)
+    })();
 
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isHovered, setIsHovered] = useState(false);
@@ -40,10 +58,10 @@ export function HeroProductSlideshow() {
         return () => clearInterval(interval);
     }, [displayProducts.length, isHovered]);
 
-    // Helper to get image path
-    const getImagePath = (path: string | undefined) => {
-        if (!path) return "/placeholder.svg";
-        return path.replace(/^public\//, '/');
+    // Helper to get image path from Supabase
+    const getImagePath = (imageUrl: string | undefined) => {
+        if (!imageUrl) return "/placeholder.svg";
+        return imageUrl;
     };
 
     const goToIndex = (idx: number) => {
@@ -84,11 +102,11 @@ export function HeroProductSlideshow() {
                     )}
                 >
                     {/* Full Frame Image */}
-                    <div className="absolute inset-0 bg-white/5">
+                    <div className="absolute inset-0 bg-black">
                         <img
-                            src={getImagePath(product.image)}
+                            src={getImagePath(product.image_url)}
                             alt={product.name}
-                            loading="lazy"
+                            loading="eager"
                             className="w-full h-full object-cover"
                         />
                     </div>

@@ -44,6 +44,7 @@ const navLinks = [
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [mobileActiveDropdown, setMobileActiveDropdown] = useState<string | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const { cart } = useCart();
   const totalItems = cart.length;
@@ -198,21 +199,52 @@ export function Navbar() {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden glass bg-black/90 mt-2 mx-4 rounded-xl p-4 animate-scale-in">
-            <div className="flex flex-col gap-2">
+          <div className="lg:hidden glass bg-black/90 mt-2 mx-4 rounded-xl p-4 animate-scale-in max-h-[80vh] overflow-y-auto">
+            <div className="flex flex-col gap-1">
               {navLinks.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  className="px-4 py-3 rounded-lg text-white font-medium transition-colors duration-200 hover:text-[#31C2F4]"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  {link.label}
-                </a>
+                <div key={link.label} className="flex flex-col">
+                  <button
+                    onClick={() => {
+                      if (link.hasDropdown) {
+                        setMobileActiveDropdown(mobileActiveDropdown === link.label ? null : link.label);
+                      } else {
+                        setIsMobileMenuOpen(false);
+                      }
+                    }}
+                    className="px-4 py-3 rounded-lg text-white font-medium transition-colors duration-200 hover:text-[#31C2F4] hover:bg-white/5 flex items-center justify-between text-left"
+                  >
+                    {link.label}
+                    {link.hasDropdown && (
+                      <ChevronDown className={cn(
+                        "w-4 h-4 transition-transform duration-300",
+                        mobileActiveDropdown === link.label && "rotate-180"
+                      )} />
+                    )}
+                  </button>
+                  
+                  {/* Mobile Dropdown */}
+                  {link.hasDropdown && mobileActiveDropdown === link.label && (
+                    <div className="bg-white/5 rounded-lg ml-4 mt-1 mb-2 overflow-hidden">
+                      {link.dropdownItems?.map((item) => (
+                        <a
+                          key={item.label}
+                          href={item.href}
+                          className="block px-4 py-2 text-white/70 hover:text-white hover:bg-white/10 transition-colors duration-200 text-sm"
+                          onClick={() => {
+                            setIsMobileMenuOpen(false);
+                            setMobileActiveDropdown(null);
+                          }}
+                        >
+                          {item.label}
+                        </a>
+                      ))}
+                    </div>
+                  )}
+                </div>
               ))}
               <hr className="border-border my-2" />
               <Button variant="nav-cta" className="w-full rounded-full group relative" asChild>
-                <Link to="/cart">
+                <Link to="/cart" onClick={() => setIsMobileMenuOpen(false)}>
                   <ShoppingCart className="w-5 h-5" />
                   <span className="ml-2">Cart</span>
                   {totalItems > 0 && (

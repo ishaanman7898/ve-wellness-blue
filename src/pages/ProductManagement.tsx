@@ -12,7 +12,8 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Badge } from '@/components/ui/badge'
 import { toast } from 'sonner'
-import { Trash2, Edit, Plus, Image as ImageIcon, LayoutGrid, List, Search, X, ArrowUpDown, MoveUp, MoveDown } from 'lucide-react'
+import { Trash2, Edit, Plus, Image as ImageIcon, LayoutGrid, List, Search, X, ArrowUpDown, MoveUp, MoveDown, Activity } from 'lucide-react'
+import { InventoryDashboard } from '@/components/InventoryDashboard'
 
 const ProductManagement = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
@@ -28,6 +29,7 @@ const ProductManagement = () => {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
   const [draggingId, setDraggingId] = useState<string | null>(null)
   const [manualOrders, setManualOrders] = useState<Record<string, Product[]>>({})
+  const [specKeys, setSpecKeys] = useState<string[]>([])
 
   const queryClient = useQueryClient()
 
@@ -71,7 +73,7 @@ const ProductManagement = () => {
     }
   })
 
-  // Fetch products
+  // Fetch products with realtime
   const { data: products = [], isLoading, error } = useQuery({
     queryKey: ['products'],
     queryFn: async () => {
@@ -84,6 +86,35 @@ const ProductManagement = () => {
       return data as Product[]
     }
   })
+
+  // Realtime subscription
+  React.useEffect(() => {
+    const channel = supabase
+      .channel('products-changes')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'products' },
+        (payload) => {
+          console.log('Realtime update:', payload)
+          // Invalidate and refetch
+          queryClient.invalidateQueries({ queryKey: ['products'] })
+          
+          // Show toast notification
+          if (payload.eventType === 'INSERT') {
+            toast.success('New product added!')
+          } else if (payload.eventType === 'UPDATE') {
+            toast.info('Product updated!')
+          } else if (payload.eventType === 'DELETE') {
+            toast.info('Product deleted!')
+          }
+        }
+      )
+      .subscribe()
+
+    return () => {
+      channel.unsubscribe()
+    }
+  }, [queryClient])
 
   // Create product mutation
   const createProductMutation = useMutation({
@@ -155,19 +186,86 @@ const ProductManagement = () => {
     }
   })
 
-  // Handle image upload
-  const handleImageUpload = async (file: File): Promise<string | null> => {
+  // Compress image before upload
+  const compressImage = async (file: File): Promise<Blob> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        const img = new Image()
+        img.onload = () => {
+          const canvas = document.createElement('canvas')
+          const ctx = canvas.getContext('2d')
+          
+          // Max dimensions
+          const maxWidth = 1200
+          const maxHeight = 1200
+          
+          let width = img.width
+          let height = img.height
+          
+          // Calculate new dimensions
+          if (width > height) {
+            if (width > maxWidth) {
+              height = (height * maxWidth) / width
+              width = maxWidth
+            }
+          } else {
+            if (height > maxHeight) {
+              width = (width * maxHeight) / height
+              height = maxHeight
+            }
+          }
+          
+          canvas.width = width
+          canvas.height = height
+          
+          ctx?.drawImage(img, 0, 0, width, height)
+          
+          canvas.toBlob(
+            (blob) => {
+              if (blob) {
+                resolve(blob)
+              } else {
+                reject(new Error('Failed to compress image'))
+              }
+            },
+            'image/png',
+            0.8
+          )
+        }
+        img.onerror = () => reject(new Error('Failed to load image'))
+        img.src = e.target?.result as string
+      }
+      reader.onerror = () => reject(new Error('Failed to read file'))
+      reader.readAsDataURL(file)
+    })
+  }
+
+  // Handle image upload with SKU-based naming and compression
+  const handleImageUpload = async (file: File, sku: string): Promise<string | null> => {
     try {
-      const fileExt = file.name.split('.').pop()
-      const fileName = `${Date.now()}.${fileExt}`
+      toast.info('Compressing image...')
+      
+      // Compress the image
+      const compressedBlob = await compressImage(file)
+      const originalSize = (file.size / 1024).toFixed(2)
+      const compressedSize = (compressedBlob.size / 1024).toFixed(2)
+      const savings = (((file.size - compressedBlob.size) / file.size) * 100).toFixed(1)
+      
+      console.log(`Image compressed: ${originalSize}KB → ${compressedSize}KB (${savings}% reduction)`)
+      
+      // Use SKU as filename
+      const fileName = `${sku}.png`
       const filePath = `product-images/${fileName}`
 
       console.log('Uploading file to:', filePath)
       
+      toast.info('Uploading to Supabase...')
+      
       const { error: uploadError } = await supabase.storage
         .from('products')
-        .upload(filePath, file, {
-          contentType: file.type,
+        .upload(filePath, compressedBlob, {
+          contentType: 'image/png',
           upsert: true,
         })
 
@@ -181,6 +279,7 @@ const ProductManagement = () => {
         .getPublicUrl(filePath)
 
       console.log('Public URL:', publicUrl)
+      toast.success(`Image uploaded! Saved ${savings}% space`)
       return publicUrl
     } catch (error) {
       console.error('Error uploading image:', error)
@@ -212,12 +311,21 @@ const ProductManagement = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
+    // Validate SKU is provided
+    if (!formData.sku) {
+      toast.error('SKU is required for image upload')
+      return
+    }
+    
     let imageUrl = formData.image_url
     
     if (imageFile) {
-      const uploadedUrl = await handleImageUpload(imageFile)
+      const uploadedUrl = await handleImageUpload(imageFile, formData.sku)
       if (uploadedUrl) {
         imageUrl = uploadedUrl
+      } else {
+        // If upload failed, don't proceed
+        return
       }
     }
 
@@ -458,8 +566,14 @@ const ProductManagement = () => {
       <div className="container mx-auto px-4 lg:px-8 pt-52 pb-20 flex-grow">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between mb-6">
         <div>
-          <h1 className="font-display text-3xl md:text-4xl font-bold">Product <span className="text-glacier">Management</span></h1>
-          <p className="text-muted-foreground">Manage products, variants, and specifications</p>
+          <h1 className="font-display text-3xl md:text-4xl font-bold flex items-center gap-3">
+            Product <span className="text-glacier">Management</span>
+            <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20">
+              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+              <span className="text-xs font-medium text-green-500">Live</span>
+            </div>
+          </h1>
+          <p className="text-muted-foreground">Manage products, variants, and specifications with realtime updates</p>
         </div>
         <div className="flex flex-col sm:flex-row gap-4">
           <Dialog
@@ -618,44 +732,53 @@ const ProductManagement = () => {
               <div>
                 <Label>Specifications</Label>
                 <div className="space-y-2 mt-2">
-                  {formData.specifications && Object.entries(formData.specifications).map(([key, value]) => (
-                    <div key={key} className="flex gap-2">
-                      <Input
-                        placeholder="Specification name (e.g., capacity, material)"
-                        value={key}
-                        onChange={(e) => {
-                          const newSpecs = { ...formData.specifications }
-                          delete newSpecs[key]
-                          newSpecs[e.target.value] = value
-                          setFormData({ ...formData, specifications: newSpecs })
-                        }}
-                        className="flex-1"
-                      />
-                      <Input
-                        placeholder="Value (e.g., 40 oz, Stainless Steel)"
-                        value={Array.isArray(value) ? value.join(', ') : String(value)}
-                        onChange={(e) => {
-                          setFormData({
-                            ...formData,
-                            specifications: { ...formData.specifications, [key]: e.target.value }
-                          })
-                        }}
-                        className="flex-1"
-                      />
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={() => {
-                          const newSpecs = { ...formData.specifications }
-                          delete newSpecs[key]
-                          setFormData({ ...formData, specifications: newSpecs })
-                        }}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  ))}
+                  {formData.specifications && Object.entries(formData.specifications).map(([key, value], index) => {
+                    const specKey = `spec-item-${index}`
+                    return (
+                      <div key={specKey} className="flex gap-2">
+                        <Input
+                          placeholder="Specification name (e.g., capacity, material)"
+                          value={key}
+                          onChange={(e) => {
+                            const newSpecs = { ...formData.specifications }
+                            const oldKey = key
+                            const newKey = e.target.value
+                            if (oldKey !== newKey) {
+                              delete newSpecs[oldKey]
+                              newSpecs[newKey] = value
+                            }
+                            setFormData({ ...formData, specifications: newSpecs })
+                          }}
+                          className="flex-1"
+                          autoComplete="off"
+                        />
+                        <Input
+                          placeholder="Value (e.g., 40 oz, Stainless Steel)"
+                          value={Array.isArray(value) ? value.join(', ') : String(value)}
+                          onChange={(e) => {
+                            setFormData({
+                              ...formData,
+                              specifications: { ...formData.specifications, [key]: e.target.value }
+                            })
+                          }}
+                          className="flex-1"
+                          autoComplete="off"
+                        />
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            const newSpecs = { ...formData.specifications }
+                            delete newSpecs[key]
+                            setFormData({ ...formData, specifications: newSpecs })
+                          }}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    )
+                  })}
                   <Button
                     type="button"
                     variant="outline"
@@ -696,6 +819,11 @@ const ProductManagement = () => {
           </DialogContent>
         </Dialog>
       </div>
+      </div>
+
+      {/* Inventory Dashboard */}
+      <div className="mb-8">
+        <InventoryDashboard />
       </div>
 
       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between mb-6">

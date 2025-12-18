@@ -21,7 +21,7 @@ export const products: Product[] = [
     "sku": "O-DI",
     "price": 8.99,
     "buyLink": "https://portal.veinternational.org/buybuttons/us019814/btn/divider-odi/",
-    "image": "/product-images/O-DI.png",
+    "image": "https://quygevwkhlggdifdqqto.supabase.co/storage/v1/object/public/products/product-images/O-DI.png",
     "groupName": "Divider"
   },
   {
@@ -32,7 +32,7 @@ export const products: Product[] = [
     "sku": "O-IM",
     "price": 19.99,
     "buyLink": "https://portal.veinternational.org/buybuttons/us019814/btn/ice-molds-oim/",
-    "image": "/product-images/O-IM.png",
+    "image": "https://quygevwkhlggdifdqqto.supabase.co/storage/v1/object/public/products/product-images/O-IM.png",
     "groupName": "Ice Molds"
   },
   {
@@ -43,7 +43,7 @@ export const products: Product[] = [
     "sku": "O-SB",
     "price": 7.99,
     "buyLink": "https://portal.veinternational.org/buybuttons/us019814/btn/shaker-ball-osb/",
-    "image": "/product-images/O-SB.png",
+    "image": "https://quygevwkhlggdifdqqto.supabase.co/storage/v1/object/public/products/product-images/O-SB.png",
     "groupName": "Shaker Ball"
   },
   {
@@ -54,7 +54,7 @@ export const products: Product[] = [
     "sku": "O-AN",
     "price": 12.99,
     "buyLink": "https://portal.veinternational.org/buybuttons/us019814/btn/the-anchor-snack-compartment-oan/",
-    "image": "/product-images/O-AN.png",
+    "image": "https://quygevwkhlggdifdqqto.supabase.co/storage/v1/object/public/products/product-images/O-AN.png",
     "groupName": "The Anchor",
     "color": "Snack Compartment"
   },
@@ -66,7 +66,7 @@ export const products: Product[] = [
     "sku": "SU-EL-1",
     "price": 19.99,
     "buyLink": "https://portal.veinternational.org/buybuttons/us019814/btn/surge-iv-blue-razzberry-suel1/",
-    "image": "/product-images/SU-EL-1.png",
+    "image": "https://quygevwkhlggdifdqqto.supabase.co/storage/v1/object/public/products/product-images/SU-EL-1.png",
     "groupName": "Surge IV",
     "color": "Blue Razzberry",
     "hexColor": "#0000FF"
@@ -79,7 +79,7 @@ export const products: Product[] = [
     "sku": "SU-EL-2",
     "price": 19.99,
     "buyLink": "https://portal.veinternational.org/buybuttons/us019814/btn/surge-iv-fruit-punch-suel2/",
-    "image": "/product-images/SU-EL-2.png",
+    "image": "https://quygevwkhlggdifdqqto.supabase.co/storage/v1/object/public/products/product-images/SU-EL-2.png",
     "groupName": "Surge IV",
     "color": "Fruit Punch",
     "hexColor": "#FF4500"
@@ -92,7 +92,7 @@ export const products: Product[] = [
     "sku": "SU-EL-3",
     "price": 19.99,
     "buyLink": "https://portal.veinternational.org/buybuttons/us019814/btn/surge-iv-lemonade-suel3/",
-    "image": "/product-images/SU-EL-3.png",
+    "image": "https://quygevwkhlggdifdqqto.supabase.co/storage/v1/object/public/products/product-images/SU-EL-3.png",
     "groupName": "Surge IV",
     "color": "Lemonade",
     "hexColor": "#FFFF00"
@@ -105,7 +105,7 @@ export const products: Product[] = [
     "sku": "SU-EL-4",
     "price": 19.99,
     "buyLink": "https://portal.veinternational.org/buybuttons/us019814/btn/surge-iv-pina-colada-suel4/",
-    "image": "/product-images/SU-EL-4.png",
+    "image": "https://quygevwkhlggdifdqqto.supabase.co/storage/v1/object/public/products/product-images/SU-EL-4.png",
     "groupName": "Surge IV",
     "color": "Pina Colada",
     "hexColor": "#F0E68C"
@@ -118,7 +118,7 @@ export const products: Product[] = [
     "sku": "SU-EL-5",
     "price": 19.99,
     "buyLink": "https://portal.veinternational.org/buybuttons/us019814/btn/surge-iv-strawberry-suel5/",
-    "image": "/product-images/SU-EL-5.png",
+    "image": "https://quygevwkhlggdifdqqto.supabase.co/storage/v1/object/public/products/product-images/SU-EL-5.png",
     "groupName": "Surge IV",
     "color": "Strawberry",
     "hexColor": "#FF69B4"
@@ -131,7 +131,7 @@ export const products: Product[] = [
     "sku": "SU-EL-6",
     "price": 19.99,
     "buyLink": "https://portal.veinternational.org/buybuttons/us019814/btn/surge-iv-tropical-punch-suel6/",
-    "image": "/product-images/SU-EL-6.png",
+    "image": "https://quygevwkhlggdifdqqto.supabase.co/storage/v1/object/public/products/product-images/SU-EL-6.png",
     "groupName": "Surge IV",
     "color": "Tropical Vibes",
     "hexColor": "#FF7F50"
@@ -144,7 +144,7 @@ export const products: Product[] = [
     "sku": "SU-EL-7",
     "price": 19.99,
     "buyLink": "https://portal.veinternational.org/buybuttons/us019814/btn/surge-iv-cucumber-lime-suel7/",
-    "image": "/product-images/SU-EL-7.png",
+    "image": "https://quygevwkhlggdifdqqto.supabase.co/storage/v1/object/public/products/product-images/SU-EL-7.png",
     "groupName": "Surge IV",
     "color": "Cucumber Lime",
     "hexColor": "#90EE90"
@@ -157,7 +157,7 @@ export const products: Product[] = [
     "sku": "SU-EL-8",
     "price": 19.99,
     "buyLink": "https://portal.veinternational.org/buybuttons/us019814/btn/surge-iv-apple-cider-suel8/",
-    "image": "/product-images/SU-EL-8.png",
+    "image": "https://quygevwkhlggdifdqqto.supabase.co/storage/v1/object/public/products/product-images/SU-EL-8.png",
     "groupName": "Surge IV",
     "color": "Apple Cider",
     "hexColor": "#D2691E"
@@ -170,7 +170,7 @@ export const products: Product[] = [
     "sku": "CA-SC",
     "price": 14.99,
     "buyLink": "https://portal.veinternational.org/buybuttons/us019814/btn/the-snow-cap-modified-lid-casc/",
-    "image": "/product-images/CA-SC.png",
+    "image": "https://quygevwkhlggdifdqqto.supabase.co/storage/v1/object/public/products/product-images/CA-SC.png",
     "groupName": "The Snow Cap",
     "color": "Modified Lid"
   },
@@ -182,7 +182,7 @@ export const products: Product[] = [
     "sku": "SU-PR-1",
     "price": 34.99,
     "buyLink": "https://portal.veinternational.org/buybuttons/us019814/btn/peak-powder-chocolate-supr1/",
-    "image": "/product-images/SU-PR-1.png",
+    "image": "https://quygevwkhlggdifdqqto.supabase.co/storage/v1/object/public/products/product-images/SU-PR-1.png",
     "groupName": "Peak Protein",
     "color": "Chocolate",
     "hexColor": "#3E2723"
@@ -195,7 +195,7 @@ export const products: Product[] = [
     "sku": "SU-PR-2",
     "price": 34.99,
     "buyLink": "https://portal.veinternational.org/buybuttons/us019814/btn/peak-powder-vanilla-supr2/",
-    "image": "/product-images/SU-PR-2.png",
+    "image": "https://quygevwkhlggdifdqqto.supabase.co/storage/v1/object/public/products/product-images/SU-PR-2.png",
     "groupName": "Peak Powder",
     "color": "Vanilla",
     "hexColor": "#F3E5AB"
@@ -208,7 +208,7 @@ export const products: Product[] = [
     "sku": "BO-46",
     "price": 75,
     "buyLink": "https://portal.veinternational.org/buybuttons/us019814/btn/the-glacier-white-w-ice-cap-bo46/",
-    "image": "/product-images/BO-46.png",
+    "image": "https://quygevwkhlggdifdqqto.supabase.co/storage/v1/object/public/products/product-images/BO-46.png",
     "groupName": "The Glacier",
     "color": "White",
     "hexColor": "#FFFFFF"
@@ -221,7 +221,7 @@ export const products: Product[] = [
     "sku": "BO-36",
     "price": 60,
     "buyLink": "https://portal.veinternational.org/buybuttons/us019814/btn/the-iceberg-white-w-ice-cap-bo36/",
-    "image": "/product-images/BO-36.png",
+    "image": "https://quygevwkhlggdifdqqto.supabase.co/storage/v1/object/public/products/product-images/BO-36.png",
     "groupName": "The Iceberg",
     "color": "White",
     "hexColor": "#FFFFFF"
@@ -234,7 +234,7 @@ export const products: Product[] = [
     "sku": "SE-F-1",
     "price": 499.99,
     "buyLink": "https://portal.veinternational.org/buybuttons/us019814/btn/alo-x-thrive-bundle-sef1/",
-    "image": "/product-images/SE-F-1.png",
+    "image": "https://quygevwkhlggdifdqqto.supabase.co/storage/v1/object/public/products/product-images/SE-F-1.png",
     "groupName": "Alo x Thrive Bundle"
   },
   {
@@ -245,7 +245,7 @@ export const products: Product[] = [
     "sku": "SE-F-2",
     "price": 2999.99,
     "buyLink": "https://portal.veinternational.org/buybuttons/us019814/btn/peloton-x-thrive-bundle-sef2/",
-    "image": "/product-images/SE-F-2.png",
+    "image": "https://quygevwkhlggdifdqqto.supabase.co/storage/v1/object/public/products/product-images/SE-F-2.png",
     "groupName": "Peleton x Thrive Bundle"
   },
   {
@@ -256,7 +256,7 @@ export const products: Product[] = [
     "sku": "SE-F-3",
     "price": 399.99,
     "buyLink": "https://portal.veinternational.org/buybuttons/us019814/btn/fall-bundle-sef3/",
-    "image": "/product-images/SE-F-3.png",
+    "image": "https://quygevwkhlggdifdqqto.supabase.co/storage/v1/object/public/products/product-images/SE-F-3.png",
     "groupName": "Fall Bundle"
   },
   {
@@ -267,7 +267,7 @@ export const products: Product[] = [
     "sku": "SU-PR-3",
     "price": 34.99,
     "buyLink": "https://portal.veinternational.org/buybuttons/us019814/btn/peak-protein-pumpkin-spice-supr3/",
-    "image": "/product-images/SU-PR-3.png",
+    "image": "https://quygevwkhlggdifdqqto.supabase.co/storage/v1/object/public/products/product-images/SU-PR-3.png",
     "groupName": "Peak Protein",
     "color": "Pumpkin Spice",
     "hexColor": "#D2691E"

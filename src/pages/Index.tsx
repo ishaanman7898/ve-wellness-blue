@@ -114,7 +114,7 @@ const Index = () => {
             <div className="flex justify-center">
               <div className="relative w-full max-w-md rounded-2xl border border-white/20 bg-gradient-to-br from-navy-medium via-navy-medium/60 to-white/10 p-6 shadow-2xl overflow-hidden">
                 <div className="aspect-[3/4] rounded-xl bg-gradient-to-br from-navy-medium/40 via-ocean/30 to-white/40 flex items-center justify-center overflow-hidden">
-                  <img src="/product-images/BO-43.png" alt="Thrive Bottle" className="w-full h-full object-contain" />
+                  <img src="https://quygevwkhlggdifdqqto.supabase.co/storage/v1/object/public/products/product-images/BO-43.png" alt="Thrive Bottle" className="w-full h-full object-contain" />
                 </div>
               </div>
             </div>

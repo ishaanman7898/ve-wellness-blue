@@ -10,7 +10,7 @@ const faqs = [
   },
   {
     question: "What is your return policy?",
-    answer: "We offer a 30-day satisfaction guarantee. If you're not completely happy with your purchase, contact us for a full refund or exchange."
+    answer: "Since our products are tangible wellness items, we do not accept returns. However, if you receive a damaged or defective product, please contact us immediately for a replacement."
   },
   {
     question: "Are your products BPA-free?",
@@ -24,13 +24,10 @@ const faqs = [
     question: "Do you ship internationally?",
     answer: "Currently, we only ship within the United States. We're working on expanding our shipping options to serve more customers worldwide."
   },
-  {
-    question: "How do I track my order?",
-    answer: "Once your order ships, you'll receive an email with a tracking number. You can use this to track your package on our carrier's website."
-  },
+
   {
     question: "What payment methods do you accept?",
-    answer: "We accept all major credit cards (Visa, MasterCard, American Express, Discover), PayPal, and Apple Pay."
+    answer: "We accept Visa, MasterCard, American Express, Discover, and other major credit and debit cards. We also support bank transfers and digital payment methods."
   },
   {
     question: "Are the supplements vegan?",
