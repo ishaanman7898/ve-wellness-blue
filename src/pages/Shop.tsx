@@ -85,7 +85,13 @@ export default function Shop({ category: categoryProp }: ShopProps = {}) {
         if (productsError) throw productsError;
         if (categoriesError) throw categoriesError;
 
-        setSupabaseProducts(productsData || []);
+        // Add cache-busting timestamp to image URLs
+        const productsWithFreshImages = (productsData || []).map(product => ({
+          ...product,
+          image_url: product.image_url ? `${product.image_url}?t=${Date.now()}` : product.image_url
+        }));
+
+        setSupabaseProducts(productsWithFreshImages);
         
         // Filter out Accessories from categories
         const categories = [...new Set(categoriesData?.map(item => item.category).filter(Boolean))];
