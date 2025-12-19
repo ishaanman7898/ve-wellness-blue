@@ -33,7 +33,6 @@ export default function SupplementsPage() {
     const wellnessProducts = useMemo(() => {
         return products.filter((product) =>
             product.category === "Wellness" && 
-            (product.group_name?.includes("Peak") || product.group_name?.includes("Surge")) &&
             product.status !== "Phased Out" && 
             product.status !== "Removal Requested" && 
             product.status !== "Removal Pending"

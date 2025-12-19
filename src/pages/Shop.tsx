@@ -250,7 +250,7 @@ export default function Shop({ category: categoryProp }: ShopProps = {}) {
             </p>
 
             {/* Products Grid */}
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8">
               {groupedProducts.map((group, index) => (
                 <ProductCard key={group[0].id} variants={group} index={index} />
               ))}
@@ -340,7 +340,7 @@ function ProductCard({ variants, index }: { variants: any[]; index: number }) {
     <div
       ref={cardRef}
       className={cn(
-        "group relative rounded-2xl overflow-hidden transition-all duration-500 h-[500px] shadow-xl hover:shadow-2xl hover:shadow-primary/10 hover:-translate-y-2 animate-fade-in-up border border-border/50",
+        "group relative rounded-2xl overflow-hidden transition-all duration-500 h-[550px] shadow-xl hover:shadow-2xl hover:shadow-primary/10 hover:-translate-y-2 animate-fade-in-up border border-border/50",
       )}
       style={{ animationDelay: `${index * 50}ms` }}
       onMouseLeave={() => {

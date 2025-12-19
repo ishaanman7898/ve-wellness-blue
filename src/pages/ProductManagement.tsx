@@ -12,10 +12,10 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Badge } from '@/components/ui/badge'
 import { toast } from 'sonner'
-import { Trash2, Edit, Plus, Image as ImageIcon, LayoutGrid, List, Search, X, ArrowUpDown, MoveUp, MoveDown, Activity } from 'lucide-react'
-import { InventoryDashboard } from '@/components/InventoryDashboard'
+import { Trash2, Edit, Plus, Image as ImageIcon, LayoutGrid, List, Search, X, ArrowUpDown, MoveUp, MoveDown } from 'lucide-react'
 
 const ProductManagement = () => {
+  const [activeTab, setActiveTab] = useState<'products' | 'inventory'>('products')
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [isEditorOpen, setIsEditorOpen] = useState(false)
@@ -25,11 +25,31 @@ const ProductManagement = () => {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [imagePreview, setImagePreview] = useState<string>('')
-  const [sortBy, setSortBy] = useState<'manual' | 'sku' | 'color' | 'name'>('sku')
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
   const [draggingId, setDraggingId] = useState<string | null>(null)
   const [manualOrders, setManualOrders] = useState<Record<string, Product[]>>({})
   const [specKeys, setSpecKeys] = useState<string[]>([])
+
+  // Session management - auto logout after 30 minutes of inactivity
+  React.useEffect(() => {
+    let timeout: NodeJS.Timeout
+    
+    const resetTimeout = () => {
+      clearTimeout(timeout)
+      timeout = setTimeout(() => {
+        toast.error('Session expired due to inactivity')
+        window.location.href = '/login'
+      }, 30 * 60 * 1000) // 30 minutes
+    }
+
+    const events = ['mousedown', 'keydown', 'scroll', 'touchstart']
+    events.forEach(event => window.addEventListener(event, resetTimeout))
+    resetTimeout()
+
+    return () => {
+      clearTimeout(timeout)
+      events.forEach(event => window.removeEventListener(event, resetTimeout))
+    }
+  }, [])
 
   const queryClient = useQueryClient()
 
@@ -87,7 +107,21 @@ const ProductManagement = () => {
     }
   })
 
-  // Realtime subscription
+  // Fetch inventory
+  const { data: inventory = [], isLoading: inventoryLoading, error: inventoryError } = useQuery({
+    queryKey: ['inventory'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('inventory')
+        .select('*')
+        .order('created_at', { ascending: false })
+      
+      if (error) throw error
+      return data as Product[]
+    }
+  })
+
+  // Realtime subscription for products
   React.useEffect(() => {
     const channel = supabase
       .channel('products-changes')
@@ -96,10 +130,8 @@ const ProductManagement = () => {
         { event: '*', schema: 'public', table: 'products' },
         (payload) => {
           console.log('Realtime update:', payload)
-          // Invalidate and refetch
           queryClient.invalidateQueries({ queryKey: ['products'] })
           
-          // Show toast notification
           if (payload.eventType === 'INSERT') {
             toast.success('New product added!')
           } else if (payload.eventType === 'UPDATE') {
@@ -116,7 +148,34 @@ const ProductManagement = () => {
     }
   }, [queryClient])
 
-  // Create product mutation
+  // Realtime subscription for inventory
+  React.useEffect(() => {
+    const channel = supabase
+      .channel('inventory-changes')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'inventory' },
+        (payload) => {
+          console.log('Realtime inventory update:', payload)
+          queryClient.invalidateQueries({ queryKey: ['inventory'] })
+          
+          if (payload.eventType === 'INSERT') {
+            toast.success('New inventory item added!')
+          } else if (payload.eventType === 'UPDATE') {
+            toast.info('Inventory updated!')
+          } else if (payload.eventType === 'DELETE') {
+            toast.info('Inventory item deleted!')
+          }
+        }
+      )
+      .subscribe()
+
+    return () => {
+      channel.unsubscribe()
+    }
+  }, [queryClient])
+
+  // Create product mutation (only for products table)
   const createProductMutation = useMutation({
     mutationFn: async (product: ProductInsert) => {
       const { data, error } = await supabase
@@ -139,7 +198,7 @@ const ProductManagement = () => {
     }
   })
 
-  // Update product mutation
+  // Update mutation
   const updateProductMutation = useMutation({
     mutationFn: async ({ id, ...product }: ProductUpdate & { id: string }) => {
       const { data, error } = await supabase
@@ -167,7 +226,7 @@ const ProductManagement = () => {
     }
   })
 
-  // Delete product mutation
+  // Delete mutation
   const deleteProductMutation = useMutation({
     mutationFn: async (id: string) => {
       const { error } = await supabase
@@ -182,7 +241,7 @@ const ProductManagement = () => {
       toast.success('Product deleted successfully!')
     },
     onError: (error) => {
-      toast.error(`Error deleting product: ${error.message}`)
+      toast.error(`Error deleting: ${error.message}`)
     }
   })
 
@@ -229,7 +288,7 @@ const ProductManagement = () => {
                 reject(new Error('Failed to compress image'))
               }
             },
-            'image/png',
+            'image/jpeg',
             0.8
           )
         }
@@ -242,6 +301,14 @@ const ProductManagement = () => {
   }
 
   // Handle image upload with SKU-based naming and compression
+  const getProductImageUrl = (sku: string): string => {
+    const fileName = `${sku}.jpg`
+    const { data: { publicUrl } } = supabase.storage
+      .from('email-product-pictures')
+      .getPublicUrl(fileName)
+    return publicUrl
+  }
+
   const handleImageUpload = async (file: File, sku: string): Promise<string | null> => {
     try {
       toast.info('Compressing image...')
@@ -254,18 +321,17 @@ const ProductManagement = () => {
       
       console.log(`Image compressed: ${originalSize}KB → ${compressedSize}KB (${savings}% reduction)`)
       
-      // Use SKU as filename
-      const fileName = `${sku}.png`
-      const filePath = `product-images/${fileName}`
+      // Use SKU as filename with .jpg extension
+      const fileName = `${sku}.jpg`
 
-      console.log('Uploading file to:', filePath)
+      console.log('Uploading file to email-product-pictures:', fileName)
       
       toast.info('Uploading to Supabase...')
       
       const { error: uploadError } = await supabase.storage
-        .from('products')
-        .upload(filePath, compressedBlob, {
-          contentType: 'image/png',
+        .from('email-product-pictures')
+        .upload(fileName, compressedBlob, {
+          contentType: 'image/jpeg',
           upsert: true,
         })
 
@@ -274,12 +340,10 @@ const ProductManagement = () => {
         throw uploadError
       }
 
-      const { data: { publicUrl } } = supabase.storage
-        .from('products')
-        .getPublicUrl(filePath)
+      const publicUrl = getProductImageUrl(sku)
 
       console.log('Public URL:', publicUrl)
-      toast.success(`Image uploaded! Saved ${savings}% space`)
+      toast.success(`Image uploaded! Saved ${savings}% space. URL will update in 2 minutes.`)
       return publicUrl
     } catch (error) {
       console.error('Error uploading image:', error)
@@ -406,6 +470,7 @@ const ProductManagement = () => {
   }
 
   const filteredProducts = useMemo(() => {
+    // Only show products, not inventory
     const base = selectedCategory === 'all'
       ? products
       : products.filter(p => p.category === selectedCategory)
@@ -436,62 +501,22 @@ const ProductManagement = () => {
       groups[groupName].push(product)
     })
 
-    // Sort each group by the selected criteria
+    // Always sort by manual order (variant_order)
     Object.keys(groups).forEach(groupName => {
-      if (sortBy === 'manual') {
-        if (manualOrders[groupName]?.length) {
-          groups[groupName] = manualOrders[groupName]
-          return
-        }
-
-        groups[groupName].sort((a, b) => {
-          const aOrder = a.variant_order ?? Number.POSITIVE_INFINITY
-          const bOrder = b.variant_order ?? Number.POSITIVE_INFINITY
-          return aOrder - bOrder
-        })
+      if (manualOrders[groupName]?.length) {
+        groups[groupName] = manualOrders[groupName]
         return
       }
 
       groups[groupName].sort((a, b) => {
-        let aValue: string | number
-        let bValue: string | number
-
-        switch (sortBy) {
-          case 'sku':
-            aValue = a.sku
-            bValue = b.sku
-            break
-          case 'color':
-            aValue = a.color || ''
-            bValue = b.color || ''
-            break
-          case 'name':
-            aValue = a.name
-            bValue = b.name
-            break
-          default:
-            aValue = a.sku
-            bValue = b.sku
-        }
-
-        if (typeof aValue === 'string' && typeof bValue === 'string') {
-          return sortOrder === 'asc' 
-            ? aValue.localeCompare(bValue)
-            : bValue.localeCompare(aValue)
-        }
-        
-        if (typeof aValue === 'number' && typeof bValue === 'number') {
-          return sortOrder === 'asc' 
-            ? aValue - bValue
-            : bValue - aValue
-        }
-
-        return 0
+        const aOrder = a.variant_order ?? Number.POSITIVE_INFINITY
+        const bOrder = b.variant_order ?? Number.POSITIVE_INFINITY
+        return aOrder - bOrder
       })
     })
 
     return groups
-  }, [filteredProducts, sortBy, sortOrder, manualOrders])
+  }, [filteredProducts, manualOrders])
 
   const reorderGroup = (groupName: string, targetId: string) => {
     if (!draggingId || draggingId === targetId) return null
@@ -507,7 +532,6 @@ const ProductManagement = () => {
     const [moved] = next.splice(fromIndex, 1)
     next.splice(toIndex, 0, moved)
     setManualOrders(prev => ({ ...prev, [groupName]: next }))
-    setSortBy('manual')
     return next
   }
 
@@ -542,7 +566,6 @@ const ProductManagement = () => {
     next.splice(newIndex, 0, moved)
 
     setManualOrders(prev => ({ ...prev, [groupName]: next }))
-    setSortBy('manual')
     saveGroupOrder(groupName, next)
   }
 
@@ -576,22 +599,23 @@ const ProductManagement = () => {
           <p className="text-muted-foreground">Manage products, variants, and specifications with realtime updates</p>
         </div>
         <div className="flex flex-col sm:flex-row gap-4">
-          <Dialog
-            open={isCreateModalOpen}
-            onOpenChange={(open) => {
-              setIsCreateModalOpen(open)
-              if (!open) {
-                setEditingProduct(null)
-                resetForm()
-              }
-            }}
-          >
-            <DialogTrigger asChild>
-              <Button className="flex items-center gap-2">
-                <Plus className="h-4 w-4" />
-                Add Product
-              </Button>
-            </DialogTrigger>
+          {activeTab === 'products' && (
+            <Dialog
+              open={isCreateModalOpen}
+              onOpenChange={(open) => {
+                setIsCreateModalOpen(open)
+                if (!open) {
+                  setEditingProduct(null)
+                  resetForm()
+                }
+              }}
+            >
+              <DialogTrigger asChild>
+                <Button className="flex items-center gap-2">
+                  <Plus className="h-4 w-4" />
+                  Add Product
+                </Button>
+              </DialogTrigger>
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>{editingProduct ? 'Edit Product' : 'Add New Product'}</DialogTitle>
@@ -630,14 +654,26 @@ const ProductManagement = () => {
 
               <div className="grid grid-cols-3 gap-4">
                 <div>
-                  <Label htmlFor="category">Category</Label>
+                  <div className="flex items-center justify-between mb-2">
+                    <Label htmlFor="category">Category</Label>
+                    {formData.category === 'Wellness' && (
+                      <a 
+                        href="/shop/supplements" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-xs text-glacier hover:underline"
+                      >
+                        View Supplements →
+                      </a>
+                    )}
+                  </div>
                   <Select value={formData.category} onValueChange={(value) => setFormData({ ...formData, category: value })}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="Accessories">Accessories</SelectItem>
-                      <SelectItem value="Wellness">Wellness</SelectItem>
+                      <SelectItem value="Wellness">Wellness (Supplements)</SelectItem>
                       <SelectItem value="Water Bottles">Water Bottles</SelectItem>
                       <SelectItem value="Bundles">Bundles</SelectItem>
                     </SelectContent>
@@ -817,13 +853,33 @@ const ProductManagement = () => {
               </div>
             </form>
           </DialogContent>
-        </Dialog>
+            </Dialog>
+          )}
       </div>
       </div>
 
-      {/* Inventory Dashboard */}
-      <div className="mb-8">
-        <InventoryDashboard />
+      {/* Table Tabs */}
+      <div className="flex gap-2 mb-6 border-b border-border">
+        <button
+          onClick={() => setActiveTab('products')}
+          className={`px-4 py-3 font-medium transition-colors border-b-2 ${
+            activeTab === 'products'
+              ? 'border-glacier text-glacier'
+              : 'border-transparent text-muted-foreground hover:text-foreground'
+          }`}
+        >
+          Products Table
+        </button>
+        <button
+          onClick={() => setActiveTab('inventory')}
+          className={`px-4 py-3 font-medium transition-colors border-b-2 ${
+            activeTab === 'inventory'
+              ? 'border-glacier text-glacier'
+              : 'border-transparent text-muted-foreground hover:text-foreground'
+          }`}
+        >
+          Inventory Table
+        </button>
       </div>
 
       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between mb-6">
@@ -877,33 +933,49 @@ const ProductManagement = () => {
           </button>
         </div>
 
-        <div className="flex items-center gap-2">
-          <span className="text-sm text-muted-foreground">Sort by:</span>
-          <Select value={sortBy} onValueChange={(value: 'manual' | 'sku' | 'color' | 'name') => setSortBy(value)}>
-            <SelectTrigger className="w-32">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="manual">Manual</SelectItem>
-              <SelectItem value="sku">SKU</SelectItem>
-              <SelectItem value="color">Color</SelectItem>
-              <SelectItem value="name">Name</SelectItem>
-            </SelectContent>
-          </Select>
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
-            className="flex items-center gap-1"
-          >
-            {sortOrder === 'asc' ? <MoveUp className="w-4 h-4" /> : <MoveDown className="w-4 h-4" />}
-            {sortOrder === 'asc' ? 'A-Z' : 'Z-A'}
-          </Button>
-        </div>
+
       </div>
 
-      {isLoading ? (
+      {activeTab === 'inventory' ? (
+        <div className="space-y-4">
+          <h2 className="text-2xl font-bold mb-4">Inventory Overview</h2>
+          {inventoryLoading ? (
+            <div className="text-center py-12 text-muted-foreground">Loading inventory...</div>
+          ) : inventoryError ? (
+            <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+              <p className="text-red-600">Error loading inventory: {(inventoryError as Error).message}</p>
+            </div>
+          ) : inventory.length === 0 ? (
+            <div className="text-center py-12 text-muted-foreground">No inventory items found.</div>
+          ) : (
+            <div className="grid gap-4">
+              {inventory.map((item: any) => (
+                <Card key={item.id} className="p-4">
+                  <div className="flex items-center justify-between gap-4">
+                    <div className="flex-1">
+                      <p className="font-semibold text-lg">{item.item_name || 'N/A'}</p>
+                      <p className="text-sm text-muted-foreground">SKU: {item.sku || 'N/A'}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-sm text-muted-foreground">Bought: {item.stock_bought || 0}</p>
+                      <p className="font-semibold">Left: {item.stock_left || 0}</p>
+                    </div>
+                    <Badge variant={
+                      item.stock_left < 0 ? 'destructive' :
+                      item.stock_left > 10 ? 'default' : 
+                      item.stock_left > 0 ? 'secondary' : 
+                      'destructive'
+                    }>
+                      {item.stock_left < 0 ? 'Backordered' : item.stock_left > 10 ? 'In Stock' : item.stock_left > 0 ? 'Low Stock' : 'Out of Stock'}
+                    </Badge>
+                  </div>
+
+                </Card>
+              ))}
+            </div>
+          )}
+        </div>
+      ) : isLoading ? (
         <div className="text-center py-12 text-muted-foreground">Loading products...</div>
       ) : Object.keys(groupedProducts).length === 0 ? (
         <div className="text-center py-12 text-muted-foreground">No products found.</div>
@@ -928,11 +1000,9 @@ const ProductManagement = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {productsInGroup.map((product, index) => (
                   <Card key={product.id} className="overflow-hidden hover:shadow-lg transition-shadow relative">
-                    {sortBy === 'manual' && (
-                      <div className="absolute top-2 left-2 z-10 bg-background/90 backdrop-blur-sm rounded-full w-6 h-6 flex items-center justify-center text-xs font-semibold border">
-                        {index + 1}
-                      </div>
-                    )}
+                    <div className="absolute top-2 left-2 z-10 bg-background/90 backdrop-blur-sm rounded-full w-6 h-6 flex items-center justify-center text-xs font-semibold border">
+                      {index + 1}
+                    </div>
                     <button
                       type="button"
                       className="w-full text-left"
@@ -1065,11 +1135,9 @@ const ProductManagement = () => {
                         reorderGroupAndPersist(groupName, product.id)
                       }}
                     >
-                      {sortBy === 'manual' && (
-                        <div className="w-8 h-8 rounded-full bg-muted border flex items-center justify-center text-sm font-semibold flex-shrink-0">
-                          {index + 1}
-                        </div>
-                      )}
+                      <div className="w-8 h-8 rounded-full bg-muted border flex items-center justify-center text-sm font-semibold flex-shrink-0">
+                        {index + 1}
+                      </div>
                       <div className="w-16 h-16 bg-muted/30 rounded-lg flex-shrink-0">
                         {product.image_url ? (
                           <img
