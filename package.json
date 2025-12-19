@@ -3,7 +3,6 @@
   "private": true,
   "version": "1.8.0",
   "type": "module",
-  "homepage": "https://ishaanman7898.github.io/TWP",
   "scripts": {
     "dev": "vite",
     "dev:frontend": "vite",
@@ -13,8 +12,6 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "start": "vite",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist",
     "migrate:images": "tsx scripts/migrate-images-to-supabase.ts",
     "migrate:images:admin": "tsx scripts/migrate-images-service-role.ts",
     "update:product-urls": "tsx scripts/update-product-urls.ts",
