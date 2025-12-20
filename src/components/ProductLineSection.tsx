@@ -218,10 +218,10 @@ export function ProductLineSection({
                         key={variant.id}
                         onClick={() => setSelectedVariant(variant)}
                         className={cn(
-                          "w-10 h-10 rounded-full border-2 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-white",
+                          "w-10 h-10 rounded-full border-2 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-white relative flex items-center justify-center",
                           selectedVariant.id === variant.id
                             ? "border-white scale-110"
-                            : "border-white/30 hover:border-white/60",
+                            : "border-white/30",
                           variant.hexColor === "#FFFFFF" && "bg-white border-white"
                         )}
                         style={{
@@ -230,7 +230,19 @@ export function ProductLineSection({
                           backgroundImage: (variant.category === "Supplements" || variant.category === "Wellness") && !variant.hexColor ? "linear-gradient(45deg, #333, #666)" : undefined
                         }}
                         title={variant.color}
-                      />
+                      >
+                        {selectedVariant.id === variant.id && (
+                          <svg className={cn(
+                            "w-5 h-5 drop-shadow-lg",
+                            // Light colors get black checkmark, dark colors get white
+                            variant.hexColor === "#FFFFFF" || 
+                            variant.hexColor === "#FFF" ||
+                            variant.hexColor?.match(/^#[89A-Fa-f]/) ? "text-black" : "text-white"
+                          )} fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </svg>
+                        )}
+                      </button>
                     ))}
                   </div>
                 </div>

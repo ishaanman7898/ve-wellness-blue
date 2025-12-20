@@ -47,7 +47,7 @@ const getGroupKey = (product: any) => {
 // Helper function to get category display name
 const getCategoryDisplayName = (category: string) => {
   switch (category) {
-    case "Wellness": return "Electrolytes";
+    case "Wellness": return "Supplements";
     case "Water Bottles": return "Water Bottles";
     case "Bundles": return "Bundles";
     case "Accessories": return "Accessories";
@@ -315,13 +315,13 @@ function ProductCard({ variants, index }: { variants: any[]; index: number }) {
   const getCategoryColor = (category: string) => {
     switch (category) {
       case "Wellness":
-        return "bg-emerald-500/10 text-emerald-700";
+        return "bg-[#387ed0]/10 text-purple-500";
       case "Water Bottles":
-        return "bg-sky-500/10 text-sky-600";
+        return "bg-[#7eb2e8]/10 text-[#7eb2e8]";
       case "Bundles":
-        return "bg-orange-500/10 text-orange-600";
+        return "bg-[#FF88A1]/10 text-[#FF88A1]";
       case "Accessories":
-        return "bg-purple-500/10 text-purple-600";
+        return "bg-[#22406d]/10 text-[#22406d]";
       default:
         return "bg-primary/10 text-primary";
     }
@@ -418,8 +418,11 @@ function ProductCard({ variants, index }: { variants: any[]; index: number }) {
       {/* Top badges */}
       <div className="absolute top-4 left-4 z-20 flex flex-col gap-2 pointer-events-none">
         <span className={cn(
-          "px-3 py-1 rounded-full text-xs font-bold shadow-lg backdrop-blur-md",
-          getCategoryColor(product.category).replace('text-', 'bg-white/90 text-').replace('bg-', 'border-0 ')
+          "px-3 py-1 rounded-full text-xs font-bold shadow-lg backdrop-blur-md bg-white/90",
+          product.category === "Wellness" ? "text-purple-500" :
+          product.category === "Water Bottles" ? "text-[#7eb2e8]" :
+          product.category === "Bundles" ? "text-[#FF88A1]" :
+          "text-[#22406d]"
         )}>
           {product.category}
         </span>
@@ -435,7 +438,7 @@ function ProductCard({ variants, index }: { variants: any[]; index: number }) {
           {variants.length > 1 && (
             <div
               ref={swatchScrollRef}
-              className="flex gap-2 items-center opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity duration-200 overflow-x-auto w-full"
+              className="flex gap-2 items-center opacity-100 transition-opacity duration-200 overflow-visible w-full"
               style={{ scrollbarWidth: "none" }}
             >
               {variants.map((variant) => (
@@ -446,7 +449,8 @@ function ProductCard({ variants, index }: { variants: any[]; index: number }) {
                     setSelectedVariant(variant);
                   }}
                   className={cn(
-                    "w-6 h-6 rounded-full border border-white/30 transition-transform hover:scale-110 focus:outline-none shadow-sm flex-none",
+                    "w-6 h-6 rounded-full border-2 focus:outline-none shadow-sm flex-none relative flex items-center justify-center",
+                    selectedVariant.id === variant.id ? "border-white scale-110" : "border-white/30",
                     (variant.hexColor ?? variant.hex_color) === "#FFFFFF" && "bg-white",
                     !(variant.hexColor ?? variant.hex_color) && "bg-white/10",
                   )}
@@ -456,7 +460,19 @@ function ProductCard({ variants, index }: { variants: any[]; index: number }) {
                       ? 'linear-gradient(45deg, rgba(255,255,255,0.15), rgba(255,255,255,0.45))'
                       : undefined,
                   }}
-                />
+                >
+                  {selectedVariant.id === variant.id && (
+                    <svg className={cn(
+                      "w-3 h-3 drop-shadow-lg",
+                      // Light colors get black checkmark, dark colors get white
+                      (variant.hexColor ?? variant.hex_color) === "#FFFFFF" || 
+                      (variant.hexColor ?? variant.hex_color) === "#FFF" ||
+                      (variant.hexColor ?? variant.hex_color)?.match(/^#[89A-Fa-f]/) ? "text-black" : "text-white"
+                    )} fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                  )}
+                </button>
               ))}
             </div>
           )}

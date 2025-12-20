@@ -15,7 +15,8 @@ export default function About() {
       try {
         const { count } = await supabase
           .from('products')
-          .select('*', { count: 'exact', head: true });
+          .select('*', { count: 'exact', head: true })
+          .eq('status', 'In Store');
         setProductCount(count || 0);
       } catch (error) {
         console.error('Error fetching product count:', error);
@@ -85,14 +86,7 @@ export default function About() {
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-4xl md:text-5xl font-black mb-8">Our Story</h2>
           <p className="text-lg text-white/60 leading-relaxed mb-6">
-            Thrive started with a simple frustration: the wellness industry was full of empty promises.
-          </p>
-          <p className="text-lg text-white/60 leading-relaxed mb-6">
-            We set out to create something different—pure ingredients, real science, actual results. 
-            No shortcuts, no compromises.
-          </p>
-          <p className="text-lg text-white/60 leading-relaxed">
-            Based in Aurora, Illinois, we've been here for one year and counting, building a wellness revolution one product at a time.
+            Thrive started with a simple frustration: the wellness industry was full of empty promises. We set out to create something different—pure ingredients, real science, actual results. No shortcuts, no compromises. Based in Aurora, Illinois, we've been here for one year and counting, building a wellness revolution one product at a time.
           </p>
         </div>
       </section>

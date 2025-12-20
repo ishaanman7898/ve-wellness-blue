@@ -58,7 +58,7 @@ export default function BundlesPage() {
             {/* Hero Section - Apple Style */}
             <section className="relative h-screen flex items-center justify-center overflow-hidden pt-20">
                 {/* Orange Glow/Gradient */}
-                <div className="absolute inset-0 bg-gradient-to-b from-orange-600/30 via-black to-black z-0"></div>
+                <div className="absolute inset-0 bg-gradient-to-b from-[#FF88A1]/30 via-black to-black z-0"></div>
                 <div className="absolute top-0 inset-x-0 h-1/2 bg-gradient-to-b from-orange-500/20 to-transparent blur-3xl"></div>
 
                 <div className="relative z-10 text-center px-4">

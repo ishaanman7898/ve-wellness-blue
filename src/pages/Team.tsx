@@ -1,68 +1,109 @@
 import { useEffect, useRef } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { CustomCursor } from "@/components/CustomCursor";
 import { ChevronDown } from "lucide-react";
 
+// Team images from local public folder
+const teamImageUrls: { [key: string]: string } = {
+  "AlexWohlfahrt": "/team/AlexWohlfahrt.jpg",
+  "AliceHo": "/team/AliceHo.jpg",
+  "AnshJain": "/team/AnshJain.jpg",
+  "CarterShaw": "/team/CarterShaw.jpg",
+  "DumitruBusuioc": "/team/DumitruBusuioc.jpg",
+  "EshanKhan": "/team/EshanKhan.jpg",
+  "EshanviSharma": "/team/EshanviSharma.jpg",
+  "EthanHsu": "/team/EthanHsu.jpg",
+  "GraceHelbing": "/team/GraceHelbing.jpg",
+  "HitaKhandelwal": "/team/HitaKhandelwal.jpg",
+  "IshaanManoor": "/team/IshaanManoor.jpg",
+  "LilyElsea": "/team/LilyElsea.jpg",
+  "MacyEvans": "/team/MacyEvans.jpg",
+  "MaryHoward": "/team/MaryHoward.jpg",
+  "MunisKodirova": "/team/MunisKodirova.jpg",
+  "ReeceClavey": "/team/ReeceClavey.jpg",
+  "RonikaGajulapalli": "/team/RonikaGajulapalli.jpg",
+  "RyanLucas": "/team/RyanLucas.jpg",
+  "SiyanshVirmani": "/team/SiyanshVirmani.jpg",
+  "VinanyaPenumadula": "/team/VinanyaPenumadula.jpg",
+};
+
 const allTeamImages = [
-  "/team/AliceHo.png", "/team/LilyElsea.png", "/team/HitaKhandelwal.png",
-  "/team/MacyEvans.png", "/team/MaryHoward.png", "/team/VinanyaPenumadula.png",
-  "/team/AnshJain.png", "/team/SiyanshVirmani.png", "/team/AlexWohlfahrt.png",
-  "/team/RonikaGajulapalli.png", "/team/GraceHelbing.png", "/team/EshanKhan.png",
-  "/team/DumitruBusuioc.png", "/team/IshaanManoor.png", "/team/ReeceClavey.png",
-  "/team/EshanviSharma.png", "/team/CarterShaw.png", "/team/EthanHsu.png",
-  "/team/MunisKodirova.png", "/team/RyanLucas.png"
+  teamImageUrls["AliceHo"], teamImageUrls["LilyElsea"], teamImageUrls["HitaKhandelwal"],
+  teamImageUrls["MacyEvans"], teamImageUrls["MaryHoward"], teamImageUrls["VinanyaPenumadula"],
+  teamImageUrls["AnshJain"], teamImageUrls["SiyanshVirmani"], teamImageUrls["AlexWohlfahrt"],
+  teamImageUrls["RonikaGajulapalli"], teamImageUrls["GraceHelbing"], teamImageUrls["EshanKhan"],
+  teamImageUrls["DumitruBusuioc"], teamImageUrls["IshaanManoor"], teamImageUrls["ReeceClavey"],
+  teamImageUrls["EshanviSharma"], teamImageUrls["CarterShaw"], teamImageUrls["EthanHsu"],
+  teamImageUrls["MunisKodirova"], teamImageUrls["RyanLucas"]
 ];
 
 const teamData = {
   leadership: [
-    { name: "Alice Ho", role: "CEO", img: "/team/AliceHo.png", bio: "Leading Thrive's vision with passion for wellness." },
-    { name: "Lily Elsea", role: "CFO", img: "/team/LilyElsea.png", bio: "Overseeing financial strategy and growth." },
-    { name: "Hita Khandelwal", role: "CDO", img: "/team/HitaKhandelwal.png", bio: "Shaping visual identity and UX." },
-    { name: "Macy Evans", role: "CAO", img: "/team/MacyEvans.png", bio: "Ensuring operational excellence." },
-    { name: "Mary Howard", role: "CMO", img: "/team/MaryHoward.png", bio: "Driving brand awareness." },
-    { name: "Vinanya Penumadula", role: "CSO", img: "/team/VinanyaPenumadula.png", bio: "Leading sales initiatives." },
+    { name: "Alice Ho", role: "CEO", img: teamImageUrls["AliceHo"], bio: "Leading Thrive's vision with passion for wellness." },
+    { name: "Lily Elsea", role: "CFO", img: teamImageUrls["LilyElsea"], bio: "Overseeing financial strategy and growth." },
+    { name: "Hita Khandelwal", role: "CDO", img: teamImageUrls["HitaKhandelwal"], bio: "Shaping visual identity and UX." },
+    { name: "Macy Evans", role: "CAO", img: teamImageUrls["MacyEvans"], bio: "Ensuring operational excellence." },
+    { name: "Mary Howard", role: "CMO", img: teamImageUrls["MaryHoward"], bio: "Driving brand awareness." },
+    { name: "Vinanya Penumadula", role: "CSO", img: teamImageUrls["VinanyaPenumadula"], bio: "Leading sales initiatives." },
   ],
   departments: [
     {
       name: "Accounting",
       members: [
-        { name: "Ansh Jain", role: "Financial Analyst", img: "/team/AnshJain.png" },
-        { name: "Siyansh Virmani", role: "Accountant", img: "/team/SiyanshVirmani.png" },
-        { name: "Alex Wohlfahrt", role: "Financial Associate", img: "/team/AlexWohlfahrt.png" },
+        { name: "Ansh Jain", role: "Financial Analyst", img: teamImageUrls["AnshJain"], bio: "Crunching numbers and forecasting growth with precision." },
+        { name: "Siyansh Virmani", role: "Accountant", img: teamImageUrls["SiyanshVirmani"], bio: "Keeping the books balanced and the finances flowing." },
+        { name: "Alex Wohlfahrt", role: "Financial Associate", img: teamImageUrls["AlexWohlfahrt"], bio: "Supporting financial operations with attention to detail." },
       ]
     },
     {
       name: "Creative",
       members: [
-        { name: "Ronika Gajulapalli", role: "Graphic Designer", img: "/team/RonikaGajulapalli.png" },
-        { name: "Grace Helbing", role: "UX/UI Designer", img: "/team/GraceHelbing.png" },
-        { name: "Eshan Khan", role: "Creative Director", img: "/team/EshanKhan.png" },
+        { name: "Ronika Gajulapalli", role: "Graphic Designer", img: teamImageUrls["RonikaGajulapalli"], bio: "Bringing bold ideas to life through stunning visuals." },
+        { name: "Grace Helbing", role: "UX/UI Designer", img: teamImageUrls["GraceHelbing"], bio: "Crafting seamless experiences that users love." },
+        { name: "Eshan Khan", role: "Creative Director", img: teamImageUrls["EshanKhan"], bio: "Leading creative vision with innovation and style." },
       ]
     },
     {
       name: "Sales",
       members: [
-        { name: "Dumitru Busuioc", role: "Sales Rep", img: "/team/DumitruBusuioc.png" },
-        { name: "Ishaan Manoor", role: "Sales Person", img: "/team/IshaanManoor.png" },
+        { name: "Dumitru Busuioc", role: "Sales Rep", img: teamImageUrls["DumitruBusuioc"], bio: "Building relationships and closing deals with confidence." },
+        { name: "Ishaan Manoor", role: "Sales Person", img: teamImageUrls["IshaanManoor"], bio: "Driving revenue and connecting with customers." },
       ]
     },
     {
       name: "Marketing",
       members: [
-        { name: "Reece Clavey", role: "Marketing Specialist", img: "/team/ReeceClavey.png" },
-        { name: "Eshanvi Sharma", role: "Digital Marketer", img: "/team/EshanviSharma.png" },
-        { name: "Carter Shaw", role: "Content Strategist", img: "/team/CarterShaw.png" },
+        { name: "Reece Clavey", role: "Marketing Specialist", img: teamImageUrls["ReeceClavey"], bio: "Creating campaigns that resonate and convert." },
+        { name: "Eshanvi Sharma", role: "Digital Marketer", img: teamImageUrls["EshanviSharma"], bio: "Mastering social media and digital engagement." },
+        { name: "Carter Shaw", role: "Content Strategist", img: teamImageUrls["CarterShaw"], bio: "Telling stories that captivate and inspire action." },
       ]
     },
     {
       name: "HR",
       members: [
-        { name: "Ethan Hsu", role: "HR Specialist", img: "/team/EthanHsu.png" },
-        { name: "Munis Kodirova", role: "Talent Acquisition", img: "/team/MunisKodirova.png" },
-        { name: "Ryan Lucas", role: "HR Coordinator", img: "/team/RyanLucas.png" },
+        { name: "Ethan Hsu", role: "HR Specialist", img: teamImageUrls["EthanHsu"], bio: "Nurturing talent and fostering a positive culture." },
+        { name: "Munis Kodirova", role: "Talent Acquisition", img: teamImageUrls["MunisKodirova"], bio: "Finding the best people to join our mission." },
+        { name: "Ryan Lucas", role: "HR Coordinator", img: teamImageUrls["RyanLucas"], bio: "Keeping the team organized and supported." },
       ]
     },
   ]
+};
+
+const departmentCardColors: { [key: string]: string } = {
+  "Accounting": "from-green-500/20 to-emerald-700/40",
+  "Creative": "from-blue-500/20 to-indigo-700/40",
+  "Sales": "from-purple-500/20 to-violet-700/40",
+  "Marketing": "from-pink-500/20 to-rose-700/40",
+  "HR": "from-orange-400/20 to-amber-600/40",
+};
+
+const departmentColors: { [key: string]: string } = {
+  "Accounting": "bg-emerald-500",
+  "Creative": "bg-blue-500",
+  "Sales": "bg-purple-500",
+  "Marketing": "bg-pink-500",
+  "HR": "bg-orange-400",
 };
 
 export default function Team() {
@@ -78,7 +119,29 @@ export default function Team() {
     let imageIndex = 0;
     let lastX = 0;
     let lastY = 0;
-    const gap = 250; // More spaced out
+    const gap = 300; // Increased gap to give images time to load
+    const imageCache = new Map<string, string>();
+    const loadedImages = new Set<string>();
+
+    // Pre-cache all images with proper loading
+    const preloadImages = async () => {
+      for (const url of allTeamImages) {
+        const img = new Image();
+        img.onload = () => {
+          loadedImages.add(url);
+          imageCache.set(url, url);
+        };
+        img.onerror = () => {
+          console.warn(`Failed to load image: ${url}`);
+          // Extract filename for debugging
+          const filename = url.split('/').pop();
+          console.warn(`Missing file: ${filename}`);
+        };
+        img.src = url;
+      }
+    };
+
+    preloadImages();
 
     const handleMouseMove = (e: MouseEvent) => {
       const rect = hero.getBoundingClientRect();
@@ -94,8 +157,13 @@ export default function Team() {
         lastX = e.clientX;
         lastY = e.clientY;
 
+        // Only use images that are fully loaded
+        const loadedImageUrls = allTeamImages.filter(url => loadedImages.has(url));
+        if (loadedImageUrls.length === 0) return; // Skip if no images loaded yet
+
+        const imageUrl = loadedImageUrls[imageIndex % loadedImageUrls.length];
         const img = document.createElement('img');
-        img.src = allTeamImages[imageIndex % allTeamImages.length];
+        img.src = imageUrl;
         img.className = 'trail-image';
         const randomRotation = Math.random() * 30 - 15;
         const fallDistance = window.innerHeight + 200;
@@ -112,24 +180,25 @@ export default function Team() {
           z-index: 50;
           transform: translate(-50%, -50%) scale(0) rotate(0deg);
           opacity: 0;
-          border-radius: 20px;
-          box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+          border-radius: 15px;
+          box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+          will-change: transform, opacity;
         `;
 
         trailContainer.appendChild(img);
         imageIndex++;
 
-        // Appear animation
+        // Appear animation - slower
         requestAnimationFrame(() => {
-          img.style.transition = 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease-out';
+          img.style.transition = 'transform 0.3s ease-out, opacity 0.3s ease-out';
           img.style.transform = `translate(-50%, -50%) scale(1) rotate(${randomRotation}deg)`;
-          img.style.opacity = '0.95';
+          img.style.opacity = '0.9';
         });
 
-        // Fall off page animation - starts immediately after appearing
+        // Fall off page animation - much slower
         setTimeout(() => {
-          img.style.transition = 'transform 2s cubic-bezier(0.4, 0, 0.6, 1), opacity 1.5s ease-in';
-          img.style.transform = `translate(-50%, ${fallDistance}px) scale(0.7) rotate(${randomRotation + (Math.random() * 60 - 30)}deg)`;
+          img.style.transition = 'transform 2s ease-in, opacity 1.2s ease-in';
+          img.style.transform = `translate(-50%, ${fallDistance}px) scale(0.6) rotate(${randomRotation + (Math.random() * 60 - 30)}deg)`;
           img.style.opacity = '0';
           setTimeout(() => img.remove(), 2000);
         }, 100);
@@ -142,13 +211,14 @@ export default function Team() {
 
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white overflow-x-hidden">
+      <CustomCursor />
       <Navbar />
       <div ref={trailImagesRef} className="pointer-events-none" />
 
       {/* Hero with mouse trail */}
-      <section ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-glacier/20 via-transparent to-[#0a0a0f]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-glacier/10 via-transparent to-transparent" />
+      <section ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden bg-black">
+        {/* Single blue spotlight */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_800px_600px_at_50%_30%,rgba(100,180,255,0.15)_0%,transparent_70%)]" />
         
         <div className="relative z-10 text-center px-4">
           <p className="text-glacier text-sm tracking-[0.4em] uppercase mb-6 font-medium">The People Behind</p>
@@ -183,13 +253,14 @@ export default function Team() {
                   key={person.name} 
                   className="group w-full max-w-[260px] animate-slide-up"
                   style={{ animationDelay: `${i * 0.1}s` }}
+                  data-cursor={person.bio}
                 >
-                  <div className="relative overflow-hidden rounded-xl bg-white/5 border border-white/5 hover:border-glacier/30 transition-all duration-300 hover:-translate-y-3 hover:rotate-2">
-                    <div className="aspect-square overflow-hidden bg-gray-900">
+                  <div className="relative overflow-hidden rounded-xl bg-white/5 border border-white/5 transition-all duration-300 hover:border-glacier/30">
+                    <div className="aspect-[3/4] overflow-hidden bg-gray-900">
                       <img
                         src={person.img}
                         alt={person.name}
-                        className="w-full h-full object-contain object-center transition-transform duration-500 group-hover:scale-110"
+                        className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
                       />
                     </div>
                     <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-transparent" />
@@ -220,23 +291,25 @@ export default function Team() {
 
               <div className="flex justify-center">
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-6 justify-items-center">
-                  {dept.members.map((member, idx) => (
+                  {dept.members.map((member) => (
                     <div 
                       key={member.name} 
                       className="group w-full max-w-[260px]"
+                      data-cursor={member.bio}
+                      data-cursor-color={departmentColors[dept.name]}
                     >
-                      <div className="relative overflow-hidden rounded-xl bg-white/5 border border-white/5 hover:border-glacier/30 transition-all duration-300 hover:-translate-y-3 hover:rotate-2">
-                        <div className="aspect-square overflow-hidden bg-gray-900">
+                      <div className={`relative overflow-hidden rounded-xl bg-gradient-to-br ${departmentCardColors[dept.name]} border border-white/10 transition-all duration-300 hover:border-white/30 hover:scale-105`}>
+                        <div className="aspect-[3/4] overflow-hidden">
                           <img
                             src={member.img}
                             alt={member.name}
-                            className="w-full h-full object-contain object-center transition-transform duration-500 group-hover:scale-110"
+                            className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
                           />
                         </div>
                         <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-transparent" />
                         <div className="absolute bottom-0 left-0 right-0 p-4 text-center">
                           <h4 className="font-bold text-lg">{member.name}</h4>
-                          <p className="text-glacier/80 text-sm">{member.role}</p>
+                          <p className="text-white/80 text-sm">{member.role}</p>
                         </div>
                       </div>
                     </div>

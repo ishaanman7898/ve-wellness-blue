@@ -50,9 +50,9 @@ export function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-5 lg:grid-cols-7 gap-8 mb-12">
           {/* Brand */}
           <div className="col-span-2 border-r border-border pr-8">
-            <a href="/" className="flex items-center gap-2 mb-4">
-              <img src="/Thrive.png" alt="Thrive" className="h-12 w-auto object-contain" />
-            </a>
+            <div className="flex items-center gap-2 mb-4">
+              <img src="/Thrive.png" alt="Thrive" className="h-16 w-auto object-contain" />
+            </div>
             <p className="text-muted-foreground mb-6 max-w-xs">
               Premium wellness products designed for those who demand more from life.
             </p>
@@ -165,7 +165,7 @@ export function Footer() {
             </p>
             <p className="text-xs text-muted-foreground/60 mt-2">
               <Link to="/changelog" className="text-xs text-muted-foreground/60 hover:text-muted-foreground underline">
-                v2.0.0 - Major updates
+                v2.0.2 - Team Page & Infrastructure
               </Link>
             </p>
 

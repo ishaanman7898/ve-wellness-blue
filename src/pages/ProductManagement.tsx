@@ -993,16 +993,18 @@ const ProductManagement = () => {
               <div className="flex items-center gap-2">
                 <h2 className="text-xl font-semibold">{groupName}</h2>
                 <Badge variant="secondary">{productsInGroup.length} variants</Badge>
-                <Button
-                  type="button"
-                  size="sm"
-                  variant="outline"
-                  disabled={updateVariantOrderMutation.isPending}
-                  onClick={() => saveGroupOrder(groupName)}
-                  className="ml-auto"
-                >
-                  {updateVariantOrderMutation.isPending ? 'Saving…' : 'Save order'}
-                </Button>
+                <div className="ml-auto flex items-center gap-2">
+                  <span className="text-xs text-muted-foreground">Drag cards to reorder</span>
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="outline"
+                    disabled={updateVariantOrderMutation.isPending}
+                    onClick={() => saveGroupOrder(groupName)}
+                  >
+                    {updateVariantOrderMutation.isPending ? 'Saving…' : 'Save order'}
+                  </Button>
+                </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {productsInGroup.map((product, index) => (
@@ -1115,16 +1117,18 @@ const ProductManagement = () => {
               <div className="flex items-center gap-2">
                 <h2 className="text-xl font-semibold">{groupName}</h2>
                 <Badge variant="secondary">{productsInGroup.length} variants</Badge>
-                <Button
-                  type="button"
-                  size="sm"
-                  variant="outline"
-                  disabled={updateVariantOrderMutation.isPending}
-                  onClick={() => saveGroupOrder(groupName)}
-                  className="ml-auto"
-                >
-                  {updateVariantOrderMutation.isPending ? 'Saving…' : 'Save order'}
-                </Button>
+                <div className="ml-auto flex items-center gap-2">
+                  <span className="text-xs text-muted-foreground">Drag rows to reorder</span>
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="outline"
+                    disabled={updateVariantOrderMutation.isPending}
+                    onClick={() => saveGroupOrder(groupName)}
+                  >
+                    {updateVariantOrderMutation.isPending ? 'Saving…' : 'Save order'}
+                  </Button>
+                </div>
               </div>
               <div className="space-y-2">
                 {productsInGroup.map((product, index) => (
