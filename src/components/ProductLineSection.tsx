@@ -278,8 +278,8 @@ export function ProductLineSection({
                 </Button>
               </div>
 
-              {/* Generic specs */}
-              <div className="pt-6 border-t border-white/10">
+              {/* Generic specs - Hidden on mobile */}
+              <div className="hidden md:block pt-6 border-t border-white/10">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <p className="text-xs text-white/60 uppercase tracking-widest mb-1">

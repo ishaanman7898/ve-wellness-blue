@@ -109,9 +109,24 @@ const departmentColors: { [key: string]: string } = {
 export default function Team() {
   const heroRef = useRef<HTMLElement>(null);
   const trailImagesRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
-  // Mouse trail effect for hero section - images fall off page
+  // Detect mobile
   useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Mouse trail effect for hero section - images fall off page - Desktop only
+  useEffect(() => {
+    // Check if mobile
+    const isMobile = window.innerWidth < 768;
+    if (isMobile) return; // Skip mouse trail on mobile
+
     const hero = heroRef.current;
     const trailContainer = trailImagesRef.current;
     if (!hero || !trailContainer) return;
@@ -211,7 +226,7 @@ export default function Team() {
 
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white overflow-x-hidden">
-      <CustomCursor />
+      {!isMobile && <CustomCursor />}
       <Navbar />
       <div ref={trailImagesRef} className="pointer-events-none" />
 
@@ -253,7 +268,7 @@ export default function Team() {
                   key={person.name} 
                   className="group w-full max-w-[260px] animate-slide-up"
                   style={{ animationDelay: `${i * 0.1}s` }}
-                  data-cursor={person.bio}
+                  {...(!isMobile && { 'data-cursor': person.bio })}
                 >
                   <div className="relative overflow-hidden rounded-xl bg-white/5 border border-white/5 transition-all duration-300 hover:border-glacier/30">
                     <div className="aspect-[3/4] overflow-hidden bg-gray-900">
@@ -295,8 +310,10 @@ export default function Team() {
                     <div 
                       key={member.name} 
                       className="group w-full max-w-[260px]"
-                      data-cursor={member.bio}
-                      data-cursor-color={departmentColors[dept.name]}
+                      {...(!isMobile && { 
+                        'data-cursor': member.bio,
+                        'data-cursor-color': departmentColors[dept.name]
+                      })}
                     >
                       <div className={`relative overflow-hidden rounded-xl bg-gradient-to-br ${departmentCardColors[dept.name]} border border-white/10 transition-all duration-300 hover:border-white/30 hover:scale-105`}>
                         <div className="aspect-[3/4] overflow-hidden">

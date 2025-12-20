@@ -121,7 +121,7 @@ export default function ProductDetail() {
       <Navbar />
 
       {/* Hero Section with Product Image */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 bg-gradient-to-b from-slate-900 via-black to-black">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-32 md:pt-20 bg-gradient-to-b from-slate-900 via-black to-black">
 
 
         <div className="container mx-auto px-4 lg:px-8 relative z-10">

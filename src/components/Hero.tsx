@@ -96,8 +96,8 @@ export function Hero() {
             </span>
           </h1>
 
-          {/* WELLNESS THAT WORKS */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 animate-fade-in-up delay-100 mb-10 md:mb-12 w-full">
+          {/* WELLNESS THAT WORKS - Hidden on mobile */}
+          <div className="hidden md:flex flex-col sm:flex-row items-center justify-center gap-2 animate-fade-in-up delay-100 mb-10 md:mb-12 w-full">
             <span className="font-display font-bold text-white tracking-wide text-[clamp(1.1rem,4vw,2.8rem)] text-center sm:text-left">
               WELLNESS THAT 
             </span>
@@ -118,12 +118,12 @@ export function Hero() {
         <ChevronDown className="w-8 h-8 text-white/80" />
       </button>
 
-      {/* Play/Pause control */}
+      {/* Play/Pause control - Hidden on mobile */}
       <button
         type="button"
         aria-label="Play or pause background video"
         onClick={togglePlay}
-        className="absolute bottom-4 right-4 z-20 glass-light rounded-full p-3 text-white hover:bg-white/20 transition"
+        className="hidden md:block absolute bottom-4 right-4 z-20 glass-light rounded-full p-3 text-white hover:bg-white/20 transition"
       >
         {playing ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
       </button>

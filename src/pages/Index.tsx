@@ -51,9 +51,10 @@ const Index = () => {
                 <div className="hidden lg:block">PRODUCTS THAT</div>
                 <div className="hidden lg:block">MAKE WELLNESS</div>
                 {/* Mobile: Simplified text */}
-                <div className="lg:hidden text-5xl sm:text-6xl">THRIVE</div>
-                <div className="lg:hidden text-2xl sm:text-3xl text-white/80 mt-4">Premium wellness products</div>
-                <div><FlippingText /></div>
+                <div className="lg:hidden text-6xl sm:text-7xl mb-4">THRIVE</div>
+                <div className="lg:hidden text-2xl sm:text-3xl text-white/80 font-light">Premium wellness products made simple</div>
+                {/* Desktop: FlippingText */}
+                <div className="hidden lg:block"><FlippingText /></div>
               </h2>
             </div>
             {/* Right: product card slideshow */}
@@ -80,10 +81,10 @@ const Index = () => {
           <div className="grid lg:grid-cols-2 items-start gap-12">
             {/* Left: Heading + accordion list */}
             <div>
-              <h2 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-tight mb-3">
+              <h2 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white leading-tight mb-3 text-center lg:text-left">
                 THE THRIVE <span className="text-glacier">FACTOR</span>
               </h2>
-              <p className="font-display text-xl sm:text-2xl font-extrabold text-white/90 tracking-wide mb-10">
+              <p className="font-display text-xl sm:text-2xl font-extrabold text-white/90 tracking-wide mb-10 text-center lg:text-left">
                 MADE WITH A CONSCIENCE TO THE WORLD
               </p>
 
