@@ -950,7 +950,7 @@ const ProductManagement = () => {
 
       {activeTab === 'inventory' ? (
         <div className="space-y-4">
-          <h2 className="text-2xl font-bold mb-4">Inventory Overview</h2>
+          <h2 className="text-xl sm:text-2xl font-bold mb-4">Inventory Overview</h2>
           {inventoryLoading ? (
             <div className="text-center py-12 text-muted-foreground">Loading inventory...</div>
           ) : inventoryError ? (
@@ -962,15 +962,15 @@ const ProductManagement = () => {
           ) : (
             <div className="grid gap-4">
               {inventory.map((item: any) => (
-                <Card key={item.id} className="p-4">
-                  <div className="flex items-center justify-between gap-4">
-                    <div className="flex-1">
-                      <p className="font-semibold text-lg">{item.item_name || 'N/A'}</p>
-                      <p className="text-sm text-muted-foreground">SKU: {item.sku || 'N/A'}</p>
+                <Card key={item.id} className="p-3 sm:p-4">
+                  <div className="flex items-center justify-between gap-2 sm:gap-4">
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-sm sm:text-lg truncate">{item.item_name || 'N/A'}</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground truncate">SKU: {item.sku || 'N/A'}</p>
                     </div>
-                    <div className="text-right">
-                      <p className="text-sm text-muted-foreground">Bought: {item.stock_bought || 0}</p>
-                      <p className="font-semibold">Left: {item.stock_left || 0}</p>
+                    <div className="text-right flex-shrink-0">
+                      <p className="text-xs sm:text-sm text-muted-foreground">Bought: {item.stock_bought || 0}</p>
+                      <p className="text-xs sm:text-sm font-semibold">Left: {item.stock_left || 0}</p>
                     </div>
                     <Badge variant={
                       item.stock_left < 0 ? 'destructive' :
@@ -995,10 +995,10 @@ const ProductManagement = () => {
         <div className="space-y-8">
           {Object.entries(groupedProducts).map(([groupName, productsInGroup]) => (
             <div key={groupName} className="space-y-4">
-              <div className="flex items-center gap-2">
-                <h2 className="text-xl font-semibold">{groupName}</h2>
-                <Badge variant="secondary">{productsInGroup.length} variants</Badge>
-                <div className="ml-auto flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
+                <h2 className="text-lg sm:text-xl font-semibold">{groupName}</h2>
+                <Badge variant="secondary" className="text-xs">{productsInGroup.length} variants</Badge>
+                <div className="ml-auto flex items-center gap-2 flex-wrap justify-end">
                   <span className="text-xs text-muted-foreground">Drag cards to reorder</span>
                   <Button
                     type="button"
@@ -1058,17 +1058,17 @@ const ProductManagement = () => {
                 </div>
               </button>
 
-              <CardContent className="p-4">
-                <div className="flex items-start justify-between gap-3">
+              <CardContent className="p-3 sm:p-4">
+                <div className="flex items-start justify-between gap-2 sm:gap-3">
                   <div className="min-w-0">
-                    <h3 className="font-semibold text-lg mb-1 truncate">{product.name}</h3>
+                    <h3 className="font-semibold text-sm sm:text-lg mb-1 truncate">{product.name}</h3>
                     <p className="text-xs text-muted-foreground truncate">SKU: {product.sku}</p>
                   </div>
-                  <span className="text-lg font-bold text-glacier">${product.price.toFixed(2)}</span>
+                  <span className="text-sm sm:text-lg font-bold text-glacier flex-shrink-0">${product.price.toFixed(2)}</span>
                 </div>
 
-                <div className="flex justify-between items-center mt-3">
-                  <Badge variant="secondary">{product.category}</Badge>
+                <div className="flex justify-between items-center mt-2 sm:mt-3 gap-2 flex-wrap">
+                  <Badge variant="secondary" className="text-xs">{product.category}</Badge>
                   {product.color && (
                     <div className="flex items-center gap-2">
                       {product.hex_color && (
@@ -1119,10 +1119,10 @@ const ProductManagement = () => {
         <div className="space-y-6">
           {Object.entries(groupedProducts).map(([groupName, productsInGroup]) => (
             <div key={groupName} className="space-y-3">
-              <div className="flex items-center gap-2">
-                <h2 className="text-xl font-semibold">{groupName}</h2>
-                <Badge variant="secondary">{productsInGroup.length} variants</Badge>
-                <div className="ml-auto flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
+                <h2 className="text-lg sm:text-xl font-semibold">{groupName}</h2>
+                <Badge variant="secondary" className="text-xs">{productsInGroup.length} variants</Badge>
+                <div className="ml-auto flex items-center gap-2 flex-wrap justify-end">
                   <span className="text-xs text-muted-foreground">Drag rows to reorder</span>
                   <Button
                     type="button"
@@ -1168,11 +1168,11 @@ const ProductManagement = () => {
                         )}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-start justify-between gap-3">
+                        <div className="flex items-start justify-between gap-2 sm:gap-3 flex-wrap">
                           <div className="min-w-0">
-                            <h3 className="font-semibold truncate">{product.name}</h3>
-                            <p className="text-sm text-muted-foreground">SKU: {product.sku}</p>
-                            <div className="flex items-center gap-2 mt-1">
+                            <h3 className="font-semibold text-sm sm:text-base truncate">{product.name}</h3>
+                            <p className="text-xs sm:text-sm text-muted-foreground truncate">SKU: {product.sku}</p>
+                            <div className="flex items-center gap-2 mt-1 flex-wrap">
                               <Badge variant="secondary" className="text-xs">{product.category}</Badge>
                               <Badge
                                 className={`text-xs ${
@@ -1198,9 +1198,9 @@ const ProductManagement = () => {
                               )}
                             </div>
                           </div>
-                          <div className="text-right">
-                            <div className="text-lg font-bold text-glacier">${product.price.toFixed(2)}</div>
-                            <div className="flex gap-1 mt-2">
+                          <div className="text-right flex-shrink-0">
+                            <div className="text-sm sm:text-lg font-bold text-glacier">${product.price.toFixed(2)}</div>
+                            <div className="flex gap-1 mt-2 justify-end">
                               <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                                 <Button
                                   type="button"
