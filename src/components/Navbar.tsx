@@ -11,10 +11,9 @@ const navLinks = [
     href: "/shop",
     hasDropdown: true,
     dropdownItems: [
+      { label: "Bundles", href: "/shop/bundles" },
       { label: "Water Bottles", href: "/shop/water-bottles" },
       { label: "Supplements", href: "/shop/supplements" },
-
-      { label: "Bundles", href: "/shop/bundles" },
       { label: "All Products", href: "/shop" },
     ]
   },

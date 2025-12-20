@@ -1033,7 +1033,7 @@ const ProductManagement = () => {
                       }}
                     >
                       <div className="aspect-square bg-muted/30 relative">
-                        {product.image_url ? (
+                        {product.image_url && product.status !== 'Phased Out' ? (
                     <img
                       src={product.image_url}
                       alt={product.name}
@@ -1155,7 +1155,7 @@ const ProductManagement = () => {
                         {index + 1}
                       </div>
                       <div className="w-16 h-16 bg-muted/30 rounded-lg flex-shrink-0">
-                        {product.image_url ? (
+                        {product.image_url && product.status !== 'Phased Out' ? (
                           <img
                             src={product.image_url}
                             alt={product.name}
