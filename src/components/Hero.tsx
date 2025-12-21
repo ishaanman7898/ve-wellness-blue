@@ -84,8 +84,8 @@ export function Hero() {
       {/* Content - Centered like reference */}
       <div className="container mx-auto px-4 lg:px-8 relative z-20">
         <div className="max-w-5xl mx-auto text-center">
-          {/* Big THRIVE Text */}
-          <h1 className="font-display text-[clamp(4rem,15vw,20rem)] font-black mb-4 md:mb-6 animate-fade-in-up tracking-[0.06em] leading-none text-center">
+          {/* Big THRIVE Text - Moved up on mobile */}
+          <h1 className="font-display text-[clamp(4rem,15vw,20rem)] font-black mb-2 md:mb-6 animate-fade-in-up tracking-[0.06em] leading-none text-center -mt-8 md:mt-0">
             <span className="text-white drop-shadow-[0_4px_30px_rgba(0,0,0,0.5)] whitespace-nowrap">
               <span className="inline-block text-white drop-shadow-[0_4px_30px_rgba(0,0,0,0.5)]">T</span>
               <span className="inline-block text-white drop-shadow-[0_4px_30px_rgba(0,0,0,0.5)]">H</span>
@@ -96,8 +96,8 @@ export function Hero() {
             </span>
           </h1>
 
-          {/* WELLNESS THAT WORKS - Hidden on mobile */}
-          <div className="hidden md:flex flex-col sm:flex-row items-center justify-center gap-2 animate-fade-in-up delay-100 mb-10 md:mb-12 w-full">
+          {/* WELLNESS THAT WORKS - Hidden on mobile, moved up subtitle */}
+          <div className="hidden md:flex flex-col sm:flex-row items-center justify-center gap-2 animate-fade-in-up delay-100 mb-10 md:mb-12 w-full -mt-4 md:mt-0">
             <span className="font-display font-bold text-white tracking-wide text-[clamp(1.1rem,4vw,2.8rem)] text-center sm:text-left">
               WELLNESS THAT 
             </span>

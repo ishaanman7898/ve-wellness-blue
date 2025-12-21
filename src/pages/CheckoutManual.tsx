@@ -33,7 +33,7 @@ export default function CheckoutManual() {
             <Link className="text-primary hover:underline" to="/cart">Go to Cart</Link>
           </div>
         </section>
-        <Footer />
+        {/* Footer removed from checkout manual page */}
       </div>
     );
   }
@@ -73,7 +73,7 @@ export default function CheckoutManual() {
           </div>
         </div>
       </section>
-      <Footer />
+      {/* Footer removed from checkout manual page */}
     </div>
   );
 }

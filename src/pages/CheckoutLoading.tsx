@@ -114,7 +114,7 @@ export default function CheckoutLoading() {
           </div>
         </div>
       </section>
-      <Footer />
+      {/* Footer removed from checkout loading page */}
     </div>
   );
 }

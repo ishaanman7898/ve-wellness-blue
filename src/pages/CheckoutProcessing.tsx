@@ -150,7 +150,16 @@ export default function CheckoutProcessing() {
         }
 
         if (cart.length > 0 && !sessionId) {
-            startPopupCheckout();
+            // Check if mobile device
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
+            
+            if (isMobile) {
+                // On mobile, go directly to manual checkout
+                setStatus("manual");
+            } else {
+                // On desktop, use automated popup checkout
+                startPopupCheckout();
+            }
         }
     }, [cart, navigate, sessionId, CART_SERVER_URL]);
 
@@ -358,8 +367,11 @@ export default function CheckoutProcessing() {
                     {status === "manual" && (
                         <div className="w-full h-[80vh] flex flex-col items-center justify-center">
                             <div className="flex-shrink-0 w-full max-w-xl mx-auto">
-                                <h1 className="font-display text-3xl font-bold mb-2 text-center">Manual Checkout</h1>
-                                <p className="text-muted-foreground mb-6 text-center">Follow these steps to complete your purchase:</p>
+                            <h1 className="font-display text-3xl font-bold mb-2 text-center">Manual Checkout</h1>
+                                <p className="text-muted-foreground mb-6 text-center">
+                                    <span className="hidden md:inline">Follow these steps to complete your purchase:</span>
+                                    <span className="md:hidden">Click each product to add to your VEI cart, then complete your purchase:</span>
+                                </p>
                             </div>
                             <div className="flex-grow overflow-y-auto pr-2 space-y-4 w-full max-w-xl mx-auto">
                                 <div className="step">

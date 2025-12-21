@@ -248,7 +248,7 @@ export default function Cart() {
         </div>
       </main>
 
-      <Footer />
+      {/* Footer removed from cart page */}
     </div>
   );
 }
