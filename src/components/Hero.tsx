@@ -49,7 +49,7 @@ export function Hero() {
   };
 
   return (
-    <section className="relative h-screen flex items-center justify-center overflow-hidden pt-24">
+    <section className="relative h-screen flex items-center justify-center overflow-hidden pt-12 md:pt-24">
       <style>{`
         .ve-gradient-letter{
           display: inline-block;
@@ -85,7 +85,7 @@ export function Hero() {
       <div className="container mx-auto px-4 lg:px-8 relative z-20">
         <div className="max-w-5xl mx-auto text-center">
           {/* Big THRIVE Text - Moved up on mobile */}
-          <h1 className="font-display text-[clamp(4rem,15vw,20rem)] font-black mb-2 md:mb-6 animate-fade-in-up tracking-[0.06em] leading-none text-center -mt-8 md:mt-0">
+          <h1 className="font-display text-[clamp(4rem,15vw,20rem)] font-black mb-3 md:mb-6 animate-fade-in-up tracking-[0.06em] leading-none text-center">
             <span className="text-white drop-shadow-[0_4px_30px_rgba(0,0,0,0.5)] whitespace-nowrap">
               <span className="inline-block text-white drop-shadow-[0_4px_30px_rgba(0,0,0,0.5)]">T</span>
               <span className="inline-block text-white drop-shadow-[0_4px_30px_rgba(0,0,0,0.5)]">H</span>
@@ -96,8 +96,15 @@ export function Hero() {
             </span>
           </h1>
 
-          {/* WELLNESS THAT WORKS - Hidden on mobile, moved up subtitle */}
-          <div className="hidden md:flex flex-col sm:flex-row items-center justify-center gap-2 animate-fade-in-up delay-100 mb-10 md:mb-12 w-full -mt-4 md:mt-0">
+          {/* Wellness Made Simple - Below THRIVE on mobile */}
+          <div className="md:hidden mb-8">
+            <p className="text-glacier text-sm tracking-[0.3em] uppercase font-medium animate-fade-in-up delay-100">
+              Wellness Made Simple
+            </p>
+          </div>
+
+          {/* WELLNESS THAT WORKS - Desktop only */}
+          <div className="hidden md:flex flex-col sm:flex-row items-center justify-center gap-2 animate-fade-in-up delay-100 mb-10 md:mb-12 w-full">
             <span className="font-display font-bold text-white tracking-wide text-[clamp(1.1rem,4vw,2.8rem)] text-center sm:text-left">
               WELLNESS THAT 
             </span>

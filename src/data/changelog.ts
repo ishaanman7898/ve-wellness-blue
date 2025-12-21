@@ -4,15 +4,14 @@ export const changelogData = [
     date: "December 20, 2025",
     type: "Mobile UX & Checkout Improvements",
     items: [
-      "Added 'Wellness Made Simple' slogan above slideshow on mobile landing page.",
-      "Moved THRIVE text and subtitle up on mobile landing page for better visual hierarchy.",
-      "Mobile checkout now defaults to manual checkout with clear instructions.",
-      "Desktop checkout continues to use automated popup system.",
-      "Updated manual checkout instructions for mobile: 'Click each product to add to your VEI cart'.",
+      "Added 'Wellness Made Simple' slogan below THRIVE text on mobile hero section.",
+      "Moved entire hero section up on mobile (pt-12 instead of pt-24) for better visual hierarchy.",
+      "Automated popup checkout now works on all devices (mobile and desktop).",
+      "Updated manual checkout instructions for better clarity.",
       "Removed footer from all cart-related pages (Cart, Checkout Processing, Checkout Loading, Checkout Manual).",
       "Improved mobile bandwidth usage by optimizing checkout flow.",
       "Fixed SPA routing for Team page on Cloudflare Pages.",
-      "Enhanced mobile user experience with clearer checkout prompts."
+      "Enhanced mobile user experience with cleaner layout."
     ]
   },
   {

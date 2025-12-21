@@ -41,13 +41,6 @@ const Index = () => {
       {/* Tagline Section - Navy split layout */}
       <section id="tagline" className="relative bg-[#020410] py-12 md:py-24">
         <div className="container mx-auto px-4 lg:px-8 relative z-10">
-          {/* Mobile: Slogan above slideshow */}
-          <div className="lg:hidden text-center mb-8">
-            <p className="text-glacier text-sm tracking-[0.3em] uppercase font-medium mb-2">
-              Wellness Made Simple
-            </p>
-          </div>
-
           <div className="grid lg:grid-cols-2 items-center gap-10">
             {/* Left: stacked text */}
             <div className="text-left lg:text-left text-center">

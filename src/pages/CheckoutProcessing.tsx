@@ -150,16 +150,8 @@ export default function CheckoutProcessing() {
         }
 
         if (cart.length > 0 && !sessionId) {
-            // Check if mobile device
-            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
-            
-            if (isMobile) {
-                // On mobile, go directly to manual checkout
-                setStatus("manual");
-            } else {
-                // On desktop, use automated popup checkout
-                startPopupCheckout();
-            }
+            // Always use automated popup checkout
+            startPopupCheckout();
         }
     }, [cart, navigate, sessionId, CART_SERVER_URL]);
 
