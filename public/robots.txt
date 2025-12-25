@@ -4,4 +4,4 @@ Disallow: /admin
 Disallow: /checkout-manual
 Disallow: /checkout-processing
 Disallow: /cart-test
-sitemap: https://thrive-wellness.com/sitemap.xml
+sitemap: https://thrivewebapp.ishaanmanoor1.workers.dev/sitemap.xml

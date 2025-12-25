@@ -181,7 +181,7 @@ export default function Shop({ category: categoryProp }: ShopProps = {}) {
         {/* Hero Section - Apple Style */}
         <section className="relative h-screen flex items-center justify-center overflow-hidden pt-20">
           <HeroTubesCursor theme="rainbow" />
-          <div className="absolute inset-0 bg-gradient-to-b from-slate-900/40 via-black/80 to-black z-[1]"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-900/20 via-black/40 to-black z-[1]"></div>
 
           <div className="relative z-10 text-center px-4">
             <h1 className="font-display text-6xl md:text-8xl font-bold mb-6 tracking-tight">

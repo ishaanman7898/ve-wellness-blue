@@ -1,5 +1,20 @@
 export const changelogData = [
   {
+    version: "2.5.0",
+    date: "December 23, 2025",
+    type: "Mobile Optimization & UI Improvements",
+    items: [
+      "Disabled framer motion mouse trailing on mobile for product line hero sections.",
+      "Removed Support dropdown and pages (FAQ, Shipping, Contact) from mobile navigation.",
+      "Support pages remain accessible on desktop only.",
+      "Updated footer disclaimer to reflect Virtual Enterprises International framework.",
+      "Decreased dark overlay opacity on product line pages (40% from 80%) for better WebGPU animation visibility.",
+      "Added clickable team member cards - clicking leadership cards scrolls to their department.",
+      "Added scroll-margin-top to department sections for better navigation.",
+      "Improved team page interactivity with section linking."
+    ]
+  },
+  {
     version: "2.4.1",
     date: "December 21, 2025",
     type: "Minor Tweaks & Patches",

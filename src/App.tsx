@@ -9,6 +9,7 @@ import { PageLoader } from "@/components/PageLoader";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { FloatingCart } from "@/components/FloatingCart";
 import { NewsletterPopup } from "@/components/NewsletterPopup";
+import { ChatbotWidget } from "@/components/ChatbotWidget";
 import Index from "./pages/Index";
 import Shop from "./pages/Shop";
 import NotFound from "./pages/NotFound";
@@ -36,7 +37,6 @@ import FAQ from "./pages/FAQ";
 import Contact from "./pages/Contact";
 import Shipping from "./pages/Shipping";
 import Mission from "./pages/Mission";
-import IntroTest from "./pages/IntroTest";
 
 const queryClient = new QueryClient();
 
@@ -50,6 +50,7 @@ const App = () => (
           <BrowserRouter>
               <ScrollToTop />
               <PageLoader />
+              <ChatbotWidget />
               <FloatingCart />
               <NewsletterPopup />
               <Routes>
@@ -82,7 +83,6 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/privacy" element={<Privacy />} />
-            <Route path="/intro-test" element={<IntroTest />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
             </Routes>

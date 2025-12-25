@@ -36,17 +36,19 @@ export function Navbar() {
         { label: "Newsletter", href: "/newsletter" },
       ]
     },
-    {
-      label: "Support",
-      href: "/faq",
-      hasDropdown: true,
-      dropdownItems: [
-        { label: "FAQ", href: "/faq" },
-        { label: "Shipping", href: "/shipping" },
-        { label: "Contact Us", href: "/contact" },
-      ]
-    },
   ];
+
+  // Desktop-only support links
+  const supportLinks = {
+    label: "Support",
+    href: "/faq",
+    hasDropdown: true,
+    dropdownItems: [
+      { label: "FAQ", href: "/faq" },
+      { label: "Shipping", href: "/shipping" },
+      { label: "Contact Us", href: "/contact" },
+    ]
+  };
 
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
@@ -98,7 +100,7 @@ export function Navbar() {
 
               {/* Desktop Navigation - Centered */}
               <div className="hidden lg:flex items-center gap-2 sm:gap-3 md:gap-4 absolute left-1/2 -translate-x-1/2 transition-all duration-300 ease-in-out">
-                {navLinks.map((link) => (
+                {[...navLinks, supportLinks].map((link) => (
                   <div
                     key={link.label}
                     className="relative"

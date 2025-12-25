@@ -38,6 +38,10 @@ export function HeroTubesCursor({ theme }: HeroTubesCursorProps) {
   const heroRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Skip on mobile devices
+    const isMobile = window.innerWidth < 768;
+    if (isMobile) return;
+
     let mounted = true;
 
     const initTubes = async () => {

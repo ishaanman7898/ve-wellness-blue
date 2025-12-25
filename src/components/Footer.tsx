@@ -187,7 +187,7 @@ export function Footer() {
               © 2025 Thrive Wellness. All rights reserved.
             </p>
             <p className="text-xs text-muted-foreground italic">
-              These statements have not been evaluated by the FDA. This product is not intended to diagnose, treat, cure, or prevent any disease.
+              This store is a project based on the framework for Virtual Enterprises International and does not offer real products.
             </p>
             <p className="text-xs text-muted-foreground/60 mt-2">
               <Link to="/changelog" className="text-xs text-muted-foreground/60 hover:text-muted-foreground underline">

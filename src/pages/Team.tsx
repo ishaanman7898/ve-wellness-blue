@@ -40,12 +40,12 @@ const allTeamImages = [
 
 const teamData = {
   leadership: [
-    { name: "Alice Ho", role: "CEO", img: teamImageUrls["AliceHo"], bio: "Leading Thrive's vision with passion for wellness." },
-    { name: "Lily Elsea", role: "CFO", img: teamImageUrls["LilyElsea"], bio: "Overseeing financial strategy and growth." },
-    { name: "Hita Khandelwal", role: "CDO", img: teamImageUrls["HitaKhandelwal"], bio: "Shaping visual identity and UX." },
-    { name: "Macy Evans", role: "CAO", img: teamImageUrls["MacyEvans"], bio: "Ensuring operational excellence." },
-    { name: "Mary Howard", role: "CMO", img: teamImageUrls["MaryHoward"], bio: "Driving brand awareness." },
-    { name: "Vinanya Penumadula", role: "CSO", img: teamImageUrls["VinanyaPenumadula"], bio: "Leading sales initiatives." },
+    { name: "Alice Ho", role: "CEO", img: teamImageUrls["AliceHo"], bio: "Leading Thrive's vision with passion for wellness.", department: "leadership" },
+    { name: "Lily Elsea", role: "CFO", img: teamImageUrls["LilyElsea"], bio: "Overseeing financial strategy and growth.", department: "accounting" },
+    { name: "Hita Khandelwal", role: "CDO", img: teamImageUrls["HitaKhandelwal"], bio: "Shaping visual identity and UX.", department: "creative" },
+    { name: "Macy Evans", role: "CAO", img: teamImageUrls["MacyEvans"], bio: "Ensuring operational excellence.", department: "leadership" },
+    { name: "Mary Howard", role: "CMO", img: teamImageUrls["MaryHoward"], bio: "Driving brand awareness.", department: "marketing" },
+    { name: "Vinanya Penumadula", role: "CSO", img: teamImageUrls["VinanyaPenumadula"], bio: "Leading sales initiatives.", department: "sales" },
   ],
   departments: [
     {
@@ -266,9 +266,13 @@ export default function Team() {
               {teamData.leadership.map((person, i) => (
                 <div 
                   key={person.name} 
-                  className="group w-full max-w-[260px] animate-slide-up"
+                  className="group w-full max-w-[260px] animate-slide-up cursor-pointer"
                   style={{ animationDelay: `${i * 0.1}s` }}
                   {...(!isMobile && { 'data-cursor': person.bio })}
+                  onClick={() => {
+                    const sectionId = person.department.toLowerCase();
+                    document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+                  }}
                 >
                   <div className="relative overflow-hidden rounded-xl bg-white/5 border border-white/5 transition-all duration-300 hover:border-glacier/30">
                     <div className="aspect-[3/4] overflow-hidden bg-gray-900">
@@ -295,7 +299,7 @@ export default function Team() {
       <section className="py-20 px-4 bg-gradient-to-b from-transparent via-white/[0.02] to-transparent">
         <div className="max-w-7xl mx-auto">
           {teamData.departments.map((dept, deptIdx) => (
-            <div key={dept.name} className="mb-32 last:mb-0">
+            <div key={dept.name} id={dept.name.toLowerCase()} className="mb-32 last:mb-0 scroll-mt-24">
               <div className="text-center mb-12">
                 <div className="flex items-center justify-center gap-4 mb-2">
                   <span className="text-6xl font-black text-white/10">{String(deptIdx + 1).padStart(2, '0')}</span>
